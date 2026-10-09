@@ -10,13 +10,15 @@ import Events from "../pages/Events";
 import Gallary from "../pages/Gallary";
 import Contact from "../pages/Contact";
 import Blog from "../pages/blog";
-import NotFound from "../pages/NotFound";
+
 import AdminDashboard from "../pages/admin/Dashboard";
 import TeacherDashboard from "../pages/teacher/Dashboard";
 import StudentDashboard from "../pages/student/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminLayout from "../layouts/AdminLayout";
 import Students from "../pages/admin/students/Students";
+import ManagementPage from "../pages/admin/ManagementPage";
+import { managementResources } from "../config/management";
 
 const AppRoutes = () => {
   return (
@@ -37,10 +39,11 @@ const AppRoutes = () => {
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/students" element={<Students />} />
+          {managementResources.map(resource => <Route key={resource} path={`/admin/${resource}`} element={<ManagementPage key={resource} resource={resource} />} />)}
         </Route>
       </Route>
-      <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-      <Route path="/student/dashboard" element={<StudentDashboard />} />
+      <Route element={<ProtectedRoute allowedRoles={["Teacher"]} />}><Route path="/teacher/dashboard" element={<TeacherDashboard />} /></Route>
+      <Route element={<ProtectedRoute allowedRoles={["Student"]} />}><Route path="/student/dashboard" element={<StudentDashboard />} /></Route>
     </Routes>
   );
 };

@@ -1,7 +1,6 @@
 import Modal from "./Modal";
 
 const FormModal = ({ isOpen, onClose, title, children }) => {
-  console.log("FormModal isOpen:", isOpen);
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} width="max-w-3xl">
       {children}

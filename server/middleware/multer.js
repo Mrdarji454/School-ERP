@@ -1,10 +1,2 @@
 import multer from "multer";
-
-const storage = multer.memoryStorage();
-
-export const upload = multer({
-    storage,
-    limits: {
-        fileSize: 10 * 1024 * 1024, // 10 MB
-    },
-});
+export const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024, files: 1 }, fileFilter: (_req, file, cb) => cb(/\.xlsx$/i.test(file.originalname) ? null : Object.assign(new Error("Only .xlsx files are supported"), { status: 400 }), /\.xlsx$/i.test(file.originalname)) });

@@ -1,3 +1,5 @@
+import { classSection, same } from "../../utils/relationships.js";
+import { fail } from "../../utils/errors.js";
 import asyncHandler from "express-async-handler";
 
 import Student from "../../models/Student.js";
@@ -10,18 +12,20 @@ export const createStudentFee = asyncHandler(async (req, res) => {
 
     const studentExists = await Student.findById(student);
 
-    if (!studentExists) {
+    if (!studentExists || !studentExists.isActive) {
         res.status(404);
         throw new Error("Student not found");
     }
 
     const feeStructureExists = await FeeStructure.findById(feeStructure);
 
-    if (!feeStructureExists) {
+    if (!feeStructureExists || !feeStructureExists.isActive) {
         res.status(404);
         throw new Error("Fee Structure not found");
     }
 
+    const cls = await classSection(studentExists.schoolClass, studentExists.section);
+    if (!same(cls.academicYear, feeStructureExists.academicYear)) fail(400, "Student and fee academic years differ");
     const exists = await StudentFee.findOne({
         student,
         feeStructure,

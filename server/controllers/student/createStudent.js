@@ -1,4 +1,3 @@
-
 import expressasynchandler from "express-async-handler";
 import mongoose from "mongoose";
 import Student from "../../models/Student.js";
@@ -11,6 +10,6 @@ export const createStudent = expressasynchandler(async (req, res) => {
     const student = await createStudentService(req.body);
 
 
-    sendResponse(res, 200, "Student created successfully2", student);
+    sendResponse(res, 201, "Student created successfully", student);
 });
 

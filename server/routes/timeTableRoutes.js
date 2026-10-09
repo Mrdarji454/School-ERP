@@ -1,23 +1,14 @@
 import express from "express";
-
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMIddleware.js";
 import { authorize } from "../middleware/roleMiddleware.js";
-import { validate } from "../middleware/validate.js";
-
-import { createTimetable } from "../controllers/timetable/createTimetable.js";
-
-import { createTimetableValidator } from "../validators/timetableValidator.js";
-
+import { createTimetable, updateTimetable, getAllTimetables, deleteTimetable } from "../controllers/timetable/handlers.js";
 const router = express.Router();
-
-router.post(
-    "/",
-    protect,
-    authorize("Admin"),
-    createTimetableValidator,
-    validate,
-    createTimetable
-);
-
-
+router.use(protect);
+router.get("/", getAllTimetables);
+router.get("/class/:classId", getAllTimetables);
+router.get("/teacher/:teacherId", getAllTimetables);
+router.get("/:id", getAllTimetables);
+router.post("/", authorize("Admin"), createTimetable);
+router.put("/:id", authorize("Admin"), updateTimetable);
+router.delete("/:id", authorize("Admin"), deleteTimetable);
 export default router;

@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 
 export const createNotificationValidator = [
+    body("expiryDate").optional({ nullable: true }).isISO8601(),
 
     body("title")
         .trim()

@@ -60,4 +60,6 @@ const studentFeeSchema = new mongoose.Schema(
         timestamps: true
     });
 
+studentFeeSchema.index({ student: 1, feeStructure: 1 }, { unique: true });
+studentFeeSchema.pre("validate", function () { const total = Math.round(this.totalAmount * 100), paid = Math.round(this.paidAmount * 100), remaining = Math.round(this.remainingAmount * 100); if (paid < 0 || total < paid || total - paid !== remaining) this.invalidate("remainingAmount", "Inconsistent financial balance"); this.paymentStatus = remaining === 0 ? "Paid" : paid === 0 ? "Pending" : "Partial"; });
 export default mongoose.model("StudentFee", studentFeeSchema);

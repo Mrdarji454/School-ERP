@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const LayoutContext = createContext();
+import { LayoutContext } from "./LayoutState";
 
 export const LayoutProvider = ({ children }) => {
   const [collapsed, setCollapsed] = useState(() => {
@@ -26,5 +26,3 @@ export const LayoutProvider = ({ children }) => {
     </LayoutContext.Provider>
   );
 };
-
-export const useLayout = () => useContext(LayoutContext);

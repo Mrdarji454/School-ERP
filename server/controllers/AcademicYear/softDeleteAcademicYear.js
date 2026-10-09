@@ -7,10 +7,11 @@ export const deleteAcademicYear = expressAsyncHandler(async (req, res) => {
 
     const academicYear = await AcademicYear.findById(req.params.id);
     if (!academicYear) {
-        sendResponse(res, 404, " academicYear not found");
+        return sendResponse(res, 404, "Academic year not found");
     }
 
     academicYear.isActive = false;
+    academicYear.isCurrent = false;
     await academicYear.save();
     sendResponse(res, 200, "academicyear deleted", academicYear);
 
@@ -18,7 +19,7 @@ export const deleteAcademicYear = expressAsyncHandler(async (req, res) => {
 export const restoreAcademicYear = expressAsyncHandler(async (req, res) => {
     const academicYear = await AcademicYear.findById(req.params.id);
     if (!academicYear) {
-        sendResponse(res, 404, " academicYear not found");
+        return sendResponse(res, 404, "Academic year not found");
     }
 
     academicYear.isActive = true;

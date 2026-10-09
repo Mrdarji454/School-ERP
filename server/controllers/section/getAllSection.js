@@ -12,7 +12,7 @@ export const getAllSections = asyncHandler(async (req, res) => {
                 select: "name isCurrent",
             },
         })
-        .populate("classTeacher", "fullName email")
+        .populate("classTeacher", "fullname email")
         .sort({ createdAt: -1 });
 
     res.status(200).json({

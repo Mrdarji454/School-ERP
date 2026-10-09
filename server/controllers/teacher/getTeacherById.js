@@ -4,7 +4,7 @@ import Teacher from "../../models/Teacher.js";
 export const getTeacherById = asyncHandler(async (req, res) => {
 
     const teacher = await Teacher.findById(req.params.id)
-        .populate("user", "fullName email phone profileImage");
+        .populate("user", "fullname email phone profileImage");
 
     if (!teacher) {
         res.status(404);

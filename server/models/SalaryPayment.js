@@ -50,4 +50,7 @@ const salaryPaymentSchema = new mongoose.Schema(
         timestamps: true
     });
 
+salaryPaymentSchema.add({ idempotencyKey: String, externalReference: String, isReversed: { type: Boolean, default: false }, reversedAt: Date, reversedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, reversalReason: String });
+salaryPaymentSchema.index({ idempotencyKey: 1 }, { unique: true, sparse: true });
+salaryPaymentSchema.index({ externalReference: 1 }, { unique: true, sparse: true });
 export default mongoose.model("SalaryPayment", salaryPaymentSchema);

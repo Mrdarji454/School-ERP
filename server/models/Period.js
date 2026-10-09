@@ -9,7 +9,7 @@ const periodSchema = new mongoose.Schema(
         },
 
         periodNumber: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Number,
             required: true,
             unique: true,
             min: 1,
@@ -54,5 +54,5 @@ const periodSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
-console.log("periods creation started6");
+
 export default mongoose.model("Period", periodSchema);

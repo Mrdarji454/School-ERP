@@ -3,13 +3,13 @@ import { Eye, Pencil, Trash2 } from "lucide-react";
 import StudentAvatar from "./StudentAvatar";
 import StatusBadge from "../ui/StatusBadge";
 
-const studentColumns = ({ onView, onEdit, onDelete }) => [
+const studentColumns = ({ onView, onEdit, onDelete, onRestore }) => [
 
   {
     header: "Student",
     render: (row) => (
       <div className="flex items-center gap-3">
-        <StudentAvatar name={row.user?.fullname} />
+        <StudentAvatar student={row} />
         <div>
           <p className="font-medium">{row.user?.fullname}</p>
           <p className="text-sm text-slate-500">{row.admissionNo}</p>
@@ -73,11 +73,12 @@ const studentColumns = ({ onView, onEdit, onDelete }) => [
           "button",
           {
             type: "button",
-            onClick: () => onDelete?.(row),
+            onClick: () => row.isActive ? onDelete?.(row) : onRestore?.(row),
+            title: row.isActive ? "Deactivate" : "Restore",
             className:
               "rounded-lg bg-red-100 p-2 text-red-600 hover:bg-red-200",
           },
-          React.createElement(Trash2, { size: 18 }),
+          row.isActive ? React.createElement(Trash2, { size: 18 }) : "Restore",
 
         ),
         React.createElement(

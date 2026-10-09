@@ -1,6 +1,5 @@
 export const sendResponse = (res, statusCode, message, data = null) => {
     // 1. Check your terminal logs to see what 'data' actually contains
-    console.log("DEBUG DATA TYPE:", typeof data, "VALUE:", data);
 
     return res.status(statusCode).json({
         success: statusCode >= 200 && statusCode < 300,

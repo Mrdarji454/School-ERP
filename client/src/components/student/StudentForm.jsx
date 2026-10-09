@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import InputField from "../ui/InputField";
-import PrimaryButton from "../ui/PrimaryButton";
+
 import SelectField from "../ui/SelectField";
 
-import { studentSchema } from "../../validations/studentSchema";
+import { studentSchema, editStudentSchema } from "../../validations/studentSchema";
 
 const StudentForm = ({
   initialData = null,
@@ -21,9 +21,12 @@ const StudentForm = ({
     register,
     handleSubmit,
     reset,
+    control,
+    setValue,
+    setError,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(studentSchema),
+    resolver: zodResolver(isEdit ? editStudentSchema : studentSchema),
     defaultValues: {
       fullname: "",
       email: "",
@@ -31,8 +34,8 @@ const StudentForm = ({
       rollNumber: "",
       schoolClass: "",
       section: "",
-      fathername: "",
-      mothername: "",
+      fatherName: "",
+      motherName: "",
       gender: "",
       phone: "",
       address: "",
@@ -43,34 +46,32 @@ const StudentForm = ({
   useEffect(() => {
     if (initialData) {
       reset({
-        fullname: initialData.fullname,
-        email: initialData.email,
+        fullname: initialData.user?.fullname || "",
+        email: initialData.user?.email || "",
         password: "",
-        rollNumber: initialData.rollNumber,
+        rollNumber: String(initialData.rollNumber ?? ""),
+        dob: initialData.dob?.slice(0, 10) || "",
         schoolClass: initialData.schoolClass?._id,
         section: initialData.section?._id,
         gender: initialData.gender,
         phone: initialData.phone,
         address: initialData.address,
-        fathername: initialData.fathername,
-        mothername: initialData.mothername,
+        fatherName: initialData.fatherName,
+        motherName: initialData.motherName,
         bloodGroup: initialData.bloodGroup,
       });
     }
   }, [initialData, reset]);
 
+  const selectedClass = useWatch({ control, name: "schoolClass" });
   return (
     <form
-      onSubmit={handleSubmit(
-        (data) => {
-          console.log("SUCCESS", data);
-          onSubmit(data);
-        },
-        (errors) => {
-          console.log("VALIDATION ERRORS", errors);
-        },
-      )}
+      onSubmit={handleSubmit(async data => {
+        try { await onSubmit(data); }
+        catch (error) { setError("root", { message: error.response?.data?.errors?.map(e => e.message).join(", ") || error.response?.data?.message || "Unable to save student" }); }
+      })}
     >
+      {errors.root && <p role="alert" className="text-red-600">{errors.root.message}</p>}
       {/* Student Information */}
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h3 className="mb-5 border-b pb-3 text-lg font-semibold text-slate-800">
@@ -141,14 +142,14 @@ const StudentForm = ({
         <div className="grid gap-5 md:grid-cols-2">
           <InputField
             label="Father Name"
-            {...register("fathername")}
-            error={errors.fathername?.message}
+            {...register("fatherName")}
+            error={errors.fatherName?.message}
           />
 
           <InputField
             label="Mother Name"
-            {...register("mothername")}
-            error={errors.mothername?.message}
+            {...register("motherName")}
+            error={errors.motherName?.message}
           />
 
           <InputField
@@ -176,7 +177,7 @@ const StudentForm = ({
 
           <SelectField
             label="Class"
-            {...register("schoolClass")}
+            {...register("schoolClass", { onChange: () => setValue("section", "") })}
             error={errors.schoolClass?.message}
           >
             <option value="">Select Class</option>
@@ -195,7 +196,7 @@ const StudentForm = ({
           >
             <option value="">Select Section</option>
 
-            {sections.map((item) => (
+            {sections.filter(item => (item.schoolClass?._id || item.schoolClass) === selectedClass).map((item) => (
               <option key={item._id} value={item._id}>
                 {item.name}
               </option>
@@ -229,9 +230,10 @@ const StudentForm = ({
 
         <button
           type="submit"
+          disabled={loading}
           className="rounded-lg bg-blue-600 px-6 py-3 text-white"
         >
-          Test Submit
+          {loading ? "Saving..." : isEdit ? "Save Changes" : "Add Student"}
         </button>
       </div>
     </form>

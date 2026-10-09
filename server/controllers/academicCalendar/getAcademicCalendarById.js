@@ -3,9 +3,9 @@ import AcademicCalendar from "../../models/AcademicCalendar.js";
 
 export const getAcademicCalendarById = asyncHandler(async (req, res) => {
 
-    const calendar = await AcademicCalendar.findById(req.params.id)
+    const calendar = await AcademicCalendar.findOne({ _id: req.params.id, ...(req.user.role === "Admin" ? {} : { isActive: true }) })
         .populate("academicYear", "name")
-        .populate("createdBy", "fullName email");
+        .populate("createdBy", "fullname email");
 
     if (!calendar) {
         res.status(404);

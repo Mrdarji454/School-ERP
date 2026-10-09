@@ -4,6 +4,6 @@ import { getAllStudentByIdService } from "../../services/student/getStudentByIds
 
 export const getStudentById = expressAsyncHandler(async (req, res) => {
 
-    const student = getAllStudentByIdService(req.params.id);
+    const student = await getAllStudentByIdService(req.params.id, req.user);
     sendResponse(res, 200, "", student);
 });

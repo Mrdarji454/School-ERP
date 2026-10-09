@@ -3,7 +3,7 @@ import Notification from "../../models/Notification.js";
 
 export const getNotificationById = asyncHandler(async (req, res) => {
 
-    const notification = await Notification.findById(req.params.id)
+    const notification = await Notification.findOne({ _id: req.params.id, ...(req.user.role === "Admin" ? {} : { isActive: true, publishDate: { $lte: new Date() }, $or: [{ expiryDate: null }, { expiryDate: { $gte: new Date() } }] }) })
         .populate("createdBy", "fullname email");
 
     if (!notification) {

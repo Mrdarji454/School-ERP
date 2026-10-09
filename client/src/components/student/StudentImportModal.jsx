@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Download, FileSpreadsheet, Upload, X } from "lucide-react";
+import { FileSpreadsheet, Upload, X } from "lucide-react";
 
 import Modal from "../modal/Modal";
 import PrimaryButton from "../ui/PrimaryButton";
@@ -14,6 +14,7 @@ const StudentImportModal = ({
 }) => {
   const fileRef = useRef(null);
 
+  const [error, setError] = useState("");
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -21,6 +22,8 @@ const StudentImportModal = ({
 
     if (!selectedFile) return;
 
+    if (!/\.xlsx$/i.test(selectedFile.name) || selectedFile.size > 5 * 1024 * 1024) { setError("Choose an .xlsx file no larger than 5 MB"); return; }
+    setError("");
     setFile(selectedFile);
   };
 
@@ -42,7 +45,7 @@ const StudentImportModal = ({
       return;
     }
 
-    await onImport(file);
+    try { await onImport(file); } catch (err) { setError(err.response?.data?.message || "Import failed"); return; }
 
     removeFile();
 
@@ -57,22 +60,24 @@ const StudentImportModal = ({
       width="max-w-2xl"
     >
       <div className="space-y-6">
+        {error && <p role="alert" className="text-red-600">{error}</p>}
+        <SecondaryButton onClick={onDownloadSample}>Download Sample</SecondaryButton>
         <div className="rounded-xl border-2 border-dashed border-slate-300 p-8">
           <div className="flex flex-col items-center gap-4">
             <FileSpreadsheet size={60} className="text-green-600" />
 
-            <h3 className="text-lg font-semibold">Upload Excel / CSV File</h3>
+            <h3 className="text-lg font-semibold">Upload Excel File</h3>
 
             <p className="text-center text-sm text-slate-500">
               Supported formats
               <br />
-              .xlsx .xls .csv
+              .xlsx, up to 5 MB
             </p>
 
             <input
               ref={fileRef}
               type="file"
-              accept=".xlsx,.xls,.csv"
+              accept=".xlsx"
               onChange={handleFileChange}
               className="hidden"
             />

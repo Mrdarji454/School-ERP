@@ -1,5 +1,5 @@
 import SidebarItem from "./SidebarItem";
-import { useLayout } from "../../context/LayoutContext";
+import { useLayout } from "../../context/LayoutState";
 
 const SidebarSection = ({ section }) => {
   const { collapsed } = useLayout();

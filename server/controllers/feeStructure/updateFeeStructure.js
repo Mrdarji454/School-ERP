@@ -10,7 +10,7 @@ export const updateFeeStructure = asyncHandler(async (req, res) => {
         throw new Error("Fee Structure not found");
     }
 
-    Object.assign(fee, req.body);
+    for (const key of ["feeType","semester","amount","dueDate","lateFee","description"]) if (req.body[key] !== undefined) fee[key] = req.body[key];
 
     fee.updatedBy = req.user._id;
 

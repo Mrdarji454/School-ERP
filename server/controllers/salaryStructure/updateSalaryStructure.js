@@ -10,7 +10,7 @@ export const updateSalaryStructure = asyncHandler(async (req, res) => {
         throw new Error("Salary structure not found");
     }
 
-    Object.assign(salary, req.body);
+    for (const key of ["basicSalary","allowance","deduction","effectiveFrom","description"]) if (req.body[key] !== undefined) salary[key] = req.body[key];
 
     salary.updatedBy = req.user._id;
 

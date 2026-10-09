@@ -1,6 +1,1 @@
-export const logout = async (req, res) => {
-    console.log("logout API");
-    res.status(200).json({
-        message: "logged out sucessfully"
-    });
-}
+export const logout = (req, res) => res.json({ success: true, message: "Clear the bearer token on this device. Issued tokens expire normally." });

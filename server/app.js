@@ -1,4 +1,10 @@
-import express, { application } from 'express';
+import feeStructureRoutes from "./routes/feeStructureRoutes.js";
+import studentFeeRoutes from "./routes/studentFeeRoutes.js";
+import salaryStructureRoutes from "./routes/salaryStructureRoutes.js";
+import teacherSalaryRoutes from "./routes/teacherSalaryRoutes.js";
+import express from 'express';
+import adminManagementRoutes from "./routes/adminManagementRoutes.js";
+import workflowRoutes from './routes/workflowRoutes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from "./routes/authRoutes.js";
@@ -10,7 +16,7 @@ import sectionRoutes from "./routes/sectionRoutes.js";
 import subjectRoutes from "./routes/subjectRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
-import timetableRoutes from "./routes/timetableRoutes.js";
+import timetableRoutes from "./routes/timeTableRoutes.js";
 import periodRoutes from './routes/periodRoutes.js';
 import teacherAssignmentRoutes from "./routes/teacherAssingmentRoutes.js";
 import academicCalendarRoutes from "./routes/academicCalendarRoutes.js";
@@ -23,15 +29,18 @@ import { notFound, errotHandler } from './middleware/errorMIddleware.js';
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true, }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:5173", credentials: true, }));
 
 
 
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
+app.use("/api/admin-management", adminManagementRoutes);
+app.use('/api/workflow', workflowRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/students", studentRoutes);
+app.use("/api/academic-years", AcademicYearRoutes);
 app.use("/api/acadamic-years", AcademicYearRoutes);
 app.use("/api/classes", classRoutes);
 app.use("/api/sections", sectionRoutes);
@@ -51,6 +60,10 @@ app.get("/", (req, res) => {
     res.send("school api running...")
 });
 
+app.use("/api/fee-structures", feeStructureRoutes);
+app.use("/api/student-fees", studentFeeRoutes);
+app.use("/api/salary-structures", salaryStructureRoutes);
+app.use("/api/teacher-salaries", teacherSalaryRoutes);
 app.use(notFound);
 app.use(errotHandler);
 

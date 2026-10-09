@@ -6,7 +6,12 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "check:imports": "node scripts/check-imports.js",
+    "test": "node --test tests/core.test.js",
+    "test:integration": "node tests/integration.js",
+    "bootstrap:admin": "node scripts/bootstrap-admin.js",
+    "audit:data": "node scripts/audit-data.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -1,0 +1,1 @@
+export { getAllTimetables } from "./handlers.js";

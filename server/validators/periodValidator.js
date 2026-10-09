@@ -7,7 +7,7 @@ export const createPeriodValidator = [
         .notEmpty()
         .withMessage("Period name is required"),
 
-    body("period")
+    body("periodNumber")
         .isInt({ min: 1 })
         .withMessage("Valid period number is required"),
 

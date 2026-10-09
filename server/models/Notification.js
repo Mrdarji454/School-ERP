@@ -69,4 +69,5 @@ const notificationSchema = new mongoose.Schema(
     }
 );
 
+notificationSchema.pre("validate", function () { if (this.expiryDate && this.expiryDate < this.publishDate) this.invalidate("expiryDate", "Expiry must follow publication"); });
 export default mongoose.model("Notification", notificationSchema);

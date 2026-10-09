@@ -1,6 +1,7 @@
+import { academicRelations, restoreAcademic } from "../middleware/academicRelations.js";
 import express from "express";
 
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMIddleware.js";
 import { authorize } from "../middleware/roleMiddleware.js";
 import { validate } from "../middleware/validate.js";
 
@@ -14,10 +15,11 @@ import { createSubjectValidator } from "../validators/subjectValidator.js";
 
 const router = express.Router();
 
-router.post("/", protect, authorize("Admin"), createSubjectValidator, validate, createSubject);
+router.post("/", protect, authorize("Admin"), createSubjectValidator, validate, academicRelations("subject"), createSubject);
 router.get("/", protect, authorize("Admin", "Teacher"), getAllSubjects);
 router.get("/:id", protect, authorize("Admin", "Teacher"), getSubjectById);
-router.put("/:id", protect, authorize("Admin"), createSubjectValidator, validate, updateSubject);
+router.put("/:id", protect, authorize("Admin"), createSubjectValidator, validate, academicRelations("subject"), updateSubject);
 router.delete("/:id", protect, authorize("Admin"), deleteSubject);
 
+router.patch("/:id/restore", protect, authorize("Admin"), restoreAcademic("subject"));
 export default router;

@@ -1,25 +1,7 @@
-import Student from "../../models/Student.js";
 import User from "../../models/User.js";
-
-
-export const registerService = async (body) => {
-    const {
-        fullname,
-        email,
-        password,
-        role
-    } = body;
-
-    const exists = await User.findOne({ email });
-
-    if (exists) {
-        sendResponse(res, 400, "User exists already");
-    }
-    const user = await User.create({
-        fullname,
-        email,
-        password,
-        role,
-    });
-    return user;
-}
+import { fail } from "../../utils/errors.js";
+export const registerService = async ({ fullname, email, password, role }) => {
+ if (role !== "Admin") fail(400, "Create Teacher and Student accounts through their profile endpoints");
+ const user = await User.create({ fullname, email, password, role: "Admin" });
+ return { id: user.id, fullname: user.fullname, email: user.email, role: user.role };
+};

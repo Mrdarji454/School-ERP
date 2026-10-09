@@ -39,11 +39,11 @@ const StudentDetailsDrawer = ({ isOpen, onClose, student }) => {
 
           <div className="flex items-center gap-4">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-600 text-3xl font-bold text-white">
-              {student?.fullname?.charAt(0)?.toUpperCase()}
+              {student?.user?.fullname?.charAt(0)?.toUpperCase()}
             </div>
 
             <div>
-              <h3 className="text-2xl font-bold">{student?.fullname}</h3>
+              <h3 className="text-2xl font-bold">{student?.user?.fullname}</h3>
 
               <p className="mt-1 text-slate-500">{student?.admissionNo}</p>
 
@@ -61,7 +61,7 @@ const StudentDetailsDrawer = ({ isOpen, onClose, student }) => {
             <h4 className="mb-4 text-lg font-semibold">Personal Information</h4>
 
             <div className="grid grid-cols-2 gap-5">
-              <DetailItem label="Email" value={student?.email} />
+              <DetailItem label="Email" value={student?.user?.email} />
 
               <DetailItem label="Phone" value={student?.phone} />
 
@@ -86,7 +86,7 @@ const StudentDetailsDrawer = ({ isOpen, onClose, student }) => {
                 value={student?.academicYear?.name}
               />
 
-              <DetailItem label="Class" value={student?.className?.name} />
+              <DetailItem label="Class" value={student?.schoolClass?.name} />
 
               <DetailItem label="Section" value={student?.section?.name} />
 

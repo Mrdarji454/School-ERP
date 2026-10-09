@@ -1,15 +1,8 @@
 import Student from "../../models/Student.js";
-import { sendResponse } from "../../utils/apiResponse.js";
-
-export const getAllStudentByIdService = async (id) => {
-
-    const student = await Student.findById(id).populate({
-        path: "user",
-        select: "-password",
-    });
-    if (!student) {
-        sendResponse(res, 404, "Student not found");
-
-    }
-    return student;
+import { populateStudent, studentFilter } from "./studentCore.js";
+import { fail } from "../../utils/errors.js";
+export async function getAllStudentByIdService(id, user) {
+ const student = await populateStudent(Student.findOne({ _id: id, ...await studentFilter({}, user) }));
+ if (!student) fail(404, "Student not found");
+ return student;
 }

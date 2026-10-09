@@ -9,6 +9,7 @@ export const createSection = asyncHandler(async (req, res) => {
         name,
         schoolClass,
         capacity,
+        classTeacher,
         description,
     } = req.body;
 
@@ -33,6 +34,7 @@ export const createSection = asyncHandler(async (req, res) => {
         name: name.toUpperCase(),
         schoolClass,
         capacity,
+        classTeacher: classTeacher || null,
         description,
         createdBy: req.user._id,
     });

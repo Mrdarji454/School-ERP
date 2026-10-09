@@ -55,6 +55,7 @@ const attendanceSchema = new mongoose.Schema(
 
 
         students: [attendanceStudentSchema],
+        audit: [{ actor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, action: { type: String, enum: ['lock', 'unlock', 'deactivate', 'correction'] }, reason: String, at: { type: Date, default: Date.now } }],
 
         markedBy: {
             type: mongoose.Schema.Types.ObjectId,

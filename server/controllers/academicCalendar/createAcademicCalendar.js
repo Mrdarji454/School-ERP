@@ -16,7 +16,7 @@ export const createAcademicCalendar = asyncHandler(async (req, res) => {
 
     const year = await AcademicYear.findById(academicYear);
 
-    if (!year) {
+    if (!year || !year.isActive) {
         res.status(404);
         throw new Error("Academic Year not found");
     }

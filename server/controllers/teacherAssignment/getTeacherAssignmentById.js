@@ -9,7 +9,7 @@ export const getTeacherAssignmentById = asyncHandler(async (req, res) => {
             select: "employeeId",
             populate: {
                 path: "user",
-                select: "fullName email phone",
+                select: "fullname email phone",
             },
         })
         .populate("subject", "name code")

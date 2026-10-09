@@ -1,6 +1,6 @@
 import express from "express";
 
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMIddleware.js";
 import { authorize } from "../middleware/roleMiddleware.js";
 import { validate } from "../middleware/validate.js";
 
@@ -10,7 +10,7 @@ import {
 
 import {
     getAllStudentFees,
-} from "../controllers/studentFee/getAllStudentFees.js";
+} from "../controllers/studentFee/getAllStudentFee.js";
 
 import {
     getStudentFeeById,
@@ -31,6 +31,7 @@ import {
 import { createStudentFeeValidator } from "../validators/studentFeeValidator.js";
 
 const router = express.Router();
+router.use(protect, authorize("Admin"));
 
 router.post("/", protect, authorize("Admin"), createStudentFeeValidator, validate, createStudentFee);
 

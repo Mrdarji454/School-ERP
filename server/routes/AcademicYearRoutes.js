@@ -1,3 +1,4 @@
+import { academicRelations, restoreAcademic } from "../middleware/academicRelations.js";
 import express from "express";
 import { protect } from "../middleware/authMIddleware.js";
 import { authorize } from "../middleware/roleMiddleware.js";
@@ -13,10 +14,10 @@ import { setCurrentAcademicYear } from "../controllers/AcademicYear/setCurrentAc
 
 const router = express.Router();
 
-router.post("/", protect, authorize("Admin"), createAcademicYearValidator, validate, createAcademicYear);
-router.get("/", protect, authorize("Admin, Teacher"), getAllAcademicYear);
-router.get("/:id", protect, authorize("Admin, Teacher"), getAcademicYearById);
-router.put("/:id", protect, authorize("Admin"), upadateAcademicYear);
+router.post("/", protect, authorize("Admin"), createAcademicYearValidator, validate, academicRelations("year"), createAcademicYear);
+router.get("/", protect, authorize("Admin", "Teacher"), getAllAcademicYear);
+router.get("/:id", protect, authorize("Admin", "Teacher"), getAcademicYearById);
+router.put("/:id", protect, authorize("Admin"), createAcademicYearValidator, validate, academicRelations("year"), upadateAcademicYear);
 router.delete("/:id", protect, authorize("Admin"), deleteAcademicYear);
 router.patch("/:id", protect, authorize("Admin"), restoreAcademicYear);
 router.patch("/:id/current", protect, authorize("Admin"), setCurrentAcademicYear);

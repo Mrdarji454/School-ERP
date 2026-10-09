@@ -7,9 +7,6 @@ const StudentFilters = ({
   search,
   setSearch,
 
-  academicYears = [],
-  selectedAcademicYear,
-  setSelectedAcademicYear,
 
   classes = [],
   selectedClass,
@@ -36,20 +33,6 @@ const StudentFilters = ({
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search student..."
         />
-
-        {/* Academic Year */}
-        <SelectField
-          value={selectedAcademicYear}
-          onChange={(e) => setSelectedAcademicYear(e.target.value)}
-        >
-          <option value="">Academic Year</option>
-
-          {academicYears.map((item) => (
-            <option key={item._id} value={item._id}>
-              {item.name}
-            </option>
-          ))}
-        </SelectField>
 
         {/* Class */}
         <SelectField

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 import LoginForm from "../../components/forms/LoginForm";
 import { login } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthState";
 
 const Login = () => {
   const navigate = useNavigate();

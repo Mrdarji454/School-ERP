@@ -5,11 +5,7 @@ export const studentSchema = z.object({
 
     email: z.string().email("Invalid email"),
 
-    password: z
-        .string()
-        .min(6, "Password must be at least 6 characters")
-        .optional()
-        .or(z.literal("")),
+    password: z.string().min(8, "Password must be at least 8 characters"),
 
     rollNumber: z.string().min(1, "Roll Number is required").regex(/^\d+$/, "Roll Number must contain only numbers"),
 
@@ -17,11 +13,11 @@ export const studentSchema = z.object({
 
     section: z.string().min(1, "Section is required"),
 
-    fathername: z.string().min(1, "Father Name is required"),
+    fatherName: z.string().min(1, "Father Name is required"),
 
-    mothername: z.string().min(1, "Mother Name is required"),
+    motherName: z.string().min(1, "Mother Name is required"),
 
-    dob: z.string().optional(),
+    dob: z.string().min(1, "Date of birth is required"),
 
     gender: z.string().min(1, "Gender is required"),
 
@@ -34,3 +30,4 @@ export const studentSchema = z.object({
 
     address: z.string().optional(),
 });
+export const editStudentSchema = studentSchema.extend({ password: z.string().min(8).optional().or(z.literal("")) });

@@ -12,7 +12,7 @@ export const getSectionById = asyncHandler(async (req, res) => {
                 select: "name isCurrent",
             },
         })
-        .populate("classTeacher", "fullName email");
+        .populate("classTeacher", "fullname email");
 
     if (!section) {
         res.status(404);

@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema(
     {
         fullname: { type: String, required: true, trim: true, },
         email: { type: String, required: true, unique: true, lowercase: true, trim: true, },
-        password: { type: String, required: true, minlength: 6, },
+        password: { type: String, required: true, minlength: 8, select: false },
         role: { type: String, enum: ["Admin", "Teacher", "Student"], },
         profileImage: { type: String, default: "", },
         phone: { type: String, default: "", },
@@ -30,5 +30,6 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 // userSchema.index({ fullname: "text", email: "text" });
+userSchema.set("toJSON", { transform: (_doc, ret) => { delete ret.password; return ret; } });
 const User = mongoose.model("User", userSchema);
 export default User;

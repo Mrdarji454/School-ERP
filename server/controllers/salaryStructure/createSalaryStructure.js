@@ -16,7 +16,7 @@ export const createSalaryStructure = asyncHandler(async (req, res) => {
 
     const teacherExists = await Teacher.findById(teacher);
 
-    if (!teacherExists) {
+    if (!teacherExists || !teacherExists.isActive) {
         res.status(404);
         throw new Error("Teacher not found");
     }

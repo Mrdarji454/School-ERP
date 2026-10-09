@@ -62,6 +62,7 @@ const academicCalendarSchema = new mongoose.Schema(
     }
 );
 
+academicCalendarSchema.pre("validate", function () { if (this.startDate > this.endDate) this.invalidate("endDate", "End date must follow start date"); });
 export default mongoose.model(
     "AcademicCalendar",
     academicCalendarSchema

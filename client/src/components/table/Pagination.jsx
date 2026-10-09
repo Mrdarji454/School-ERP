@@ -1,11 +1,11 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const Pagination = ({ page, totalPages, onPageChange }) => {
+const Pagination = ({ page, totalPages, onPageChange, disabled = false }) => {
   return (
     <div className="mt-6 flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
       <button
         onClick={() => onPageChange(page - 1)}
-        disabled={page === 1}
+        disabled={disabled || page <= 1}
         className="flex text-slate-700 items-center gap-2 rounded-lg border px-4 py-2 disabled:opacity-50"
       >
         <ChevronLeft size={18} />
@@ -18,7 +18,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
 
       <button
         onClick={() => onPageChange(page + 1)}
-        disabled={page === totalPages}
+        disabled={disabled || page >= totalPages}
         className="flex  text-slate-700 items-center gap-2 rounded-lg border px-4 py-2 disabled:opacity-50"
       >
         Next

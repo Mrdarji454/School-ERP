@@ -20,6 +20,10 @@ import useSections from "../../../hooks/useSection";
 const Students = () => {
   const {
     students,
+    error,
+    statistics,
+    recoverStudent,
+    downloadSample,
     loading,
     pagination,
     fetchStudents,
@@ -35,7 +39,7 @@ const Students = () => {
 
   const [search, setSearch] = useState("");
 
-  const [selectedAcademicYear, setSelectedAcademicYear] = useState("");
+
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [status, setStatus] = useState("");
@@ -53,29 +57,19 @@ const Students = () => {
 
   useEffect(() => {
     fetchStudents({
-      page: pagination.page,
+      page: 1,
       search,
       schoolClass: selectedClass,
       section: selectedSection,
       status,
     });
-  }, [selectedClass, selectedSection, status]);
+  }, [search, selectedClass, selectedSection, status, fetchStudents]);
 
-  const handleSearch = (value) => {
-    setSearch(value);
-
-    fetchStudents({
-      page: 1,
-      search: value,
-      schoolClass: selectedClass,
-      section: selectedSection,
-      status,
-    });
-  };
+  const handleSearch = setSearch;
 
   const handleReset = () => {
     setSearch("");
-    setSelectedAcademicYear("");
+
     setSelectedClass("");
     setSelectedSection("");
     setStatus("");
@@ -101,29 +95,18 @@ const Students = () => {
   };
 
   const handleDelete = async () => {
-    await removeStudent(selectedStudent._id);
+    try { await removeStudent(selectedStudent._id); } catch { return; }
 
     setDeleteOpen(false);
     setSelectedStudent(null);
   };
 
-  const handleImport = async () => {
-    if (!file) return;
-    await onImport(file);
-    removeFile();
-    onClose();
-  };
 
-  const totalStudents = pagination.totalStudents;
 
-  const activeStudents = students.filter((student) => student.isActive).length;
-
-  const inactiveStudents = totalStudents - activeStudents;
-
-  const totalClasses = new Set(
-    students.map((student) => student.schoolClass?._id),
-  ).size;
-
+  const totalStudents = statistics.total;
+  const activeStudents = statistics.active;
+  const inactiveStudents = statistics.inactive;
+  const totalClasses = statistics.classes;
   return (
     <>
       <PageHeader title="Students" subtitle="Manage all students" />
@@ -138,13 +121,10 @@ const Students = () => {
       <StudentFilters
         search={search}
         setSearch={handleSearch}
-        academicYears={[]}
-        selectedAcademicYear={selectedAcademicYear}
-        setSelectedAcademicYear={setSelectedAcademicYear}
         classes={classes}
         selectedClass={selectedClass}
-        setSelectedClass={setSelectedClass}
-        sections={sections}
+        setSelectedClass={value => { setSelectedClass(value); setSelectedSection(""); }}
+        sections={sections.filter(s => !selectedClass || (s.schoolClass?._id || s.schoolClass) === selectedClass)}
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
         status={status}
@@ -160,17 +140,19 @@ const Students = () => {
           })
         }
         onAdd={() => {
-          console.log("Add Student Clicked");
+
           setOpen(true);
         }}
       />
 
+      {error && <p role="alert" className="text-red-600">{error}</p>}
       <StudentTable
         students={students}
         loading={loading}
         onView={handleViewClick}
         onEdit={handleEditClick}
         onDelete={handleDeleteClick}
+        onRestore={async student => { try { await recoverStudent(student._id); } catch { /* Toast keeps failure visible. */ } }}
       />
 
       <Pagination
@@ -232,8 +214,8 @@ const Students = () => {
           setSelectedStudent(null);
         }}
         onConfirm={handleDelete}
-        title="Delete Student"
-        message={`Are you sure you want to delete "${selectedStudent?.fullname}"?`}
+        title="Deactivate Student"
+        message={`Are you sure you want to deactivate "${selectedStudent?.user?.fullname}"?`}
       />
 
       <StudentDetailsDrawer
@@ -258,7 +240,7 @@ const Students = () => {
             setSummaryOpen(true);
           }
         }}
-        onDownloadSample={() => {}}
+        onDownloadSample={downloadSample}
       />
       <ImportSummaryModal
         isOpen={summaryOpen}

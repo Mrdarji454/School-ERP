@@ -1,23 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSections } from "../services/sectionService";
-
-const useSections = () => {
-    const [sections, setSections] = useState([]);
-
-    const fetchSections = async () => {
-        try {
-            const res = await getSections();
-            setSections(res.data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    useEffect(() => {
-        fetchSections();
-    }, []);
-
-    return { sections, fetchSections };
-};
-
-export default useSections;
+export default function useSections() {
+ const [sections, setSections] = useState([]), [error, setError] = useState("");
+ useEffect(() => { let active = true; getSections().then(res => { if(active) setSections(res.data); }).catch(() => { if(active) setError("Unable to load sections"); }); return () => { active = false; }; }, []);
+ return { sections, error };
+}

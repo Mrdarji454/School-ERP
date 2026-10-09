@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useLayout } from "../../context/LayoutContext";
+import { useLayout } from "../../context/LayoutState";
 
 const SidebarItem = ({ item }) => {
   const { collapsed } = useLayout();

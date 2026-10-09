@@ -1,155 +1,37 @@
-import { useEffect, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
-import { importStudents as importStudentsApi } from "../services/studentService";
-
-import {
-  getStudents,
-  createStudent,
-  updateStudent,
-  deleteStudent,
-  restoreStudent,
-  exportStudents,
-  importStudents,
-} from "../services/studentService";
-
-const useStudents = () => {
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [pagination, setPagination] = useState({
-    page: 1,
-    totalPages: 1,
-    totalStudents: 0,
-    limit: 10,
-  });
-
-  const fetchStudents = async (params = {}) => {
-
-    try {
-
-      setLoading(true);
-
-      const res = await getStudents(params);
-
-      setStudents(res.data.students);
-
-      setPagination(res.data.pagination);
-
-    } catch (err) {
-
-      toast.error(
-        err.response?.data?.message ||
-        "Failed to fetch students"
-      );
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  };
-
-  const addStudent = async (studentData) => {
-    try {
-      setLoading(true);
-
-      await createStudent(studentData);
-
-      toast.success("Student added successfully");
-
-      await fetchStudents({
-        page: pagination.page,
-      });
-    } catch (err) {
-      console.log(error.response?.data);
-      toast.error(
-        err.response?.data?.message || "Failed to add student"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const editStudent = async (id, payload) => {
-    try {
-      await updateStudent(id, payload);
-
-      toast.success("Student updated successfully");
-
-      fetchStudents();
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to update student");
-    }
-  };
-
-  const removeStudent = async (id) => {
-    await deleteStudent(id);
-    toast.success("Student deleted successfully");
-    fetchStudents();
-  };
-
-  const recoverStudent = async (id) => {
-    await restoreStudent(id);
-    toast.success("Student restored successfully");
-    fetchStudents();
-  };
-
-  const downloadStudents = async (filters) => {
-
-    try {
-      const blob = await exportStudents(filters);
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "students.xlsx";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-      toast.success("Export completed");
-    } catch (err) {
-      toast.error("Export failed");
-    }
-
-  };
-  const importStudentExcel = async (file) => {
-    try {
-      setLoading(true);
-
-      const res = await importStudentsApi(file);
-
-      toast.success(
-        `Imported: ${res.data.imported} | Failed: ${res.data.failed}`
-      );
-
-      await fetchStudents();
-
-      return res.data;
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Import failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
-  return {
-    students,
-    loading,
-    fetchStudents,
-    addStudent,
-    editStudent,
-    removeStudent,
-    recoverStudent,
-    pagination,
-    setPagination,
-    downloadStudents,
-    importStudentExcel,
-  };
-};
-
-export default useStudents;
+import * as service from "../services/studentService";
+import api from "../services/api";
+const saveBlob = (blob, name) => { const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = name; link.click(); URL.revokeObjectURL(url); };
+export default function useStudents() {
+ const [students, setStudents] = useState([]), [loading, setLoading] = useState(false), [error, setError] = useState("");
+ const [statistics, setStatistics] = useState({ total: 0, active: 0, inactive: 0, classes: 0 });
+ const [pagination, setPagination] = useState({ page: 1, totalPages: 1, totalStudents: 0, limit: 10 });
+ const paramsRef = useRef({}), requestRef = useRef(0);
+ const fetchStudents = useCallback(async (params = paramsRef.current) => {
+  paramsRef.current = params;
+  const request = ++requestRef.current; setLoading(true); setError("");
+  try {
+   const res = await service.getStudents(params);
+   if (request !== requestRef.current) return;
+   setStudents(res.data.students); setPagination(res.data.pagination); setStatistics(res.data.statistics);
+   paramsRef.current = { ...params, page: res.data.pagination.page };
+  } catch (err) { if (request === requestRef.current) { setError(err.response?.data?.message || "Failed to fetch students"); setStudents([]); } }
+  finally { if (request === requestRef.current) setLoading(false); }
+ }, []);
+ const mutate = async (action, message) => {
+  setLoading(true);
+  try { const result = await action(); toast.success(message); await fetchStudents(); return result; }
+  catch (err) { toast.error(err.response?.data?.message || "Operation failed"); throw err; }
+  finally { setLoading(false); }
+ };
+ return { students, loading, error, statistics, pagination, fetchStudents,
+  addStudent: data => mutate(() => service.createStudent(data), "Student added"),
+  editStudent: (id, data) => mutate(() => service.updateStudent(id, data), "Student updated"),
+  removeStudent: id => mutate(() => service.deleteStudent(id), "Student deactivated"),
+  recoverStudent: id => mutate(() => service.restoreStudent(id), "Student restored"),
+  importStudentExcel: async file => (await mutate(() => service.importStudents(file), "Import processed")).data,
+  downloadStudents: async filters => { try { saveBlob(await service.exportStudents(filters), "students.xlsx"); } catch { toast.error("Export failed"); } },
+  downloadSample: async () => { try { saveBlob((await api.get("/students/sample", { responseType: "blob" })).data, "student-import-template.xlsx"); } catch { toast.error("Sample download failed"); } },
+ };
+}

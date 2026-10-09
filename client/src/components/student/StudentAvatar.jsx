@@ -5,7 +5,7 @@ const StudentAvatar = ({ student, size = "md" }) => {
     lg: "h-16 w-16 text-xl",
   };
 
-  const initials = student?.fullname
+  const initials = student?.user?.fullname
     ?.split(" ")
     .map((name) => name.charAt(0))
     .join("")
@@ -16,7 +16,7 @@ const StudentAvatar = ({ student, size = "md" }) => {
     return (
       <img
         src={student.profileImage}
-        alt={student.fullname}
+        alt={student.user?.fullname}
         className={`${sizes[size]} rounded-full object-cover border border-slate-200`}
       />
     );

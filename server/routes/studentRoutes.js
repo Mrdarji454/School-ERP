@@ -1,3 +1,5 @@
+import asyncHandler from "express-async-handler";
+import { sampleWorkbook } from "../services/student/studentWorkbook.js";
 import express from "express";
 import protect from "../middleware/authMIddleware.js";
 import { authorize } from "../middleware/roleMiddleware.js";
@@ -16,6 +18,7 @@ import createStudentValidator from "../validators/studentValidator.js";
 
 const router = express.Router();
 
+router.get("/sample", protect, authorize("Admin"), asyncHandler(async (_req, res) => { res.attachment("student-import-template.xlsx"); await sampleWorkbook().xlsx.write(res); res.end(); }));
 router.get("/export", protect, authorize("Admin"), exportStudents);
 router.post("/import", protect, authorize("Admin"), upload.single("file"), importStudents);
 router.get("/", protect, authorize("Admin", "Teacher"), getAllStudent);
@@ -30,7 +33,7 @@ router.post(
 );
 router.put("/:id", protect, authorize("Admin"), updateStudent);
 router.delete("/:id", protect, authorize("Admin"), deleteStudent);
-router.patch("/:id", protect, authorize("Admin"), restoreStudent);
+router.patch("/:id/restore", protect, authorize("Admin"), restoreStudent);
 router.get("/:id", protect, authorize("Admin", "Teacher"), getStudentById);
 
 export default router;

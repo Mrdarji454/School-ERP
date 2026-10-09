@@ -1,30 +1,4 @@
 import { body } from "express-validator";
-
-export const createTeacherValidator = [
-
-    body("fullname")
-        .trim()
-        .notEmpty()
-        .withMessage("Full name is required"),
-
-    body("email")
-        .isEmail()
-        .withMessage("Valid email is required"),
-
-    body("password")
-        .isLength({ min: 6 })
-        .withMessage("Password must be at least 6 characters"),
-
-    body("qualification")
-        .notEmpty()
-        .withMessage("Qualification is required"),
-
-    body("designation")
-        .notEmpty()
-        .withMessage("Designation is required"),
-
-    body("joiningDate")
-        .isISO8601()
-        .withMessage("Valid joining date is required"),
-
-];
+const common = () => [body("fullname").isString().bail().trim().notEmpty(), body("email").isEmail(), body("qualification").isString().bail().notEmpty(), body("designation").isString().bail().notEmpty(), body("joiningDate").isISO8601(), body("experience").optional().isFloat({ min: 0 }), body("salary").optional().isFloat({ min: 0 }), body("phone").optional({ values: "falsy" }).isString().bail().matches(/^$|^\+?[\d\s()-]{7,20}$/).withMessage("Enter a valid phone number"), body("employeeType").optional().isIn(["Permanent", "Contract", "Guest"]), body("department").optional().isString(), body("address").optional().isString()];
+export const createTeacherValidator = [...common(), body("password").isString().bail().isLength({ min: 8 })];
+export const updateTeacherValidator = [...common().map(rule => rule.optional()), body("password").optional({ values: "falsy" }).isString().bail().isLength({ min: 8 })];

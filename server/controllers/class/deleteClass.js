@@ -18,5 +18,5 @@ export const deleteClass = asyncHandler(async (req, res) => {
         success: true,
         message: "Class deleted successfully",
     });
-    sendResponse(res, 200, "Class deleted successfully", schoolClass);
+
 });

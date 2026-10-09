@@ -1,6 +1,7 @@
+import { academicRelations, restoreAcademic } from "../middleware/academicRelations.js";
 import express from "express";
 
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMIddleware.js";
 import { authorize } from "../middleware/roleMiddleware.js";
 import { validate } from "../middleware/validate.js";
 
@@ -20,8 +21,7 @@ router.post(
     protect,
     authorize("Admin"),
     createPeriodValidator,
-    validate,
-    createPeriod
+    validate, academicRelations("period"), createPeriod
 );
 
 router.get(
@@ -41,8 +41,7 @@ router.put(
     protect,
     authorize("Admin"),
     createPeriodValidator,
-    validate,
-    updatePeriod
+    validate, academicRelations("period"), updatePeriod
 );
 
 router.delete(

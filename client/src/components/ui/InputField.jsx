@@ -4,10 +4,11 @@ const InputField = forwardRef(
   ({ label, error, className = "", ...props }, ref) => {
     return (
       <div className="space-y-2">
-        <label className="text-sm font-medium text-slate-800">{label}</label>
+        <label htmlFor={props.id || props.name} className="text-sm font-medium text-slate-800">{label}</label>
 
         <input
           ref={ref}
+          id={props.id || props.name}
           {...props}
           className={`
                         w-full
@@ -29,7 +30,7 @@ const InputField = forwardRef(
                     `}
         />
 
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && <p id={`${props.id || props.name}-error`} className="text-sm text-red-500">{error}</p>}
       </div>
     );
   },

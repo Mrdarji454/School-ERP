@@ -8,6 +8,7 @@ const StudentTable = ({
   onView,
   onEdit,
   onDelete,
+  onRestore,
 }) => {
   return (
     <DataTable
@@ -15,6 +16,7 @@ const StudentTable = ({
         onView,
         onEdit,
         onDelete,
+  onRestore,
       })}
       data={students}
       loading={loading}

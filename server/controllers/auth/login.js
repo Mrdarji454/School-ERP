@@ -16,6 +16,6 @@ export const login = async (req, res) => {
             },
         });
     } catch (err) {
-        sendResponse(res, 401, err.message || "Login failed");
+        sendResponse(res, 401, "Invalid credentials or inactive account");
     }
 };

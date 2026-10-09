@@ -28,5 +28,6 @@ const AcademicYearSchema = new mongoose.Schema(
     timestamps: true,
 }
 );
+AcademicYearSchema.index({ isCurrent: 1 }, { unique: true, partialFilterExpression: { isCurrent: true } });
 const AcademicYear = mongoose.model("AcademicYear", AcademicYearSchema);
 export default AcademicYear;

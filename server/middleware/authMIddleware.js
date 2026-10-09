@@ -1,3 +1,5 @@
+import Student from "../models/Student.js";
+import Teacher from "../models/Teacher.js";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
@@ -10,7 +12,7 @@ export const protect = async (req, res, next) => {
 
         if (!token) {
             return res.status(401).json({
-                successs: false,
+                success: false,
                 message: "Not authorized. No token provided."
             });
         }
@@ -19,16 +21,18 @@ export const protect = async (req, res, next) => {
 
         req.user = await User.findById(decoded.id).select("-password");
 
-        if (!req.user) {
+        if (!req.user || !req.user.isActive) {
             return res.status(401).json({
-                successs: false,
+                success: false,
                 message: "User not found"
             });
         }
+        const Profile = req.user.role === "Student" ? Student : req.user.role === "Teacher" ? Teacher : null;
+        if (Profile && !await Profile.exists({ user: req.user._id, isActive: true })) return res.status(401).json({ success: false, message: "Inactive or missing profile" });
         next();
     } catch (err) {
         return res.status(401).json({
-            successs: false,
+            success: false,
             message: "invalid or expired token."
         });
     }

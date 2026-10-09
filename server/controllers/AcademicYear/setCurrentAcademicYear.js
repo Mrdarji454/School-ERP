@@ -1,19 +1,13 @@
+import asyncHandler from "express-async-handler";
 import AcademicYear from "../../models/AcademicYear.js";
-import expressAsyncHandler from "express-async-handler";
-import { sendResponse } from "../../utils/apiResponse.js";
-
-export const setCurrentAcademicYear = expressAsyncHandler(async (req, res) => {
-    await AcademicYear.updateMany({}, {
-        isCurrent: false
-    });
-
-    const academicYear = await AcademicYear.findById(req.params.id);
-
-    if (!academicYear) {
-        sendResponse(res, 404, "academic year not found");
-    }
-    academicYear.isCurrent = true;
-
-    await academicYear.save();
-    sendResponse(res, 200, "current academic year seted", academicYear);
-})
+import { transaction } from "../../utils/transaction.js";
+import { fail } from "../../utils/errors.js";
+export const setCurrentAcademicYear = asyncHandler(async (req, res) => {
+ const data = await transaction(async session => {
+  const year = await AcademicYear.findOne({ _id: req.params.id, isActive: true }).session(session);
+  if (!year) fail(404, "Active academic year not found");
+  await AcademicYear.updateMany({}, { $set: { isCurrent: false }, $inc: { __v: 1 } }, { session });
+  year.isCurrent = true; await year.save({ session }); return year;
+ });
+ res.json({ success: true, data });
+});

@@ -44,7 +44,7 @@ export const updateSection = asyncHandler(async (req, res) => {
     section.name = name ? name.toUpperCase() : section.name;
     section.schoolClass = schoolClass ?? section.schoolClass;
     section.capacity = capacity ?? section.capacity;
-    section.classTeacher = classTeacher ?? section.classTeacher;
+    if (classTeacher !== undefined) section.classTeacher = classTeacher;
     section.description = description ?? section.description;
     section.updatedBy = req.user._id;
 
@@ -59,7 +59,7 @@ export const updateSection = asyncHandler(async (req, res) => {
                 select: "name isCurrent",
             },
         })
-        .populate("classTeacher", "fullName email");
+        .populate("classTeacher", "fullname email");
 
     res.status(200).json({
         success: true,

@@ -76,6 +76,7 @@ teacherAssignmentSchema.index(
     }
 );
 
+teacherAssignmentSchema.index({ schoolClass: 1, section: 1, academicYear: 1 }, { unique: true, partialFilterExpression: { isClassTeacher: true, isActive: true } });
 export default mongoose.model(
     "TeacherAssignment",
     teacherAssignmentSchema

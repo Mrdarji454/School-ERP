@@ -2,13 +2,14 @@ const PrimaryButton = ({
   children,
   type = "button",
   loading = false,
+  disabled = false,
   className = "",
   ...props
 }) => {
   return (
     <button
       type={type}
-      disabled={loading}
+      disabled={loading || disabled}
       className={`
                 w-full
                 rounded-xl

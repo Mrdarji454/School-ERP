@@ -1,0 +1,18 @@
+import express from "express";
+import { protect } from "../middleware/authMIddleware.js";
+import { authorize } from "../middleware/roleMiddleware.js";
+import { validate } from "../middleware/validate.js";
+import { generateTeacherSalary } from "../controllers/teacherSalary/generateTeacherSalary.js";
+import { getAllTeacherSalaries } from "../controllers/teacherSalary/getAllTeacherSalaries.js";
+import { getTeacherSalaryById } from "../controllers/teacherSalary/getTeacherSalaryById.js";
+import { deleteTeacherSalary } from "../controllers/teacherSalary/deleteTeacherSalary.js";
+import { restoreTeacherSalary } from "../controllers/teacherSalary/restoreTeacherSalary.js";
+import { generateTeacherSalaryValidator } from "../validators/teacherSalaryValidator.js";
+const router = express.Router();
+router.use(protect, authorize("Admin"));
+router.post("/", generateTeacherSalaryValidator, validate, generateTeacherSalary);
+router.get("/", getAllTeacherSalaries);
+router.get("/:id", getTeacherSalaryById);
+router.delete("/:id", deleteTeacherSalary);
+router.patch("/:id/restore", restoreTeacherSalary);
+export default router;

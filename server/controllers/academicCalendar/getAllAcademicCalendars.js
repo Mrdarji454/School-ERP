@@ -7,7 +7,7 @@ export const getAllAcademicCalendars = asyncHandler(async (req, res) => {
         isActive: true,
     })
         .populate("academicYear", "name")
-        .populate("createdBy", "fullName email")
+        .populate("createdBy", "fullname email")
         .sort({
             startDate: 1,
         });

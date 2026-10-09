@@ -1,20 +1,23 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import api from "../services/api";
+import { useEffect, useState } from "react";
 
-const AuthContext = createContext();
+import { AuthContext } from "./AuthState";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
+    const clear = () => { localStorage.removeItem("token"); localStorage.removeItem("user"); if (active) setUser(null); };
+    window.addEventListener("auth:invalid", clear);
     const token = localStorage.getItem("token");
-    const savedUser = localStorage.getItem("user");
-
-    if (token && savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-
-    setLoading(false);
+    Promise.resolve().then(async () => {
+      if (!token) return;
+      try { const { data } = await api.get("/auth/me"); if (active) setUser(data.data); }
+      catch { clear(); }
+    }).finally(() => { if (active) setLoading(false); });
+    return () => { active = false; window.removeEventListener("auth:invalid", clear); };
   }, []);
 
   const loginUser = (token, user) => {
@@ -44,5 +47,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

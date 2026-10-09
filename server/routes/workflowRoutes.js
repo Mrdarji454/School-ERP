@@ -1,0 +1,16 @@
+import express from 'express';
+import asyncHandler from 'express-async-handler';
+import { protect } from '../middleware/authMIddleware.js';
+import { authorize } from '../middleware/roleMiddleware.js';
+import { workflowOptions, workflowTimetable, attendanceList, attendanceDetail, attendanceRoster, setAttendanceLock, publishedNotices } from '../services/workflow.js';
+const router = express.Router();
+router.use(protect, authorize('Admin', 'Teacher', 'Student'));
+const read = fn => asyncHandler(async (req, res) => res.json({ success: true, data: await fn(req) }));
+router.get('/options', read(req => workflowOptions(req.user)));
+router.get('/timetables', read(req => workflowTimetable(req.user, req.query)));
+router.get('/notices', read(() => publishedNotices()));
+router.get('/attendance', read(req => attendanceList(req.user, req.query)));
+router.get('/roster', authorize('Admin', 'Teacher'), read(req => attendanceRoster(req.user, req.query)));
+router.get('/attendance/:id', authorize('Admin', 'Teacher'), read(req => attendanceDetail(req.user, req.params.id)));
+router.patch('/attendance/:id/lock', authorize('Admin'), read(req => setAttendanceLock(req.user, req.params.id, req.body)));
+export default router;

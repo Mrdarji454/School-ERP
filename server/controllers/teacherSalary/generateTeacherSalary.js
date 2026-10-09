@@ -1,3 +1,4 @@
+import { fail } from "../../utils/errors.js";
 import asyncHandler from "express-async-handler";
 
 import Teacher from "../../models/Teacher.js";
@@ -10,7 +11,7 @@ export const generateTeacherSalary = asyncHandler(async (req, res) => {
 
     const teacherExists = await Teacher.findById(teacher);
 
-    if (!teacherExists) {
+    if (!teacherExists || !teacherExists.isActive) {
         res.status(404);
         throw new Error("Teacher not found");
     }
@@ -18,7 +19,8 @@ export const generateTeacherSalary = asyncHandler(async (req, res) => {
     const structure = await SalaryStructure.findOne({
         teacher,
         isActive: true,
-    });
+        effectiveFrom: { $lte: new Date(Date.UTC(Number(year), Number(month), 0)) },
+    }).sort({ effectiveFrom: -1 });
 
     if (!structure) {
         res.status(404);
@@ -43,6 +45,7 @@ export const generateTeacherSalary = asyncHandler(async (req, res) => {
     const netSalary =
         grossSalary - structure.deduction;
 
+    if (netSalary < 0) fail(400, "Deductions exceed gross salary");
     const salary = await TeacherSalary.create({
 
         teacher,
