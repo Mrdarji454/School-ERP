@@ -46,7 +46,9 @@ export async function updateAttendanceRecord(id, body, user) {
   if (row.isLocked) fail(409, "Attendance is locked");
   expectedVersion(body, row);
   if (body.isLocked !== undefined && user.role !== 'Admin') fail(403, 'Only Admin can change attendance locks');
-  const audit = user.role === 'Admin' && body.isLocked === true ? auditAction(user, 'lock', body.reason) : body.reason ? auditAction(user, 'correction', body.reason) : null;
+  const audit = user.role === 'Admin'
+    ? auditAction(user, body.isLocked === true ? 'lock' : 'correction', body.reason)
+    : body.reason ? auditAction(user, 'correction', body.reason) : null;
   for (const key of ["teacherAssignment", "period"]) if (body[key] !== undefined && !same(body[key], row[key])) fail(400, "Attendance assignment and period cannot change");
   if (body.attendanceDate && schoolDate(body.attendanceDate).getTime() !== row.attendanceDate.getTime()) fail(400, "Attendance date cannot change");
   const data = await validateAttendance({ teacherAssignment: row.teacherAssignment, period: row.period, attendanceDate: row.attendanceDate.toISOString().slice(0, 10), students: body.students }, user);

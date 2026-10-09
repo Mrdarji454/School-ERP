@@ -35,5 +35,10 @@ export const myAttendance = asyncHandler(async (req, res) => {
   const student = await Student.findOne({ user: req.user._id, isActive: true });
   if (!student) fail(403, "Active student profile required");
   const rows = await Attendance.find({ isActive: true, "students.student": student._id }, { students: { $elemMatch: { student: student._id } }, attendanceDate: 1, period: 1, teacherAssignment: 1 }).populate("period", 'name periodNumber startTime endTime isBreak').sort({ attendanceDate: -1 });
-  res.json({ success: true, data: rows });
+  const data = rows.map(row => {
+    const record = row.toObject();
+    record.students = record.students.map(({ remark, ...entry }) => entry);
+    return record;
+  });
+  res.json({ success: true, data });
 });

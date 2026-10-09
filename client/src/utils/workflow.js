@@ -1,6 +1,7 @@
 export const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 export const attendanceStatuses = ['Present', 'Absent', 'Late', 'Half Day', 'Leave'];
 export const idOf = value => value?._id || value || '';
+export const validSchoolDateRange = (from, to) => !from || !to || from <= to;
 export const label = value => value?.name ? `${value.name}${value.isActive === false ? ' (inactive)' : ''}` : 'Missing reference';
 export const assignmentLabel = a => a ? `${label(a.schoolClass)} / ${label(a.section)} · ${label(a.subject)} · ${a.teacher?.user?.fullname || 'Missing teacher'}${a.isActive === false ? ' (inactive assignment)' : ''}` : 'Missing assignment';
 export const timeLabel = p => p ? `${p.name} (${p.startTime}–${p.endTime})${p.isBreak ? ' · Break' : ''}${p.isActive === false ? ' · Inactive' : ''}` : 'Missing period';

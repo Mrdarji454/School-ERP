@@ -9,7 +9,7 @@ function AppContent() {
   const location = useLocation();
   const hideLayout =
     location.pathname.startsWith("/login") ||
-    location.pathname.startsWith("/admin");
+    location.pathname.startsWith("/admin") || location.pathname.startsWith('/teacher') || location.pathname.startsWith('/student');
 
   return (
     <>

@@ -4,7 +4,7 @@ Status: **not executed in a browser**. No connected browser was available. Run a
 
 ## Desktop setup workflow
 
-- [ ] Log in as Admin. Check all seven navigation destinations, Dashboard and Students. No unfinished timetable, attendance, finance, or logout-page links should appear; the Log out button works.
+- [ ] Log in as Admin. Check all seven academic management destinations, Dashboard, Students, Timetable and Attendance review. No unfinished finance or logout-page links should appear; the Log out button works.
 - [ ] Academic Years: create `UI 2028-2029`, dates `2028-04-01`–`2029-03-31`; reject reversed dates; edit its name. Set current, cancel once then confirm. Exactly one year shows Current; explain that this does not promote students.
 - [ ] Classes: select this year, create `Class UI`; edit description. Open Details / dependencies and check counts before and after creating related records. Year remains read-only in Edit.
 - [ ] Sections: choose year/class and create `A` with capacity 35. Reject zero capacity. Create another class and confirm changing the parent clears dependent fields. Editing cannot move a section; optional class teacher can be selected and cleared.
@@ -36,3 +36,34 @@ Status: **not executed in a browser**. No connected browser was available. Run a
 - [ ] Recheck Student create/edit/import/confirmation modals because the shared Modal and DataTable changed. Public Home/About/Academics/Admissions/Events/Gallery/Contact/Blog retain their existing appearance.
 
 Record browser/version, viewport sizes, date, fixture database, pass/fail results, and screenshot paths. Do not mark unchecked items as verified.
+
+## Timetable and attendance workflow (2026-10-09 — pending browser acceptance)
+
+Use synthetic fixtures: one Admin, two Teachers with different class/section assignments, two Students in one class and another Student in the other class; one active academic year covering test dates; teaching and break periods; published, future and expired notices. Use a dedicated replica set/database. Automated fixture tests stop their server/database afterward; start a separate disposable development instance for this checklist.
+
+- [ ] Admin creates a Monday timetable booking; edit room/day; inspect details. Filter year/class/section/teacher/day and compare grid/list. Period start/end, subject, teacher, room and break references are readable.
+- [ ] Attempt overlapping teacher, class/section and normalized-room bookings (including different period IDs with overlapping times); errors are useful and entered values remain. An adjacent non-overlapping period is allowed.
+- [ ] Deactivate and restore a booking. Inactive view retains labels; restoration checks conflicts and inactive academic references. Filters remain selected. Timetable changes do not change attendance history.
+- [ ] Rapidly change filters under network throttling; no outdated results should replace the newest query. A failed request shows Retry, rather than an empty schedule. A genuinely empty schedule has a distinct empty state.
+- [ ] At 1440/1280 px, inspect weekly grid columns and keyboard-accessible horizontal scrolling. At 390/768 px, verify practical list view, reference breaks, readable action buttons and no page-wide overflow.
+- [ ] Teacher dashboard shows only their eligible lessons on the school date. A timetable task is labelled as inferred until an existing attendance record is found. Open it and check assignment/period/date defaults. Published notices appear; future/expired notices do not.
+- [ ] Teacher weekly schedule and assignment list contain only owned relationships. Modify URL/query IDs to another Teacher's IDs; verify no schedule/roster disclosure.
+- [ ] Choose an authorized assignment/date/period without a timetable booking and load the roster. School timezone and date-range restrictions are clear. No roster row is silently Present or Absent.
+- [ ] Try saving with an Unmarked row: explicit validation, no request persisted. Mark all Present, check feedback, change individual rows to Absent/Late/Half Day/Leave, add a remark, and save.
+- [ ] Reopen the same assignment/date/period: retrieve the existing session rather than create a duplicate. Edit unlocked rows; refresh and confirm persisted values. A concurrent duplicate creation shows an error with retained entries and a reload action.
+- [ ] Open the same session in two tabs. Save in tab A, then tab B: B gets a stale-version conflict, retains its entries, and requires review/reload. Do not silently retry using the new version.
+- [ ] While editing, try sidebar navigation, browser Back, Close/Escape, browser reload and logout. Unsaved changes require discard confirmation; Cancel preserves entries. While a save is pending, duplicate submissions and modal dismissal are disabled. Session expiry still invalidates authentication.
+- [ ] Force a save failure by blocking the API; selected statuses/remarks remain visible, error feedback appears, and retry works when the API is available. Bulk/Clear/Cancel buttons must never submit the form accidentally.
+- [ ] Teacher history filters date/status/assignment and paginates correctly; reversed date ranges show an inline error without issuing a list request. Empty records do not become Absent. Locked/inactive sessions are readable; editable controls are unavailable.
+- [ ] Admin review filters year/class/section/teacher/assignment/date range/record state/lock/status. Session counts and Present counts are labelled. A “session contains status” filter counts all recorded students in those sessions, not only the selected status.
+- [ ] Admin edits a session: require a correction reason and confirmation, then show audit entry after save. Lock with a reason, verify Teacher cannot edit, and verify legacy PUT cannot unlock/edit it. Admin unlocks with a reason; review actor/time/reason history.
+- [ ] Admin deactivates an unlocked session with reason/confirmation. It appears in Inactive history, disappears from Student counts, and cannot be recreated with the same key. No unsupported Restore action appears for attendance.
+- [ ] Student dashboard/timetable follow authenticated placement. Personal attendance lists only own date/subject/period/status; no classmates, staff remarks, actor IDs or audit fields appear in UI or response bodies.
+- [ ] Record one each of Present, Absent, Late, Half Day, Leave for a Student: summary shows 1 / 5 = 20%. Add days without any record: denominator stays 5. Date/subject/status filters update matching totals across pages.
+- [ ] Give a classmate an Absent entry while the Student is Present; the Student's Absent filter must not match that classmate's entry. Forged Student/Teacher IDs must not broaden personal history.
+- [ ] Verify missing/inactive placement, empty schedule/history, missing references, deactivated accounts and expired login states give clear feedback without leaking other records.
+- [ ] Historical sessions preserve the recorded roster. A newly enrolled Student is not silently added to an old session. Transfer/inactive-student correction restrictions are explicit; no historical placement is invented.
+- [ ] Keyboard-only marking: Tab/Shift+Tab, labelled selects, arrow keys, bulk actions, save, confirmations and focus restoration. Inspect screen-reader labels/status/error announcements.
+- [ ] Capture and inspect screenshots for Admin grid/list/review, Teacher dashboard/marking/history, Student dashboard/history, dirty-navigation confirmation, conflict errors and locked read-only states. Recheck Student management dialogs and all public website pages after shared router/button changes.
+
+Browser acceptance remains pending until these items are actually exercised and findings are recorded.

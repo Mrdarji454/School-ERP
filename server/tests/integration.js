@@ -9,6 +9,7 @@ import net from "node:net";
 import mongoose from "mongoose";
 import ExcelJS from "exceljs";
 import { verifyAdminManagement } from "./adminManagement.js";
+import { verifyWorkflow } from './workflow.js';
 process.env.JWT_SECRET = "isolated-test-secret-never-use-in-production";
 process.env.SCHOOL_TIMEZONE = "Asia/Kolkata";
 const { default: app } = await import("../app.js");
@@ -130,14 +131,16 @@ try {
   const attendance = await request("POST", "/attendance", attendanceBody, teacherToken, 201);
   await request("POST", "/attendance", attendanceBody, teacherToken, 409);
   await request("GET", `/attendance/${attendance._id}`, null, teacherToken2, 404);
-  await request("PUT", `/attendance/${attendance._id}`, { ...attendanceBody, teacherAssignment: assignment2._id }, teacherToken, 400);
-  await request("PUT", `/attendance/${attendance._id}`, { students: [{ student: student._id, status: "Late" }] }, teacherToken);
-  const own = await request("GET", "/attendance/me", null, studentToken); assert.equal(own[0].students.length, 1); assert.equal(own[0].students[0].student, student._id);
-  await request("PUT", `/attendance/${attendance._id}`, { students: attendanceBody.students, isLocked: true }, token);
+  await request("PUT", `/attendance/${attendance._id}`, { ...attendanceBody, version: 0, teacherAssignment: assignment2._id }, teacherToken, 400);
+  await request("PUT", `/attendance/${attendance._id}`, { version: 0, students: [{ student: student._id, status: "Late" }] }, teacherToken);
+  const own = await request("GET", "/attendance/me", null, studentToken); assert.equal(own[0].students.length, 1); assert.equal(own[0].students[0].student, student._id); assert.equal(own[0].students[0].remark, undefined);
+  await request("PUT", `/attendance/${attendance._id}`, { students: attendanceBody.students, version: 1 }, token, 400);
+  await request("PUT", `/attendance/${attendance._id}`, { students: attendanceBody.students, version: 1, reason: 'Fixture correction' }, token);
+  await request("PUT", `/attendance/${attendance._id}`, { students: attendanceBody.students, version: 2, isLocked: true, reason: 'Fixture lock' }, token);
   await request("PUT", `/attendance/${attendance._id}`, { students: attendanceBody.students }, teacherToken, 409);
   await request("DELETE", `/attendance/${attendance._id}`, null, token, 409);
   const unLocked = await request("POST", "/attendance", { ...attendanceBody, attendanceDate: "2026-10-09" }, teacherToken, 201);
-  await request("DELETE", `/attendance/${unLocked._id}`, null, token);
+  await request("DELETE", `/attendance/${unLocked._id}`, { version: 0, reason: 'Fixture correction' }, token);
   await request("POST", "/attendance", { ...attendanceBody, attendanceDate: "2026-10-09" }, teacherToken, 409);
   const structure = await request("POST", "/fee-structures", { academicYear: year._id, feeType: "Annual", amount: 100, dueDate: "2026-12-01" }, token, 201);
   const fee = await request("POST", "/student-fees", { student: student._id, feeStructure: structure._id }, token, 201);
@@ -201,6 +204,7 @@ try {
   } finally { startup.kill(); await Promise.race([new Promise(r => startup.once("exit", r)), delay(5000)]); }
   assert.equal(await Student.countDocuments(), 2); assert.equal(await Teacher.countDocuments(), 2); assert.equal(await Attendance.countDocuments(), 2);
   await verifyAdminManagement({ request, token, teacherToken, studentToken, password });
+  await verifyWorkflow({ request, base, token, teacherToken, teacherToken2, studentToken, teacher, teacher2, student, assignment, assignment2, period, period2, cls, cls2, section, year });
   console.log(`PASS: ${count} HTTP/integration checks, including student workflow, permissions, attendance, concurrent scheduling and payments`);
 } finally {
   if (http) { http.closeAllConnections(); await new Promise(r => http.close(r)); }

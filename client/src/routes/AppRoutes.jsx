@@ -12,8 +12,10 @@ import Contact from "../pages/Contact";
 import Blog from "../pages/blog";
 
 import AdminDashboard from "../pages/admin/Dashboard";
-import TeacherDashboard from "../pages/teacher/Dashboard";
-import StudentDashboard from "../pages/student/Dashboard";
+import PortalDashboard from '../pages/workflow/PortalDashboard';
+import PortalLayout from '../layouts/PortalLayout';
+import TimetablePage from '../pages/workflow/TimetablePage';
+import AttendancePage from '../pages/workflow/AttendancePage';
 import ProtectedRoute from "./ProtectedRoute";
 import AdminLayout from "../layouts/AdminLayout";
 import Students from "../pages/admin/students/Students";
@@ -39,11 +41,12 @@ const AppRoutes = () => {
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/students" element={<Students />} />
+          <Route path="/admin/timetable" element={<TimetablePage />} />
+          <Route path="/admin/attendance" element={<AttendancePage />} />
           {managementResources.map(resource => <Route key={resource} path={`/admin/${resource}`} element={<ManagementPage key={resource} resource={resource} />} />)}
         </Route>
       </Route>
-      <Route element={<ProtectedRoute allowedRoles={["Teacher"]} />}><Route path="/teacher/dashboard" element={<TeacherDashboard />} /></Route>
-      <Route element={<ProtectedRoute allowedRoles={["Student"]} />}><Route path="/student/dashboard" element={<StudentDashboard />} /></Route>
+      {['Teacher', 'Student'].map(role => <Route key={role} element={<ProtectedRoute allowedRoles={[role]} />}><Route element={<PortalLayout role={role} />}><Route path={`/${role.toLowerCase()}/dashboard`} element={<PortalDashboard />} /><Route path={`/${role.toLowerCase()}/timetable`} element={<TimetablePage />} /><Route path={`/${role.toLowerCase()}/attendance`} element={<AttendancePage />} /></Route></Route>)}
     </Routes>
   );
 };

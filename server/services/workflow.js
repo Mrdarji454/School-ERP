@@ -31,9 +31,9 @@ export function validateQuery(query) {
 const assignmentFields = 'academicYear schoolClass section subject teacher isActive';
 export const populateAssignment = q => q
   .populate('academicYear', 'name startDate endDate isActive isCurrent')
-  .populate('schoolClass', 'name isActive')
-  .populate('section', 'name isActive')
-  .populate('subject', 'name code isActive')
+  .populate('schoolClass', 'name academicYear isActive')
+  .populate('section', 'name schoolClass isActive')
+  .populate('subject', 'name code schoolClass isActive')
   .populate({ path: 'teacher', select: 'user isActive', populate: { path: 'user', select: 'fullname isActive' } });
 const assignmentPopulation = { path: 'teacherAssignment', select: assignmentFields, populate: [
   { path: 'academicYear', select: 'name startDate endDate isActive' }, { path: 'schoolClass', select: 'name isActive' },
@@ -42,7 +42,7 @@ const assignmentPopulation = { path: 'teacherAssignment', select: assignmentFiel
 ] };
 const periodPopulation = { path: 'period', select: 'name startTime endTime periodNumber isBreak isActive' };
 const rosterPopulation = { path: 'students.student', select: 'user admissionNo rollNumber isActive', populate: { path: 'user', select: 'fullname isActive' } };
-const eligible = a => Boolean(a.isActive && a.academicYear?.isActive && a.schoolClass?.isActive && a.section?.isActive && a.subject?.isActive && a.teacher?.isActive && a.teacher?.user?.isActive);
+const eligible = a => Boolean(a.isActive && a.academicYear?.isActive && a.schoolClass?.isActive && a.section?.isActive && a.subject?.isActive && a.teacher?.isActive && a.teacher?.user?.isActive && same(a.schoolClass.academicYear, a.academicYear) && same(a.section.schoolClass, a.schoolClass) && same(a.subject.schoolClass, a.schoolClass));
 async function teacherId(user) {
   const t = await Teacher.findOne({ user: user._id, isActive: true }).select('_id');
   if (!t) fail(403, 'Active teacher profile required');

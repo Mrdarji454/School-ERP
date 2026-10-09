@@ -7,6 +7,8 @@ export const adminNavigation = [
   { name: "Sections", path: "/admin/sections", icon: Layers3 },
   { name: "Subjects", path: "/admin/subjects", icon: BookCopy },
   { name: "Periods", path: "/admin/periods", icon: Clock },
+  { name: "Timetable", path: "/admin/timetable", icon: Calendar },
+  { name: "Attendance review", path: "/admin/attendance", icon: UserCheck },
  ] },
  { title: "People", items: [
   { name: "Students", path: "/admin/students", icon: GraduationCap },
