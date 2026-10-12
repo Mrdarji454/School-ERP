@@ -1,62 +1,15 @@
-import express from "express";
-
-import { protect } from "../middleware/authMIddleware.js";
-import { authorize } from "../middleware/roleMiddleware.js";
-import { validate } from "../middleware/validate.js";
-
-import { createAcademicCalendar } from "../controllers/academicCalendar/createAcademicCalendar.js";
-import { getAllAcademicCalendars } from "../controllers/academicCalendar/getAllAcademicCalendars.js";
-import { getAcademicCalendarById } from "../controllers/academicCalendar/getAcademicCalendarById.js";
-import { updateAcademicCalendar } from "../controllers/academicCalendar/updateAcademicCalendar.js";
-import { deleteAcademicCalendar } from "../controllers/academicCalendar/deleteAcademicCalendar.js";
-import { restoreAcademicCalendar } from "../controllers/academicCalendar/restoreAcademicCalendar.js";
-
-import { createAcademicCalendarValidator } from "../validators/academicCalendarValidator.js";
-
+import express from 'express';
+import asyncHandler from 'express-async-handler';
+import { protect } from '../middleware/authMIddleware.js';
+import { authorize } from '../middleware/roleMiddleware.js';
+import { listCommunications, communicationDetail, saveCommunication, setCommunicationActive } from '../services/communications.js';
 const router = express.Router();
-
-router.post(
-    "/",
-    protect,
-    authorize("Admin"),
-    createAcademicCalendarValidator,
-    validate,
-    createAcademicCalendar
-);
-
-router.get(
-    "/",
-    protect,
-    getAllAcademicCalendars
-);
-
-router.get(
-    "/:id",
-    protect,
-    getAcademicCalendarById
-);
-
-router.put(
-    "/:id",
-    protect,
-    authorize("Admin"),
-    createAcademicCalendarValidator,
-    validate,
-    updateAcademicCalendar
-);
-
-router.delete(
-    "/:id",
-    protect,
-    authorize("Admin"),
-    deleteAcademicCalendar
-);
-
-router.patch(
-    "/:id/restore",
-    protect,
-    authorize("Admin"),
-    restoreAcademicCalendar
-);
-
+router.use(protect);
+const reply = (fn, status = 200) => asyncHandler(async (req, res) => res.status(status).json({ success: true, data: await fn(req) }));
+router.get('/', reply(async req => (await listCommunications('calendar', req.user, { ...req.query, limit: '100' })).records));
+router.get('/:id', reply(req => communicationDetail('calendar', req.user, req.params.id)));
+router.post('/', authorize('Admin'), reply(req => saveCommunication('calendar', req.user, null, req.body), 201));
+router.put('/:id', authorize('Admin'), reply(req => saveCommunication('calendar', req.user, req.params.id, req.body)));
+router.delete('/:id', authorize('Admin'), reply(req => setCommunicationActive('calendar', req.user, req.params.id, false)));
+router.patch('/:id/restore', authorize('Admin'), reply(req => setCommunicationActive('calendar', req.user, req.params.id, true)));
 export default router;

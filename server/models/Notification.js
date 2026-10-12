@@ -47,6 +47,9 @@ const notificationSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
+        audience: { type: String, enum: ['Everyone', 'Teachers', 'Students', 'Selected'], default: 'Everyone' },
+        targetClasses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'SchoolClass' }],
+        targetSections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Section' }],
 
         isActive: {
             type: Boolean,
@@ -69,5 +72,5 @@ const notificationSchema = new mongoose.Schema(
     }
 );
 
-notificationSchema.pre("validate", function () { if (this.expiryDate && this.expiryDate < this.publishDate) this.invalidate("expiryDate", "Expiry must follow publication"); });
+notificationSchema.pre("validate", function () { if (this.expiryDate && this.expiryDate <= this.publishDate) this.invalidate("expiryDate", "Expiry must follow publication"); });
 export default mongoose.model("Notification", notificationSchema);

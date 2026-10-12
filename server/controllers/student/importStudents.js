@@ -1,9 +1,9 @@
 import expressAsyncHandler from "express-async-handler";
-import { importStudentsService } from "../../services/student/importStudentsService.js";
+import { importPeople } from '../../services/peopleWorkbook.js';
 import { sendResponse } from "../../utils/apiResponse.js";
 
 export const importStudents = expressAsyncHandler(async (req, res) => {
-    const result = await importStudentsService(req.file);
+    const result = await importPeople('students', req.file, req.body, req.user);
 
     sendResponse(
         res,

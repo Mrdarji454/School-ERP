@@ -1,0 +1,22 @@
+import User from '../../models/User.js';
+import Student from '../../models/Student.js';
+import Teacher from '../../models/Teacher.js';
+import AcademicYear from '../../models/AcademicYear.js';
+import SchoolClass from '../../models/SchoolClass.js';
+import Section from '../../models/Section.js';
+import Subject from '../../models/Subject.js';
+import TeacherAssignment from '../../models/TeacherAssignment.js';
+import Period from '../../models/Period.js';
+import Timetable from '../../models/TimeTable.js';
+import Attendance from '../../models/Attendance.js';
+import AcademicCalendar from '../../models/AcademicCalendar.js';
+import Notification from '../../models/Notification.js';
+import FeeStructure from '../../models/FeeStructure.js';
+import StudentFee from '../../models/StudentFee.js';
+import FeePayment from '../../models/FeePayment.js';
+import SalaryStructure from '../../models/SalaryStructure.js';
+import TeacherSalary from '../../models/TeacherSalary.js';
+import SalaryPayment from '../../models/SalaryPayment.js';
+export { User, Student, Teacher, AcademicYear, SchoolClass, Section, Subject, TeacherAssignment, Period, Timetable, Attendance, AcademicCalendar, Notification, FeeStructure, StudentFee, FeePayment, SalaryStructure, TeacherSalary, SalaryPayment };
+export const models = { User, Student, Teacher, AcademicYear, SchoolClass, Section, Subject, TeacherAssignment, Period, Timetable, Attendance, AcademicCalendar, Notification, FeeStructure, StudentFee, FeePayment, SalaryStructure, TeacherSalary, SalaryPayment };
+export async function counts() { return Object.fromEntries(await Promise.all(Object.entries(models).map(async ([name, Model]) => [name, await Model.countDocuments()]))); }

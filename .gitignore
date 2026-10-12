@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 server/.test-data/
+server/.demo-data/
 .verification/
 *.local
 .env
@@ -27,3 +28,6 @@ server/.test-data/
 *.njsproj
 *.sln
 *.sw?
+
+server/.private-resources/
+server/.demo-resource-files/

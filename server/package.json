@@ -11,7 +11,19 @@
     "test": "node --test tests/core.test.js",
     "test:integration": "node tests/integration.js",
     "bootstrap:admin": "node scripts/bootstrap-admin.js",
-    "audit:data": "node scripts/audit-data.js"
+    "audit:data": "node scripts/audit-data.js",
+    "demo:db": "node scripts/demo/local-db.js",
+    "demo:server": "node scripts/demo/server.js",
+    "seed:demo": "node scripts/demo/cli.js seed",
+    "seed:demo:verify": "node scripts/demo/cli.js verify",
+    "seed:demo:copy-to-local": "node scripts/demo/copy-to-local.js",
+    "seed:demo:learning": "node scripts/demo/extend-learning.js",
+    "seed:demo:learning:verify": "node scripts/demo/verify-learning.js",
+    "resources:cleanup": "node scripts/resource-cleanup.js",
+    "seed:demo:workbooks": "node scripts/demo/people-fixtures.js",
+    "seed:demo:report": "node scripts/demo/cli.js report",
+    "seed:demo:reset": "node scripts/demo/cli.js reset",
+    "test:demo": "node --test tests/demo.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

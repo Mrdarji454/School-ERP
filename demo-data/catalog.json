@@ -1,0 +1,2698 @@
+{
+  "school": "Demo Vidya School",
+  "seedDate": "2026-10-09",
+  "timeZone": "Asia/Kolkata",
+  "randomSeed": "vidya-2026-v1",
+  "attendanceDates": [
+    "2026-09-22",
+    "2026-09-23",
+    "2026-09-24",
+    "2026-09-25",
+    "2026-09-26",
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-03",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
+  ],
+  "counts": {
+    "User": 271,
+    "Student": 250,
+    "Teacher": 20,
+    "AcademicYear": 2,
+    "SchoolClass": 5,
+    "Section": 10,
+    "Subject": 30,
+    "TeacherAssignment": 60,
+    "Period": 6,
+    "Timetable": 300,
+    "Attendance": 684,
+    "AcademicCalendar": 5,
+    "Notification": 5,
+    "FeeStructure": 1,
+    "StudentFee": 248,
+    "FeePayment": 11,
+    "SalaryStructure": 20,
+    "TeacherSalary": 20,
+    "SalaryPayment": 5
+  },
+  "samples": {
+    "locked": "02d35e501f07a373f0161415",
+    "unlocked": "e4d8187ea6a173a9f15db5cb",
+    "inactive": "0b200f8fa7fcd9d486fd4a5b",
+    "teacher1Unlocked": "555d64db5fa988fd4a5b8a23",
+    "teacher1Assignment": "2c43c06aa496132ee4e82d57",
+    "teacher2Assignment": "22b9e4e5d6df43c1c5c9007d"
+  },
+  "unmarked": [
+    {
+      "date": "2026-09-22",
+      "assignment": "e78dfa3c9f749745a19da678",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 6 A"
+    },
+    {
+      "date": "2026-09-22",
+      "assignment": "85b2ac1dbb58b7921732090a",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 9 B"
+    },
+    {
+      "date": "2026-09-22",
+      "assignment": "db1954dbfe092601a69229a7",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-09-22",
+      "assignment": "6fc65053660aa4b6b916de50",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-09-23",
+      "assignment": "85b2ac1dbb58b7921732090a",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 9 B"
+    },
+    {
+      "date": "2026-09-23",
+      "assignment": "db1954dbfe092601a69229a7",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-09-23",
+      "assignment": "6fc65053660aa4b6b916de50",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-09-23",
+      "assignment": "df5a3380411202da2746c5b8",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-09-24",
+      "assignment": "db1954dbfe092601a69229a7",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-09-24",
+      "assignment": "6fc65053660aa4b6b916de50",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-09-24",
+      "assignment": "df5a3380411202da2746c5b8",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-09-24",
+      "assignment": "44d49dd5fa9cf6b973fe1f2f",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 10 B"
+    },
+    {
+      "date": "2026-09-25",
+      "assignment": "6fc65053660aa4b6b916de50",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-09-25",
+      "assignment": "df5a3380411202da2746c5b8",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-09-25",
+      "assignment": "44d49dd5fa9cf6b973fe1f2f",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 10 B"
+    },
+    {
+      "date": "2026-09-25",
+      "assignment": "e42d0ab8e93946166f795a93",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 8 B"
+    },
+    {
+      "date": "2026-09-26",
+      "assignment": "6fc65053660aa4b6b916de50",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-09-26",
+      "assignment": "df5a3380411202da2746c5b8",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-09-26",
+      "assignment": "44d49dd5fa9cf6b973fe1f2f",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 10 B"
+    },
+    {
+      "date": "2026-09-26",
+      "assignment": "e42d0ab8e93946166f795a93",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 8 B"
+    },
+    {
+      "date": "2026-09-26",
+      "assignment": "eaaff32122b61e2fad9b5a86",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 6 B"
+    },
+    {
+      "date": "2026-09-28",
+      "assignment": "df5a3380411202da2746c5b8",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-09-28",
+      "assignment": "44d49dd5fa9cf6b973fe1f2f",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 10 B"
+    },
+    {
+      "date": "2026-09-28",
+      "assignment": "e42d0ab8e93946166f795a93",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 8 B"
+    },
+    {
+      "date": "2026-09-28",
+      "assignment": "eaaff32122b61e2fad9b5a86",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 6 B"
+    },
+    {
+      "date": "2026-09-28",
+      "assignment": "474e32b40aa07ee52b87ac4c",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 10 A"
+    },
+    {
+      "date": "2026-09-29",
+      "assignment": "44d49dd5fa9cf6b973fe1f2f",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 10 B"
+    },
+    {
+      "date": "2026-09-29",
+      "assignment": "e42d0ab8e93946166f795a93",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 8 B"
+    },
+    {
+      "date": "2026-09-29",
+      "assignment": "eaaff32122b61e2fad9b5a86",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 6 B"
+    },
+    {
+      "date": "2026-09-29",
+      "assignment": "474e32b40aa07ee52b87ac4c",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 10 A"
+    },
+    {
+      "date": "2026-09-29",
+      "assignment": "c5ea2b7e201ceff1d8268735",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 8 A"
+    },
+    {
+      "date": "2026-09-30",
+      "assignment": "e42d0ab8e93946166f795a93",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 8 B"
+    },
+    {
+      "date": "2026-09-30",
+      "assignment": "eaaff32122b61e2fad9b5a86",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 6 B"
+    },
+    {
+      "date": "2026-09-30",
+      "assignment": "474e32b40aa07ee52b87ac4c",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 10 A"
+    },
+    {
+      "date": "2026-09-30",
+      "assignment": "c5ea2b7e201ceff1d8268735",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 8 A"
+    },
+    {
+      "date": "2026-09-30",
+      "assignment": "2c43c06aa496132ee4e82d57",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 6 A"
+    },
+    {
+      "date": "2026-10-01",
+      "assignment": "eaaff32122b61e2fad9b5a86",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 6 B"
+    },
+    {
+      "date": "2026-10-01",
+      "assignment": "474e32b40aa07ee52b87ac4c",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 10 A"
+    },
+    {
+      "date": "2026-10-01",
+      "assignment": "c5ea2b7e201ceff1d8268735",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 8 A"
+    },
+    {
+      "date": "2026-10-01",
+      "assignment": "2c43c06aa496132ee4e82d57",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 6 A"
+    },
+    {
+      "date": "2026-10-01",
+      "assignment": "12c7b018abeec3a974566326",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 9 B"
+    },
+    {
+      "date": "2026-10-02",
+      "assignment": "474e32b40aa07ee52b87ac4c",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 10 A"
+    },
+    {
+      "date": "2026-10-02",
+      "assignment": "c5ea2b7e201ceff1d8268735",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 8 A"
+    },
+    {
+      "date": "2026-10-02",
+      "assignment": "2c43c06aa496132ee4e82d57",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 6 A"
+    },
+    {
+      "date": "2026-10-02",
+      "assignment": "12c7b018abeec3a974566326",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 9 B"
+    },
+    {
+      "date": "2026-10-02",
+      "assignment": "04e025387b87cde4e6d46df4",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-10-03",
+      "assignment": "c5ea2b7e201ceff1d8268735",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 8 A"
+    },
+    {
+      "date": "2026-10-03",
+      "assignment": "2c43c06aa496132ee4e82d57",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 6 A"
+    },
+    {
+      "date": "2026-10-03",
+      "assignment": "12c7b018abeec3a974566326",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 9 B"
+    },
+    {
+      "date": "2026-10-03",
+      "assignment": "04e025387b87cde4e6d46df4",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-10-05",
+      "assignment": "2c43c06aa496132ee4e82d57",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 6 A"
+    },
+    {
+      "date": "2026-10-05",
+      "assignment": "12c7b018abeec3a974566326",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 9 B"
+    },
+    {
+      "date": "2026-10-05",
+      "assignment": "04e025387b87cde4e6d46df4",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-10-05",
+      "assignment": "20df81936f2e339d2a0392de",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-10-06",
+      "assignment": "12c7b018abeec3a974566326",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 9 B"
+    },
+    {
+      "date": "2026-10-06",
+      "assignment": "04e025387b87cde4e6d46df4",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-10-06",
+      "assignment": "20df81936f2e339d2a0392de",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-10-06",
+      "assignment": "5f75a60f687ad91d6297529f",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-10-07",
+      "assignment": "04e025387b87cde4e6d46df4",
+      "period": "55c04be829a6b9353140521b",
+      "section": "Class 7 B"
+    },
+    {
+      "date": "2026-10-07",
+      "assignment": "20df81936f2e339d2a0392de",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-10-07",
+      "assignment": "5f75a60f687ad91d6297529f",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-10-07",
+      "assignment": "b088457881be756d8acc07a7",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 10 B"
+    },
+    {
+      "date": "2026-10-08",
+      "assignment": "20df81936f2e339d2a0392de",
+      "period": "5c3a6ac5c9a577d60383c250",
+      "section": "Class 9 A"
+    },
+    {
+      "date": "2026-10-08",
+      "assignment": "5f75a60f687ad91d6297529f",
+      "period": "c8df7459ef0c936f26393036",
+      "section": "Class 7 A"
+    },
+    {
+      "date": "2026-10-08",
+      "assignment": "b088457881be756d8acc07a7",
+      "period": "ad0793dcef7510dde005e38c",
+      "section": "Class 10 B"
+    },
+    {
+      "date": "2026-10-08",
+      "assignment": "c5042fce5bce1be3d77880b1",
+      "period": "4b33769090290e816d466f51",
+      "section": "Class 8 B"
+    }
+  ],
+  "verification": {
+    "verifiedAt": "2026-10-10T09:26:03.507Z",
+    "counts": {
+      "User": 271,
+      "Student": 250,
+      "Teacher": 20,
+      "AcademicYear": 2,
+      "SchoolClass": 5,
+      "Section": 10,
+      "Subject": 30,
+      "TeacherAssignment": 60,
+      "Period": 6,
+      "Timetable": 300,
+      "Attendance": 684,
+      "AcademicCalendar": 5,
+      "Notification": 5,
+      "FeeStructure": 1,
+      "StudentFee": 248,
+      "FeePayment": 11,
+      "SalaryStructure": 20,
+      "TeacherSalary": 20,
+      "SalaryPayment": 5
+    },
+    "apiChecks": 38,
+    "timetableConflicts": 0,
+    "attendance": {
+      "present": 14732,
+      "absent": 1062,
+      "late": 478,
+      "halfDay": 327,
+      "leave": 288,
+      "total": 16887,
+      "attendancePercentage": 87.24,
+      "unit": "student-period",
+      "policy": "Present-only numerator; all recorded statuses in denominator"
+    },
+    "finance": {
+      "fee": {
+        "paid": 80000,
+        "remaining": 2896000,
+        "reversedPayments": 1,
+        "pending": 238,
+        "partial": 5,
+        "fullyPaid": 5
+      },
+      "salary": {
+        "paid": 84000,
+        "remaining": 631000,
+        "reversedPayments": 1,
+        "pending": 16,
+        "partial": 2,
+        "fullyPaid": 2
+      }
+    },
+    "repeatedSeedPreservesAllDocuments": true,
+    "browserAcceptance": "Unverified: no connected browser"
+  },
+  "teachers": [
+    {
+      "employeeId": "DVS-T001",
+      "name": "Aarav Bhat",
+      "email": "teacher1@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T002",
+      "name": "Rehan Joshi",
+      "email": "teacher2@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T003",
+      "name": "Neel Iyer",
+      "email": "teacher3@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T004",
+      "name": "Mira Nair",
+      "email": "teacher4@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T005",
+      "name": "Yash Verma",
+      "email": "teacher5@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T006",
+      "name": "Neel Verma",
+      "email": "teacher6@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T007",
+      "name": "Dev Pillai",
+      "email": "teacher7@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T008",
+      "name": "Tara Kulkarni",
+      "email": "teacher8@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T009",
+      "name": "Diya Rao",
+      "email": "teacher9@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T010",
+      "name": "Kavya Sethi",
+      "email": "teacher10@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T011",
+      "name": "Diya Shah",
+      "email": "teacher11@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T012",
+      "name": "Kabir Shah",
+      "email": "teacher12@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T013",
+      "name": "Diya Kulkarni",
+      "email": "teacher13@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T014",
+      "name": "Sana Patel",
+      "email": "teacher14@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T015",
+      "name": "Kiran Bose",
+      "email": "teacher15@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T016",
+      "name": "Tara Nair",
+      "email": "teacher16@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T017",
+      "name": "Kiran Shah",
+      "email": "teacher17@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T018",
+      "name": "Avni Trivedi",
+      "email": "teacher18@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T019",
+      "name": "Riya Bose",
+      "email": "teacher19@demo.example.test",
+      "isActive": true
+    },
+    {
+      "employeeId": "DVS-T020",
+      "name": "Dev Patel",
+      "email": "teacher20@demo.example.test",
+      "isActive": true
+    }
+  ],
+  "students": [
+    {
+      "admissionNo": "DVS-S001",
+      "name": "Nisha Kulkarni",
+      "email": "student1@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S002",
+      "name": "Navya Rao",
+      "email": "student2@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S003",
+      "name": "Avni Kapoor",
+      "email": "student3@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S004",
+      "name": "Samar Bose",
+      "email": "student4@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S005",
+      "name": "Ishaan Bose",
+      "email": "student5@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S006",
+      "name": "Navya Sharma",
+      "email": "student6@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S007",
+      "name": "Kavya Kulkarni",
+      "email": "student7@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S008",
+      "name": "Diya Sharma",
+      "email": "student8@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S009",
+      "name": "Kiran Saxena",
+      "email": "student9@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S010",
+      "name": "Kabir Pillai",
+      "email": "student10@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 1,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S011",
+      "name": "Aditya Patel",
+      "email": "student11@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S012",
+      "name": "Diya Sethi",
+      "email": "student12@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S013",
+      "name": "Mira Rao",
+      "email": "student13@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S014",
+      "name": "Meera Sethi",
+      "email": "student14@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S015",
+      "name": "Kabir Bose",
+      "email": "student15@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S016",
+      "name": "Avni Iyer",
+      "email": "student16@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S017",
+      "name": "Rehan Patel",
+      "email": "student17@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S018",
+      "name": "Samar Shah",
+      "email": "student18@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S019",
+      "name": "Yash Sethi",
+      "email": "student19@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S020",
+      "name": "Nisha Saxena",
+      "email": "student20@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 2,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S021",
+      "name": "Samar Trivedi",
+      "email": "student21@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S022",
+      "name": "Meera Saxena",
+      "email": "student22@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S023",
+      "name": "Aditya Trivedi",
+      "email": "student23@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S024",
+      "name": "Aditya Verma",
+      "email": "student24@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S025",
+      "name": "Sana Kulkarni",
+      "email": "student25@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S026",
+      "name": "Aditya Patel",
+      "email": "student26@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S027",
+      "name": "Dev Joshi",
+      "email": "student27@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S028",
+      "name": "Nisha Kapoor",
+      "email": "student28@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S029",
+      "name": "Aarav Sethi",
+      "email": "student29@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S030",
+      "name": "Rehan Saxena",
+      "email": "student30@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 3,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S031",
+      "name": "Navya Pillai",
+      "email": "student31@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S032",
+      "name": "Ananya Iyer",
+      "email": "student32@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S033",
+      "name": "Yash Saxena",
+      "email": "student33@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S034",
+      "name": "Meera Desai",
+      "email": "student34@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S035",
+      "name": "Nisha Sharma",
+      "email": "student35@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S036",
+      "name": "Rohan Saxena",
+      "email": "student36@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S037",
+      "name": "Kabir Joshi",
+      "email": "student37@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S038",
+      "name": "Meera Nair",
+      "email": "student38@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S039",
+      "name": "Neel Desai",
+      "email": "student39@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S040",
+      "name": "Arjun Sen",
+      "email": "student40@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 4,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S041",
+      "name": "Samar Kulkarni",
+      "email": "student41@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S042",
+      "name": "Aditya Joshi",
+      "email": "student42@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S043",
+      "name": "Aarav Bose",
+      "email": "student43@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S044",
+      "name": "Neel Saxena",
+      "email": "student44@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S045",
+      "name": "Nisha Bose",
+      "email": "student45@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S046",
+      "name": "Navya Kulkarni",
+      "email": "student46@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S047",
+      "name": "Ira Sen",
+      "email": "student47@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S048",
+      "name": "Sana Iyer",
+      "email": "student48@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S049",
+      "name": "Sana Desai",
+      "email": "student49@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S050",
+      "name": "Mira Iyer",
+      "email": "student50@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 5,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S051",
+      "name": "Yash Patel",
+      "email": "student51@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S052",
+      "name": "Kavya Trivedi",
+      "email": "student52@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S053",
+      "name": "Neel Bhat",
+      "email": "student53@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S054",
+      "name": "Aditya Patel",
+      "email": "student54@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S055",
+      "name": "Rehan Kulkarni",
+      "email": "student55@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S056",
+      "name": "Ishaan Sen",
+      "email": "student56@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S057",
+      "name": "Vihaan Mehta",
+      "email": "student57@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S058",
+      "name": "Mira Trivedi",
+      "email": "student58@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S059",
+      "name": "Riya Kapoor",
+      "email": "student59@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S060",
+      "name": "Kavya Rao",
+      "email": "student60@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 6,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S061",
+      "name": "Aarav Patel",
+      "email": "student61@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S062",
+      "name": "Diya Trivedi",
+      "email": "student62@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S063",
+      "name": "Riya Menon",
+      "email": "student63@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S064",
+      "name": "Ananya Pillai",
+      "email": "student64@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S065",
+      "name": "Rehan Sharma",
+      "email": "student65@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S066",
+      "name": "Dev Trivedi",
+      "email": "student66@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S067",
+      "name": "Vihaan Bose",
+      "email": "student67@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S068",
+      "name": "Rohan Rao",
+      "email": "student68@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S069",
+      "name": "Neel Menon",
+      "email": "student69@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S070",
+      "name": "Ishaan Patel",
+      "email": "student70@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 7,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S071",
+      "name": "Vihaan Rao",
+      "email": "student71@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S072",
+      "name": "Nisha Joshi",
+      "email": "student72@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S073",
+      "name": "Mira Shah",
+      "email": "student73@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S074",
+      "name": "Avni Patel",
+      "email": "student74@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S075",
+      "name": "Arjun Sharma",
+      "email": "student75@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S076",
+      "name": "Avni Shah",
+      "email": "student76@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S077",
+      "name": "Yash Nair",
+      "email": "student77@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S078",
+      "name": "Tara Bhat",
+      "email": "student78@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S079",
+      "name": "Ira Pillai",
+      "email": "student79@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S080",
+      "name": "Diya Joshi",
+      "email": "student80@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 8,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S081",
+      "name": "Nisha Sharma",
+      "email": "student81@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S082",
+      "name": "Arjun Mehta",
+      "email": "student82@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S083",
+      "name": "Navya Sethi",
+      "email": "student83@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S084",
+      "name": "Tara Sen",
+      "email": "student84@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S085",
+      "name": "Kiran Sharma",
+      "email": "student85@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S086",
+      "name": "Kabir Shah",
+      "email": "student86@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S087",
+      "name": "Kavya Sethi",
+      "email": "student87@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S088",
+      "name": "Samar Shah",
+      "email": "student88@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S089",
+      "name": "Diya Sen",
+      "email": "student89@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S090",
+      "name": "Kiran Nair",
+      "email": "student90@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 9,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S091",
+      "name": "Meera Saxena",
+      "email": "student91@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S092",
+      "name": "Yash Joshi",
+      "email": "student92@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S093",
+      "name": "Yash Joshi",
+      "email": "student93@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S094",
+      "name": "Navya Trivedi",
+      "email": "student94@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S095",
+      "name": "Tara Pillai",
+      "email": "student95@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S096",
+      "name": "Rohan Iyer",
+      "email": "student96@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S097",
+      "name": "Mira Bhat",
+      "email": "student97@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S098",
+      "name": "Sana Kapoor",
+      "email": "student98@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S099",
+      "name": "Kavya Saxena",
+      "email": "student99@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S100",
+      "name": "Tara Kapoor",
+      "email": "student100@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 10,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S101",
+      "name": "Tara Shah",
+      "email": "student101@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S102",
+      "name": "Vihaan Sen",
+      "email": "student102@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S103",
+      "name": "Avni Joshi",
+      "email": "student103@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S104",
+      "name": "Tara Menon",
+      "email": "student104@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S105",
+      "name": "Kabir Rao",
+      "email": "student105@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S106",
+      "name": "Avni Menon",
+      "email": "student106@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S107",
+      "name": "Avni Kapoor",
+      "email": "student107@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S108",
+      "name": "Nisha Rao",
+      "email": "student108@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S109",
+      "name": "Sana Trivedi",
+      "email": "student109@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S110",
+      "name": "Tara Kulkarni",
+      "email": "student110@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 11,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S111",
+      "name": "Neel Verma",
+      "email": "student111@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S112",
+      "name": "Riya Rao",
+      "email": "student112@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S113",
+      "name": "Yash Joshi",
+      "email": "student113@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S114",
+      "name": "Dev Sethi",
+      "email": "student114@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S115",
+      "name": "Samar Pillai",
+      "email": "student115@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S116",
+      "name": "Ishaan Bose",
+      "email": "student116@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S117",
+      "name": "Kavya Sethi",
+      "email": "student117@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S118",
+      "name": "Riya Shah",
+      "email": "student118@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S119",
+      "name": "Mira Kulkarni",
+      "email": "student119@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S120",
+      "name": "Yash Nair",
+      "email": "student120@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 12,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S121",
+      "name": "Tara Sen",
+      "email": "student121@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S122",
+      "name": "Kabir Verma",
+      "email": "student122@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S123",
+      "name": "Meera Verma",
+      "email": "student123@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S124",
+      "name": "Tara Bhat",
+      "email": "student124@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S125",
+      "name": "Aditya Pillai",
+      "email": "student125@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S126",
+      "name": "Sana Sen",
+      "email": "student126@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S127",
+      "name": "Sana Iyer",
+      "email": "student127@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S128",
+      "name": "Aarav Bose",
+      "email": "student128@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S129",
+      "name": "Nisha Nair",
+      "email": "student129@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S130",
+      "name": "Diya Saxena",
+      "email": "student130@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 13,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S131",
+      "name": "Mira Bose",
+      "email": "student131@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S132",
+      "name": "Arjun Sethi",
+      "email": "student132@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S133",
+      "name": "Rehan Verma",
+      "email": "student133@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S134",
+      "name": "Aarav Joshi",
+      "email": "student134@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S135",
+      "name": "Navya Shah",
+      "email": "student135@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S136",
+      "name": "Aditya Saxena",
+      "email": "student136@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S137",
+      "name": "Vihaan Patel",
+      "email": "student137@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S138",
+      "name": "Tara Shah",
+      "email": "student138@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S139",
+      "name": "Ananya Verma",
+      "email": "student139@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S140",
+      "name": "Rohan Menon",
+      "email": "student140@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 14,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S141",
+      "name": "Aarav Menon",
+      "email": "student141@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S142",
+      "name": "Kabir Verma",
+      "email": "student142@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S143",
+      "name": "Samar Kulkarni",
+      "email": "student143@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S144",
+      "name": "Ira Kapoor",
+      "email": "student144@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S145",
+      "name": "Kabir Sharma",
+      "email": "student145@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S146",
+      "name": "Nisha Joshi",
+      "email": "student146@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S147",
+      "name": "Yash Menon",
+      "email": "student147@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S148",
+      "name": "Rehan Bose",
+      "email": "student148@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S149",
+      "name": "Aarav Rao",
+      "email": "student149@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S150",
+      "name": "Sana Rao",
+      "email": "student150@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 15,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S151",
+      "name": "Kavya Patel",
+      "email": "student151@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S152",
+      "name": "Sana Shah",
+      "email": "student152@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S153",
+      "name": "Ananya Iyer",
+      "email": "student153@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S154",
+      "name": "Kabir Nair",
+      "email": "student154@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S155",
+      "name": "Rehan Patel",
+      "email": "student155@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S156",
+      "name": "Kiran Joshi",
+      "email": "student156@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S157",
+      "name": "Kabir Kulkarni",
+      "email": "student157@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S158",
+      "name": "Rehan Trivedi",
+      "email": "student158@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S159",
+      "name": "Kavya Sharma",
+      "email": "student159@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S160",
+      "name": "Riya Rao",
+      "email": "student160@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 16,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S161",
+      "name": "Vihaan Sethi",
+      "email": "student161@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S162",
+      "name": "Nisha Nair",
+      "email": "student162@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S163",
+      "name": "Vihaan Patel",
+      "email": "student163@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S164",
+      "name": "Kavya Rao",
+      "email": "student164@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S165",
+      "name": "Nisha Shah",
+      "email": "student165@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S166",
+      "name": "Yash Shah",
+      "email": "student166@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S167",
+      "name": "Sana Bose",
+      "email": "student167@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S168",
+      "name": "Kiran Nair",
+      "email": "student168@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S169",
+      "name": "Kabir Kulkarni",
+      "email": "student169@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S170",
+      "name": "Mira Saxena",
+      "email": "student170@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 17,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S171",
+      "name": "Arjun Sen",
+      "email": "student171@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S172",
+      "name": "Kabir Kapoor",
+      "email": "student172@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S173",
+      "name": "Yash Patel",
+      "email": "student173@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S174",
+      "name": "Avni Rao",
+      "email": "student174@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S175",
+      "name": "Rehan Menon",
+      "email": "student175@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S176",
+      "name": "Kavya Iyer",
+      "email": "student176@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S177",
+      "name": "Aarav Rao",
+      "email": "student177@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S178",
+      "name": "Ananya Bose",
+      "email": "student178@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S179",
+      "name": "Vihaan Saxena",
+      "email": "student179@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S180",
+      "name": "Neel Rao",
+      "email": "student180@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 18,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S181",
+      "name": "Rehan Desai",
+      "email": "student181@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S182",
+      "name": "Neel Kapoor",
+      "email": "student182@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S183",
+      "name": "Ira Nair",
+      "email": "student183@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S184",
+      "name": "Navya Saxena",
+      "email": "student184@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S185",
+      "name": "Mira Bose",
+      "email": "student185@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S186",
+      "name": "Arjun Menon",
+      "email": "student186@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S187",
+      "name": "Kiran Rao",
+      "email": "student187@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S188",
+      "name": "Navya Sharma",
+      "email": "student188@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S189",
+      "name": "Samar Patel",
+      "email": "student189@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S190",
+      "name": "Nisha Bose",
+      "email": "student190@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 19,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S191",
+      "name": "Kiran Trivedi",
+      "email": "student191@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S192",
+      "name": "Samar Saxena",
+      "email": "student192@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S193",
+      "name": "Aarav Shah",
+      "email": "student193@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S194",
+      "name": "Tara Rao",
+      "email": "student194@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S195",
+      "name": "Ira Saxena",
+      "email": "student195@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S196",
+      "name": "Dev Kulkarni",
+      "email": "student196@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S197",
+      "name": "Avni Bhat",
+      "email": "student197@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S198",
+      "name": "Aarav Iyer",
+      "email": "student198@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S199",
+      "name": "Kiran Menon",
+      "email": "student199@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S200",
+      "name": "Aditya Shah",
+      "email": "student200@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 20,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S201",
+      "name": "Samar Rao",
+      "email": "student201@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S202",
+      "name": "Rehan Menon",
+      "email": "student202@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S203",
+      "name": "Avni Kulkarni",
+      "email": "student203@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S204",
+      "name": "Mira Nair",
+      "email": "student204@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S205",
+      "name": "Navya Iyer",
+      "email": "student205@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S206",
+      "name": "Rehan Sethi",
+      "email": "student206@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S207",
+      "name": "Kiran Iyer",
+      "email": "student207@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S208",
+      "name": "Sana Iyer",
+      "email": "student208@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S209",
+      "name": "Vihaan Pillai",
+      "email": "student209@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S210",
+      "name": "Kiran Saxena",
+      "email": "student210@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 21,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S211",
+      "name": "Navya Verma",
+      "email": "student211@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S212",
+      "name": "Kiran Sharma",
+      "email": "student212@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S213",
+      "name": "Nisha Sen",
+      "email": "student213@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S214",
+      "name": "Kabir Mehta",
+      "email": "student214@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S215",
+      "name": "Riya Bhat",
+      "email": "student215@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S216",
+      "name": "Kavya Trivedi",
+      "email": "student216@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S217",
+      "name": "Kabir Trivedi",
+      "email": "student217@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S218",
+      "name": "Nisha Kapoor",
+      "email": "student218@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S219",
+      "name": "Mira Pillai",
+      "email": "student219@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S220",
+      "name": "Kabir Iyer",
+      "email": "student220@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 22,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S221",
+      "name": "Rehan Pillai",
+      "email": "student221@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S222",
+      "name": "Avni Menon",
+      "email": "student222@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S223",
+      "name": "Ishaan Kulkarni",
+      "email": "student223@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S224",
+      "name": "Neel Sethi",
+      "email": "student224@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S225",
+      "name": "Samar Mehta",
+      "email": "student225@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S226",
+      "name": "Diya Iyer",
+      "email": "student226@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S227",
+      "name": "Aarav Desai",
+      "email": "student227@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S228",
+      "name": "Mira Saxena",
+      "email": "student228@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S229",
+      "name": "Ananya Iyer",
+      "email": "student229@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S230",
+      "name": "Arjun Sethi",
+      "email": "student230@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 23,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S231",
+      "name": "Avni Patel",
+      "email": "student231@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S232",
+      "name": "Aditya Sen",
+      "email": "student232@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S233",
+      "name": "Samar Bhat",
+      "email": "student233@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S234",
+      "name": "Riya Patel",
+      "email": "student234@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S235",
+      "name": "Vihaan Sen",
+      "email": "student235@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S236",
+      "name": "Rohan Iyer",
+      "email": "student236@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S237",
+      "name": "Meera Sethi",
+      "email": "student237@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S238",
+      "name": "Diya Mehta",
+      "email": "student238@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S239",
+      "name": "Ishaan Sen",
+      "email": "student239@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S240",
+      "name": "Aditya Joshi",
+      "email": "student240@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 24,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S241",
+      "name": "Samar Rao",
+      "email": "student241@demo.example.test",
+      "placement": "Class 6 A",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S242",
+      "name": "Dev Saxena",
+      "email": "student242@demo.example.test",
+      "placement": "Class 6 B",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S243",
+      "name": "Riya Shah",
+      "email": "student243@demo.example.test",
+      "placement": "Class 7 A",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S244",
+      "name": "Neel Sethi",
+      "email": "student244@demo.example.test",
+      "placement": "Class 7 B",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S245",
+      "name": "Mira Pillai",
+      "email": "student245@demo.example.test",
+      "placement": "Class 8 A",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S246",
+      "name": "Ishaan Bose",
+      "email": "student246@demo.example.test",
+      "placement": "Class 8 B",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S247",
+      "name": "Rehan Sen",
+      "email": "student247@demo.example.test",
+      "placement": "Class 9 A",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S248",
+      "name": "Mira Verma",
+      "email": "student248@demo.example.test",
+      "placement": "Class 9 B",
+      "roll": 25,
+      "isActive": true
+    },
+    {
+      "admissionNo": "DVS-S249",
+      "name": "Aarav Menon",
+      "email": "student249@demo.example.test",
+      "placement": "Class 10 A",
+      "roll": 25,
+      "isActive": false
+    },
+    {
+      "admissionNo": "DVS-S250",
+      "name": "Neel Desai",
+      "email": "student250@demo.example.test",
+      "placement": "Class 10 B",
+      "roll": 25,
+      "isActive": false
+    }
+  ],
+  "personalSummaries": [
+    {
+      "email": "student1@demo.example.test",
+      "present": 61,
+      "absent": 3,
+      "late": 1,
+      "halfDay": 3,
+      "leave": 1,
+      "total": 69,
+      "attendancePercentage": 88.41,
+      "unit": "student-period",
+      "policy": "Present-only numerator; all recorded statuses in denominator"
+    },
+    {
+      "email": "student2@demo.example.test",
+      "present": 58,
+      "absent": 6,
+      "late": 2,
+      "halfDay": 3,
+      "leave": 1,
+      "total": 70,
+      "attendancePercentage": 82.86,
+      "unit": "student-period",
+      "policy": "Present-only numerator; all recorded statuses in denominator"
+    },
+    {
+      "email": "student3@demo.example.test",
+      "present": 35,
+      "absent": 18,
+      "late": 6,
+      "halfDay": 5,
+      "leave": 3,
+      "total": 67,
+      "attendancePercentage": 52.24,
+      "unit": "student-period",
+      "policy": "Present-only numerator; all recorded statuses in denominator"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "Locked",
+      "id": "02d35e501f07a373f0161415",
+      "date": "2026-09-22",
+      "section": "Class 6 B",
+      "subject": "Mathematics",
+      "teacher": "teacher3@demo.example.test",
+      "period": "Period 1 09:00–09:45"
+    },
+    {
+      "scenario": "Teacher 1 unlocked",
+      "id": "555d64db5fa988fd4a5b8a23",
+      "date": "2026-09-22",
+      "section": "Class 10 B",
+      "subject": "Mathematics",
+      "teacher": "teacher1@demo.example.test",
+      "period": "Period 1 09:00–09:45"
+    },
+    {
+      "scenario": "Deactivated",
+      "id": "0b200f8fa7fcd9d486fd4a5b",
+      "date": "2026-09-22",
+      "section": "Class 8 A",
+      "subject": "Mathematics",
+      "teacher": "teacher6@demo.example.test",
+      "period": "Period 1 09:00–09:45"
+    }
+  ]
+}

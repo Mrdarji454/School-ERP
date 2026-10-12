@@ -8,6 +8,7 @@ try {
   const checks = [
     ["users", { email: "$email" }],
     ["students", { admissionNo: "$admissionNo" }],
+    ["students", { schoolClass: "$schoolClass", section: "$section", rollNumber: "$rollNumber" }],
     ["studentfees", { student: "$student", feeStructure: "$feeStructure" }],
     ["teachersalaries", { teacher: "$teacher", month: "$month", year: "$year" }],
     ["attendances", { teacherAssignment: "$teacherAssignment", attendanceDate: "$attendanceDate", period: "$period" }],

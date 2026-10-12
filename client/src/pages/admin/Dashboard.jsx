@@ -1,3 +1,4 @@
+import LearningLinks from '../../components/workflow/LearningLinks';
 import { useEffect, useState } from "react";
 import { GraduationCap, Users, BookOpen, IndianRupee } from "lucide-react";
 import StatCard from "../../components/cards/StatCard";
@@ -10,6 +11,7 @@ export default function Dashboard() {
  useEffect(() => { let active = true; api.get("/dashboard/admin").then(res => { if (active) setData(res.data.data); }).catch(err => { if (active) setError(err.response?.data?.message || "Dashboard could not be loaded"); }); return () => { active = false; }; }, []);
  return <>
   <PageHeader title="Dashboard" subtitle={data ? data.statistics.currentAcademicYear.name : "School overview"} />
+  <LearningLinks />
   {error ? <p role="alert" className="rounded-xl bg-red-50 p-5 text-red-700">{error}</p> : !data ? <p role="status">Loading dashboard...</p> : <>
    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
     <StatCard title="Students" value={data.statistics.totalStudents} icon={GraduationCap} />

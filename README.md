@@ -140,7 +140,7 @@ Scoped read APIs under `/api/workflow` all require authentication:
 | `GET /attendance` | `{ records, pagination, summary, summaryScope }`; paginated sessions for Admin/Teacher, personal recorded entries for Student. Filters: `from`, `to`, `date`, `period`, `studentStatus`, `page`, `limit` (1–100). Staff additionally use academic year/class/section/teacher/assignment, record `status`, and `locked=true/false`; Student can filter `subject`. Personal ownership never comes from supplied query IDs. |
 | `GET /attendance/:id` | Admin/Teacher scoped session details with a minimal recorded roster and `__v`. Admin sees audit history. Student access is denied. |
 | `PATCH /attendance/:id/lock` | Admin only; body `{ version, isLocked, reason }`. Compare-and-set mutation records actor, timestamp, action and reason. |
-| `GET /notices` | Up to 20 active, published, unexpired notices with public fields only. The existing notice model has no role/audience targeting. |
+| `GET /notices` | Up to 20 active, published, unexpired notices with public fields only. Role and academic audience targeting is enforced; see the learning/communications report. |
 
 Timetable writes retain `/api/timetables`: POST creates; PUT edits and restores inactive bookings; DELETE deactivates. Restoration reruns eligibility and interval conflicts. Existing year-based transaction serialization and indexes remain unchanged. No draft/publish lifecycle or attendance rewrite was introduced.
 
@@ -155,3 +155,13 @@ Enrollment limitation: Student stores only current class/section, without effect
 The frontend uses the existing React Router package's data-router wrapper to support navigation blocking for unsaved attendance. Authentication providers and role guards remain in place. Navigation, browser unload, modal close, and logout have unsaved-change guards; session expiry still clears invalid authentication.
 
 See [WORKFLOW_MILESTONE_REPORT.md](WORKFLOW_MILESTONE_REPORT.md) and the workflow section of [UI_ACCEPTANCE_CHECKLIST.md](UI_ACCEPTANCE_CHECKLIST.md).
+
+## Fictional demo data
+
+Expanded Student/Teacher profiles, first-login onboarding, self-service and Excel preview/import/export are documented in [PROFILE_MANAGEMENT_REPORT.md](PROFILE_MANAGEMENT_REPORT.md), including database/index preparation and the browser acceptance checklist.
+
+Use the isolated `school_erp_demo` database for repeatable testing. Follow [DEMO_DATA_GUIDE.md](DEMO_DATA_GUIDE.md) for startup, seed, verification and explicit reset commands. [DEMO_DATA_REPORT.md](DEMO_DATA_REPORT.md) contains the account directory, expected totals and concrete test scenarios; [demo-data/catalog.json](demo-data/catalog.json) provides the same fixture references for automated checks. Normal seed reruns preserve manual edits.
+
+## Learning resources and communications
+
+Private PDF resources, role libraries, targeted notices and academic calendar management are documented in [LEARNING_COMMUNICATION_REPORT.md](LEARNING_COMMUNICATION_REPORT.md). It includes storage setup, access policies, additive demo commands, verification and the pending browser checklist.

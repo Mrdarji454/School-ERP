@@ -8,7 +8,7 @@ router.use(protect, authorize('Admin', 'Teacher', 'Student'));
 const read = fn => asyncHandler(async (req, res) => res.json({ success: true, data: await fn(req) }));
 router.get('/options', read(req => workflowOptions(req.user)));
 router.get('/timetables', read(req => workflowTimetable(req.user, req.query)));
-router.get('/notices', read(() => publishedNotices()));
+router.get('/notices', read(req => publishedNotices(req.user)));
 router.get('/attendance', read(req => attendanceList(req.user, req.query)));
 router.get('/roster', authorize('Admin', 'Teacher'), read(req => attendanceRoster(req.user, req.query)));
 router.get('/attendance/:id', authorize('Admin', 'Teacher'), read(req => attendanceDetail(req.user, req.params.id)));

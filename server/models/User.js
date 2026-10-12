@@ -11,6 +11,14 @@ const userSchema = new mongoose.Schema(
         phone: { type: String, default: "", },
         isActive: { type: Boolean, default: true, },
         lastLogin: { type: Date, },
+        mustChangePassword: { type: Boolean, default: false },
+        tokenVersion: { type: Number, default: 0, select: false },
+        passwordChangedAt: Date,
+        passwordResetAt: Date,
+        passwordResetBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        passwordResetReason: String,
+        emailChangedAt: Date,
+        emailChangedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     }, {
     timestamps: true,
 }
@@ -30,6 +38,6 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 // userSchema.index({ fullname: "text", email: "text" });
-userSchema.set("toJSON", { transform: (_doc, ret) => { delete ret.password; return ret; } });
+userSchema.set("toJSON", { transform: (_doc, ret) => { delete ret.password; delete ret.tokenVersion; return ret; } });
 const User = mongoose.model("User", userSchema);
 export default User;

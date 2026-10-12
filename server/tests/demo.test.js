@@ -1,0 +1,89 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import net from 'node:net';
+import { spawn } from 'node:child_process';
+import { setTimeout as delay } from 'node:timers/promises';
+import mongoose from 'mongoose';
+import { demoConfig, seedDate, completedDays, demoId, randomValue, connectDemo, manifestCollection, MANIFEST_ID } from '../scripts/demo/config.js';
+import { requireResetConfirmation, resetDemo } from '../scripts/demo/cli.js';
+import { seedDemo } from '../scripts/demo/seed.js';
+import { verifyDemo, fingerprint } from '../scripts/demo/verify.js';
+import { extendLearning } from '../scripts/demo/extend-learning.js';
+import { verifyLearningDemo } from '../scripts/demo/verify-learning.js';
+const uri = 'mongodb://127.0.0.1:27018/school_erp_demo?replicaSet=demoRs';
+test('demo refuses production, normal URI fallback and any non-demo database before connecting', () => {
+  assert.throws(() => demoConfig({ NODE_ENV: 'production', DEMO_MONGODB_URI: uri }), /production/);
+  assert.throws(() => demoConfig({ MONGO_URI: 'mongodb://do-not-connect/private' }), /explicitly/);
+  for (const value of ['mongodb://localhost/school_erp', 'mongodb://localhost/', 'https://localhost/school_erp_demo', 'mongodb://localhost/school_erp_demo?dbName=school_erp']) assert.throws(() => demoConfig({ DEMO_MONGODB_URI: value }));
+  assert.equal(demoConfig({ DEMO_MONGODB_URI: uri }).password, 'DemoSchool123!');
+});
+test('seed date and deterministic fixture identities are reproducible', () => {
+  assert.equal(seedDate(demoConfig({ DEMO_MONGODB_URI: uri, DEMO_SEED_DATE: '2026-10-09' })), '2026-10-09');
+  assert.throws(() => seedDate(demoConfig({ DEMO_MONGODB_URI: uri, DEMO_SEED_DATE: '2027-04-01' })), /outside/);
+  assert.throws(() => seedDate(demoConfig({ DEMO_MONGODB_URI: uri, DEMO_SEED_DATE: '2026-02-30' })), /real/);
+  assert.equal(completedDays('2026-10-09').length, 15);
+  assert.ok(completedDays('2026-10-09').every(date => date < '2026-10-09' && new Date(date).getUTCDay() !== 0));
+  assert.equal(String(demoId('student/1')), String(demoId('student/1')));
+  assert.notEqual(String(demoId('student/1')), String(demoId('student/2')));
+  assert.equal(randomValue('fixed', 'row'), randomValue('fixed', 'row'));
+});
+test('reset requires its exact explicit confirmation flag', () => {
+  assert.throws(() => requireResetConfirmation([]), /refused/);
+  assert.throws(() => requireResetConfirmation(['--yes']), /refused/);
+  requireResetConfirmation(['--confirm-demo-reset']);
+});
+test('isolated replica verifies guarded reset, full seed, and manual-edit preservation', { skip: !process.env.TEST_MONGOD }, async () => {
+  const listener = net.createServer(); await new Promise(resolve => listener.listen(0, '127.0.0.1', resolve)); const port = listener.address().port; await new Promise(resolve => listener.close(resolve));
+  const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'school-demo-reset-test-'));
+  const child = spawn(process.env.TEST_MONGOD, ['--dbpath', directory, '--port', String(port), '--bind_ip', '127.0.0.1', '--replSet', 'demoTest', '--logpath', path.join(directory, 'mongod.log')], { windowsHide: true, stdio: 'ignore' });
+  let childError; child.on('error', error => { childError = error; });
+  let client;
+  try {
+    for (let i = 0; i < 40; i++) {
+      if (childError) throw childError;
+      try { client = new mongoose.mongo.MongoClient(`mongodb://127.0.0.1:${port}/school_erp_demo?directConnection=true`, { serverSelectionTimeoutMS: 500 }); await client.connect(); break; } catch { await client?.close(); client = null; await delay(250); }
+    }
+    assert.ok(client);
+    await assert.rejects(() => connectDemo(demoConfig({ DEMO_MONGODB_URI: `mongodb://127.0.0.1:${port}/school_erp_demo?directConnection=true` })), /replica-set/);
+    await mongoose.disconnect();
+    await client.db('admin').command({ replSetInitiate: { _id: 'demoTest', members: [{ _id: 0, host: `127.0.0.1:${port}` }] } });
+    await connectDemo(demoConfig({ DEMO_MONGODB_URI: `mongodb://127.0.0.1:${port}/school_erp_demo?replicaSet=demoTest` }));
+    await mongoose.connection.db.collection('sentinel').insertOne({ fictional: true });
+    await assert.rejects(() => resetDemo(['--confirm-demo-reset']), /manifest/);
+    assert.equal(await mongoose.connection.db.collection('sentinel').countDocuments(), 1);
+    await manifestCollection().insertOne({ _id: MANIFEST_ID, state: 'complete' });
+    await mongoose.connection.db.collection('sentinel').updateOne({}, { $set: { manualNote: 'Preserve this manual test edit' } });
+    const beforeRepeat = await mongoose.connection.db.collection('sentinel').findOne();
+    const collectionsBeforeRepeat = (await mongoose.connection.db.listCollections().toArray()).map(c => c.name).sort();
+    const repeated = await seedDemo(demoConfig({ DEMO_MONGODB_URI: `mongodb://127.0.0.1:${port}/school_erp_demo?replicaSet=demoTest` }), () => {});
+    assert.equal(repeated.created, false);
+    assert.deepEqual(await mongoose.connection.db.collection('sentinel').findOne(), beforeRepeat);
+    assert.deepEqual((await mongoose.connection.db.listCollections().toArray()).map(c => c.name).sort(), collectionsBeforeRepeat);
+    await assert.rejects(() => resetDemo([]), /refused/);
+    assert.equal(await mongoose.connection.db.collection('sentinel').countDocuments(), 1);
+    await resetDemo(['--confirm-demo-reset']);
+    assert.equal((await mongoose.connection.db.listCollections().toArray()).length, 0);
+    const freshConfig = demoConfig({ DEMO_MONGODB_URI: `mongodb://127.0.0.1:${port}/school_erp_demo?replicaSet=demoTest`, DEMO_SEED_DATE: '2026-10-10' });
+    const fresh = await seedDemo(freshConfig);
+    assert.equal(fresh.created, true);
+    assert.equal(fresh.manifest.seedDate, '2026-10-10');
+    const verified = await verifyDemo(freshConfig);
+    assert.equal(verified.counts.Student, 250);
+    assert.equal(verified.timetableConflicts, 0);
+    process.env.RESOURCE_STORAGE_DIR = path.join(directory, 'private-resources');
+    await extendLearning();
+    assert.equal((await verifyLearningDemo(freshConfig)).resources, 8);
+    await verifyDemo(freshConfig);
+    await mongoose.connection.db.collection('learningresources').updateOne({ _id: demoId('learning/resource/0') }, { $set: { title: 'Manually edited resource title' } });
+    await mongoose.connection.db.collection('teachers').updateOne({ employeeId: 'DVS-T001' }, { $set: { department: 'Manually edited demo department' } });
+    const manualFingerprint = await fingerprint();
+    await seedDemo(freshConfig, () => {});
+    await extendLearning();
+    assert.ok(await fingerprint() === manualFingerprint, 'A populated seed rerun must preserve manual profile changes');
+    await resetDemo(['--confirm-demo-reset']);
+    assert.equal((await mongoose.connection.db.listCollections().toArray()).length, 0);
+  } finally { await client?.close(); await mongoose.disconnect(); child.kill(); await Promise.race([new Promise(resolve => child.once('exit', resolve)), delay(5000)]); }
+});

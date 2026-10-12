@@ -67,3 +67,7 @@ Use synthetic fixtures: one Admin, two Teachers with different class/section ass
 - [ ] Capture and inspect screenshots for Admin grid/list/review, Teacher dashboard/marking/history, Student dashboard/history, dirty-navigation confirmation, conflict errors and locked read-only states. Recheck Student management dialogs and all public website pages after shared router/button changes.
 
 Browser acceptance remains pending until these items are actually exercised and findings are recorded.
+
+## Learning resources, notices and calendar
+
+Browser acceptance remains unverified: no connected browser was available on 10 October 2026. Follow the seven-step manual acceptance checklist in [LEARNING_COMMUNICATION_REPORT.md](LEARNING_COMMUNICATION_REPORT.md), covering upload/failure retention, keyboard/mobile layout, PDF preview/download, role isolation, scheduling, audiences, calendar scope and unchanged attendance. API/source verification does not mark these browser checks passed.

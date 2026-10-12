@@ -13,6 +13,7 @@ export const login = async (req, res) => {
                 fullname: result.user.fullname,
                 email: result.user.email,
                 role: result.user.role,
+                mustChangePassword: Boolean(result.user.mustChangePassword),
             },
         });
     } catch (err) {

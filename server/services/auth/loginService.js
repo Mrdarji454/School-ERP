@@ -4,7 +4,7 @@ import User from "../../models/User.js";
 import generateToken from "../../utils/generateToken.js";
 
 export const loginSrvice = async (email, password) => {
-    const user = await User.findOne({ email: email.trim().toLowerCase(), isActive: true }).select("+password");
+    const user = await User.findOne({ email: email.trim().toLowerCase(), isActive: true }).select("+password +tokenVersion");
 
     if (!user) {
         throw new Error("Invalid credentials");
@@ -17,6 +17,6 @@ export const loginSrvice = async (email, password) => {
 
     const Profile = user.role === "Student" ? Student : user.role === "Teacher" ? Teacher : null;
     if (Profile && !await Profile.exists({ user: user._id, isActive: true })) throw new Error("Invalid credentials");
-    const token = generateToken(user._id, user.role);
+    const token = generateToken(user._id, user.role, user.tokenVersion || 0);
     return { token, user };
 }

@@ -7,7 +7,7 @@ import Student from '../models/Student.js';
 import User from '../models/User.js';
 import Period from '../models/Period.js';
 import Timetable from '../models/TimeTable.js';
-import Notification from '../models/Notification.js';
+import { listCommunications } from './communications.js';
 import { active, eligibleAssignment, same } from '../utils/relationships.js';
 import { schoolDate, schoolToday } from '../utils/schoolDate.js';
 import { fail } from '../utils/errors.js';
@@ -148,7 +148,4 @@ export async function setAttendanceLock(user, id, body) {
   if (!updated) fail(409, 'Attendance changed; reload before changing the lock');
   return updated;
 }
-export async function publishedNotices() {
-  const now = new Date();
-  return Notification.find({ isActive: true, publishDate: { $lte: now }, $or: [{ expiryDate: null }, { expiryDate: { $gte: now } }] }).select('title message type priority publishDate expiryDate').sort({ publishDate: -1 }).limit(20).lean();
-}
+export async function publishedNotices(user) { return (await listCommunications('notices', user, { limit: '20' }, true)).records; }

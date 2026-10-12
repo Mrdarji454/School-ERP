@@ -10,6 +10,7 @@ const teacherSchema = new mongoose.Schema(
         },
 
         employeeId: {
+            immutable: true,
             type: String,
             required: true,
             unique: true,
@@ -66,6 +67,8 @@ const teacherSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
+        dob: Date,
+        emergencyContact: { type: String, default: '' },
 
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,

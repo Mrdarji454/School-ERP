@@ -10,6 +10,7 @@ export const adminNavigation = [
   { name: "Timetable", path: "/admin/timetable", icon: Calendar },
   { name: "Attendance review", path: "/admin/attendance", icon: UserCheck },
  ] },
+ { title: "Learning and communication", items: [{ name: "Resources", path: "/admin/resources", icon: BookCopy }, { name: "Notices", path: "/admin/notices", icon: Layers3 }, { name: "Calendar", path: "/admin/calendar", icon: Calendar }] },
  { title: "People", items: [
   { name: "Students", path: "/admin/students", icon: GraduationCap },
   { name: "Teachers", path: "/admin/teachers", icon: Users },

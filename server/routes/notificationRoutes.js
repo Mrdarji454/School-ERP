@@ -1,70 +1,16 @@
-import express from "express";
-
-import { protect } from "../middleware/authMIddleware.js";
-import { authorize } from "../middleware/roleMiddleware.js";
-import { validate } from "../middleware/validate.js";
-
-import { createNotification } from "../controllers/notification/createNotification.js";
-import { getAllNotifications } from "../controllers/notification/getAllNotifications.js";
-import { getNotificationById } from "../controllers/notification/getNotificationById.js";
-import { updateNotification } from "../controllers/notification/updateNotification.js";
-import { deleteNotification } from "../controllers/notification/deleteNotification.js";
-import { restoreNotification } from "../controllers/notification/restoreNotification.js";
-import { getActiveNotifications } from "../controllers/notification/getActiveNotifications.js";
-
-import { createNotificationValidator } from "../validators/notificationValidator.js";
-
+import express from 'express';
+import asyncHandler from 'express-async-handler';
+import { protect } from '../middleware/authMIddleware.js';
+import { authorize } from '../middleware/roleMiddleware.js';
+import { listCommunications, communicationDetail, saveCommunication, setCommunicationActive } from '../services/communications.js';
 const router = express.Router();
-
-router.post(
-    "/",
-    protect,
-    authorize("Admin"),
-    createNotificationValidator,
-    validate,
-    createNotification
-);
-
-router.get(
-    "/",
-    protect,
-    authorize("Admin"),
-    getAllNotifications
-);
-
-router.get(
-    "/active",
-    protect,
-    getActiveNotifications
-);
-
-router.get(
-    "/:id",
-    protect,
-    getNotificationById
-);
-
-router.put(
-    "/:id",
-    protect,
-    authorize("Admin"),
-    createNotificationValidator,
-    validate,
-    updateNotification
-);
-
-router.delete(
-    "/:id",
-    protect,
-    authorize("Admin"),
-    deleteNotification
-);
-
-router.patch(
-    "/:id/restore",
-    protect,
-    authorize("Admin"),
-    restoreNotification
-);
-
+router.use(protect);
+const reply = (fn, status = 200) => asyncHandler(async (req, res) => res.status(status).json({ success: true, data: await fn(req) }));
+router.get('/active', reply(async req => (await listCommunications('notices', req.user, { ...req.query, limit: '100' }, true)).records));
+router.get('/', authorize('Admin'), reply(async req => (await listCommunications('notices', req.user, { ...req.query, limit: '100' })).records));
+router.get('/:id', reply(req => communicationDetail('notices', req.user, req.params.id)));
+router.post('/', authorize('Admin'), reply(req => saveCommunication('notices', req.user, null, req.body), 201));
+router.put('/:id', authorize('Admin'), reply(req => saveCommunication('notices', req.user, req.params.id, req.body)));
+router.delete('/:id', authorize('Admin'), reply(req => setCommunicationActive('notices', req.user, req.params.id, false)));
+router.patch('/:id/restore', authorize('Admin'), reply(req => setCommunicationActive('notices', req.user, req.params.id, true)));
 export default router;

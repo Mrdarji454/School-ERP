@@ -1,0 +1,25 @@
+import express from 'express';
+import asyncHandler from 'express-async-handler';
+import protect from '../middleware/authMIddleware.js';
+import { authorize } from '../middleware/roleMiddleware.js';
+import { upload } from '../middleware/multer.js';
+import { listPeople, savePerson, peopleModel, populatePeople } from '../services/people.js';
+import { profileTemplate, exportPeople, importPeople } from '../services/peopleWorkbook.js';
+import TeacherAssignment from '../models/TeacherAssignment.js';
+import { fail } from '../utils/errors.js';
+const router = express.Router();
+router.use(protect, authorize('Admin'));
+const reply = fn => asyncHandler(async (req, res) => res.json({ success: true, data: await fn(req) }));
+router.get('/:kind/template', asyncHandler(async (req, res) => { res.attachment(`${req.params.kind}-template.xlsx`); await profileTemplate(req.params.kind).xlsx.write(res); res.end(); }));
+router.get('/:kind/export', asyncHandler(async (req, res) => { const book = await exportPeople(req.params.kind, req.query); res.attachment(`${req.params.kind}.xlsx`); await book.xlsx.write(res); res.end(); }));
+router.post('/:kind/import', upload.single('file'), reply(req => importPeople(req.params.kind, req.file, req.body, req.user)));
+router.get('/:kind', reply(req => listPeople(req.params.kind, req.query)));
+router.post('/:kind', reply(req => { peopleModel(req.params.kind); return savePerson(req.params.kind, null, req.body, req.user); }));
+router.put('/:kind/:id', reply(req => { peopleModel(req.params.kind); return savePerson(req.params.kind, req.params.id, req.body, req.user); }));
+router.get('/:kind/:id', reply(async req => {
+  const profile = await populatePeople(req.params.kind, peopleModel(req.params.kind).findById(req.params.id));
+  if (!profile) fail(404, 'Profile not found');
+  const assignments = req.params.kind === 'teachers' ? await TeacherAssignment.find({ teacher: profile._id }).populate('schoolClass', 'name').populate('section', 'name').populate('subject', 'name').select('schoolClass section subject isActive') : [];
+  return { profile, assignments };
+}));
+export default router;

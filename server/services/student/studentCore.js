@@ -8,7 +8,9 @@ import TeacherAssignment from "../../models/TeacherAssignment.js";
 import { classSection, eligibleAssignment } from "../../utils/relationships.js";
 import { transaction } from "../../utils/transaction.js";
 import { fail } from "../../utils/errors.js";
-export const studentFields = ["rollNumber", "schoolClass", "section", "fatherName", "motherName", "dob", "gender", "phone", "address", "bloodGroup"];
+import Section from '../../models/Section.js';
+import { password, onlyFields, profileValues } from '../profileValidation.js';
+export const studentFields = ["rollNumber", "schoolClass", "section", "fatherName", "motherName", "dob", "gender", "phone", "address", "bloodGroup", 'guardianName', 'guardianRelationship', 'guardianPhone', 'additionalGuardianPhone', 'admissionDate'];
 export const populateStudent = query => query.populate("user", "fullname email phone isActive").populate("schoolClass", "name academicYear").populate("section", "name schoolClass");
 export function validateStudent(data, creating = false) {
   if (data.phone && (typeof data.phone !== "string" || !/^\d{10}$/.test(data.phone))) fail(400, "Phone must contain 10 digits");
@@ -20,26 +22,33 @@ export function validateStudent(data, creating = false) {
   if (creating || data.gender !== undefined) if (!["Male", "Female", "Other"].includes(data.gender)) fail(400, "Invalid gender");
 }
 export async function createProfile(data) {
+  onlyFields(data, [...studentFields, 'fullname', 'email', 'password', 'accountActive', 'isActive']);
+  profileValues(data); password(data.password);
   validateStudent(data, true);
   const id = await transaction(async session => {
     await classSection(data.schoolClass, data.section, session);
-    const [user] = await User.create([{ fullname: data.fullname, email: data.email, password: data.password, phone: data.phone, role: "Student" }], { session });
+    await checkRoll(data, null, session);
+    const [user] = await User.create([{ fullname: data.fullname, email: data.email, password: data.password, phone: data.phone, role: "Student", mustChangePassword: true, isActive: data.accountActive ?? true }], { session });
     const fields = Object.fromEntries(studentFields.filter(k => data[k] !== undefined).map(k => [k, data[k]]));
-    const [student] = await Student.create([{ ...fields, user: user._id, admissionNo: data.admissionNo || `ADM${new Date().getFullYear()}-${randomUUID()}` }], { session });
+    const [student] = await Student.create([{ ...fields, isActive: data.isActive ?? true, user: user._id, admissionNo: `ADM${new Date().getFullYear()}-${randomUUID()}` }], { session });
     return student._id;
   });
   return populateStudent(Student.findById(id));
 }
 export async function updateProfile(id, data) {
+  onlyFields(data, [...studentFields, 'fullname', 'email', 'accountActive', 'isActive']); profileValues(data);
   validateStudent(data);
   await transaction(async session => {
     const student = await Student.findById(id).session(session);
     if (!student) fail(404, "Student not found");
     await classSection(data.schoolClass || student.schoolClass, data.section || student.section, session);
+    await checkRoll({ schoolClass: data.schoolClass || student.schoolClass, section: data.section || student.section, rollNumber: data.rollNumber ?? student.rollNumber }, student._id, session);
     const user = await User.findById(student.user).session(session);
     if (!user) fail(404, "Student account not found");
+    if (data.email !== undefined && data.email.trim().toLowerCase() !== user.email) fail(400, 'Use the separate change-login-email action');
     for (const key of ["fullname", "email", "phone"]) if (data[key] !== undefined) user[key] = data[key];
-    if (data.password) user.password = data.password;
+    if (data.accountActive !== undefined) user.isActive = data.accountActive;
+    if (data.isActive !== undefined) student.isActive = data.isActive;
     for (const key of studentFields) if (data[key] !== undefined) student[key] = data[key];
     await user.save({ session }); await student.save({ session });
   });
@@ -58,6 +67,12 @@ export async function setStudentActive(id, isActive) {
 }
 export async function studentFilter(query, user) {
   const filter = {};
+  for (const value of Object.values(query)) if (typeof value !== 'string') fail(400, 'Invalid student filter');
+  if (query.admissionNo) filter.admissionNo = query.admissionNo;
+  if (query.rollNumber) {
+    if (!query.academicYear || !query.schoolClass || !query.section || !/^\d+$/.test(query.rollNumber) || Number(query.rollNumber) < 1) fail(400, 'Roll-number search requires academic year, class and section');
+    filter.rollNumber = Number(query.rollNumber);
+  }
   if (user?.role === "Teacher") {
     const teacher = await Teacher.findOne({ user: user._id, isActive: true });
     if (!teacher) fail(403, "Active teacher profile required");
@@ -85,4 +100,9 @@ export async function studentFilter(query, user) {
     filter.$or = [{ user: { $in: users.map(u => u._id) } }, { admissionNo: { $regex: escaped, $options: "i" } }];
   }
   return filter;
+}
+async function checkRoll(data, id, session) {
+  // Serialize roster writes even before the new compound index is installed.
+  await Section.updateOne({ _id: data.section }, { $inc: { __v: 1 } }, { session });
+  if (await Student.exists({ schoolClass: data.schoolClass, section: data.section, rollNumber: Number(data.rollNumber), ...(id ? { _id: { $ne: id } } : {}) }).session(session)) fail(409, 'Roll number already exists in this class and section');
 }

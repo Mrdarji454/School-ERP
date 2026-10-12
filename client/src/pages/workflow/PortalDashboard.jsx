@@ -1,3 +1,4 @@
+import LearningLinks from '../../components/workflow/LearningLinks';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthState';
 import useWorkflow from '../../hooks/useWorkflow';
@@ -9,7 +10,7 @@ export default function PortalDashboard() {
   const options = useWorkflow('options'), schedule = useWorkflow('timetables'), notices = useWorkflow('notices');
   const attendance = useWorkflow('attendance', teacher ? { date: options.data?.today || '', limit: 100, status: 'active' } : { limit: 5 }, !teacher || Boolean(options.data));
   const today = options.data && schedule.data ? todayLessons(schedule.data.records, options.data) : [];
-  return <div className="space-y-6"><PageHeader title={`Welcome, ${user.fullname}`} subtitle={teacher ? 'Your lessons, attendance tasks and published notices' : 'Your timetable and recorded attendance'} /><RequestState request={options}>{options.data && <p className="text-sm text-slate-600">School date: {options.data.today} · {options.data.timeZone}{!teacher && ` · ${label(options.data.placement?.schoolClass)} / ${label(options.data.placement?.section)}`}</p>}</RequestState>
+  return <div className="space-y-6"><PageHeader title={`Welcome, ${user.fullname}`} subtitle={teacher ? 'Your lessons, attendance tasks and published notices' : 'Your timetable and recorded attendance'} /><LearningLinks /><RequestState request={options}>{options.data && <p className="text-sm text-slate-600">School date: {options.data.today} · {options.data.timeZone}{!teacher && ` · ${label(options.data.placement?.schoolClass)} / ${label(options.data.placement?.section)}`}</p>}</RequestState>
     <section className="rounded-2xl border bg-white p-5"><div className="mb-4 flex flex-wrap justify-between gap-3"><h2 className="text-lg font-semibold">Today’s lessons</h2><Link className="text-blue-700 underline" to={`${base}/timetable`}>Weekly timetable</Link></div><RequestState request={schedule}>{options.data && schedule.data && (!today.length ? <p className="text-slate-600">No eligible lessons scheduled today. {teacher ? 'You can still mark attendance for an authorized assignment.' : 'No absence is inferred.'}</p> : <ul className="space-y-4">{today.map(row => {
       const existing = attendance.data?.records.find(r => idOf(r.teacherAssignment) === idOf(row.teacherAssignment) && idOf(r.period) === idOf(row.period));
       const query = existing ? new URLSearchParams({ record: existing._id }) : new URLSearchParams({ assignment: idOf(row.teacherAssignment), period: idOf(row.period), date: options.data.today });
