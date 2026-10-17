@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import Enrollment from '../../models/Enrollment.js';
+import EnrollmentTransition from '../../models/EnrollmentTransition.js';
+import { initialEnrollment } from '../../services/enrollments.js';
 import * as M from './models.js';
 import { demoId, MANIFEST_ID, manifestCollection, seedDate, completedDays, relativeDate, randomValue, safeError } from './config.js';
 import { transaction } from '../../utils/transaction.js';
@@ -37,6 +40,7 @@ export async function seedDemo(config, log = console.log) {
   const manifest = { _id: MANIFEST_ID, state: 'building', school: 'Demo Vidya School', seedDate: date, timeZone: config.timeZone, randomSeed: config.randomSeed, defaultPassword: config.defaultPassword, attendanceDates: dates, createdAt: new Date(), samples: {}, unmarked: [] };
   await collection.insertOne(manifest); // Unique _id also serializes competing first seed runs.
   for (const Model of Object.values(M.models)) { await Model.createCollection(); await Model.createIndexes(); }
+  await Enrollment.createIndexes(); await EnrollmentTransition.createIndexes();
   const admin = await M.User.create({ _id: demoId('admin'), fullname: 'Demo Vidya Administrator', email: 'admin@demo.example.test', password: config.password, role: 'Admin', phone: '' });
   const year = await M.AcademicYear.create({ _id: demoId('year/current'), name: '2026-2027', startDate: '2026-04-01', endDate: '2027-03-31', isCurrent: true });
   await M.AcademicYear.create({ _id: demoId('year/prior'), name: '2025-2026', startDate: '2025-04-01', endDate: '2026-03-31', isCurrent: false });
@@ -73,6 +77,7 @@ export async function seedDemo(config, log = console.log) {
           const [user] = await M.User.create([{ _id: demoId(`student-user/${n}`), fullname: data.fullname, email: data.email, password: data.password, role: 'Student', phone: data.phone, isActive }], { session });
           const { fullname: _name, email: _email, password: _password, ...fields } = data;
           const [student] = await M.Student.create([{ ...fields, _id: demoId(`student/${n}`), user: user._id, admissionNo: `DVS-S${String(n).padStart(3, '0')}`, isActive }], { session });
+          await initialEnrollment(student, { enrollmentStart: '2026-04-01', enrollmentReason: 'Known fictional demo admission date' }, admin, session);
           return student;
         });
         students.push(profile);

@@ -165,3 +165,13 @@ Use the isolated `school_erp_demo` database for repeatable testing. Follow [DEMO
 ## Learning resources and communications
 
 Private PDF resources, role libraries, targeted notices and academic calendar management are documented in [LEARNING_COMMUNICATION_REPORT.md](LEARNING_COMMUNICATION_REPORT.md). It includes storage setup, access policies, additive demo commands, verification and the pending browser checklist.
+
+## Admin dashboard design
+
+The navy, gold and white Admin dashboard/shell integration is documented in [ADMIN_DASHBOARD_DESIGN_REPORT.md](ADMIN_DASHBOARD_DESIGN_REPORT.md), including real API mappings, scope rules, verification results and pending responsive/browser acceptance.
+
+Enrollment milestone: see [ENROLLMENT_MILESTONE_REPORT.md](ENROLLMENT_MILESTONE_REPORT.md) for effective-date rules, explicit initialization/index commands, repeatable demo fixtures and verification. Existing databases require a reviewed cutover; application startup does not migrate history.
+
+Finance milestone: see [FINANCE_MILESTONE_REPORT.md](FINANCE_MILESTONE_REPORT.md) for Admin fee/salary workflows, personal views, printable receipts, compatibility/index notes, demo commands and verification. Optional SCHOOL_NAME controls receipt branding; SCHOOL_TIMEZONE controls payment-date filtering and display.
+
+Assignments milestone: see [ASSIGNMENT_MILESTONE_REPORT.md](ASSIGNMENT_MILESTONE_REPORT.md) for Teacher publication/evaluation, Student submissions and feedback, Admin oversight, recipient snapshots, private PDFs, safe exports, repeatable demo commands and verification.

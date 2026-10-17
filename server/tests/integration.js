@@ -1,3 +1,4 @@
+import { verifyAssignments } from './assignments.js';
 // Starts its own loopback-only MongoDB replica set. Never reads .env or uses MONGO_URI.
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
@@ -11,6 +12,8 @@ import ExcelJS from "exceljs";
 import { verifyAdminManagement } from "./adminManagement.js";
 import { verifyLearning } from './learning.js';
 import { verifyPeople } from './people.js';
+import { verifyFinance } from './finance.js';
+import { verifyEnrollments } from './enrollments.js';
 import { verifyWorkflow } from './workflow.js';
 process.env.JWT_SECRET = "isolated-test-secret-never-use-in-production";
 process.env.SCHOOL_TIMEZONE = "Asia/Kolkata";
@@ -29,6 +32,7 @@ const port = await freePort();
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../.test-data");
 await fs.mkdir(root, { recursive: true });
 const dir = await fs.mkdtemp(path.join(root, "erp-"));
+process.env.RESOURCE_STORAGE_DIR = path.join(dir, 'private-pdf-tests');
 const child = spawn(executable, ["--dbpath", dir, "--port", String(port), "--bind_ip", "127.0.0.1", "--replSet", "erpTest", "--logpath", path.join(dir, "mongod.log")], { windowsHide: true, stdio: "ignore" });
 let spawnError; child.on("error", e => { spawnError = e; });
 let http, count = 0;
@@ -58,6 +62,10 @@ try {
   await request("POST", "/auth/register", { fullname: "Attacker", email: "attacker@example.test", password, role: "Admin" }, null, 401);
   const adminLogin = await request("POST", "/auth/login", { email: "admin@example.test", password });
   const token = adminLogin.token;
+  if (process.argv.includes('--assignments-only')) {
+    await verifyAssignments({ request, token });
+    console.log(`PASS: ${count} assignment HTTP checks plus transaction, privacy and retention assertions`);
+  } else {
   assert.equal(adminLogin.user.password, undefined);
   await request("GET", "/auth/me", null, token);
   const year = await request("POST", "/academic-years", { name: "2026-2027", startDate: "2026-04-01", endDate: "2027-03-31" }, token);
@@ -66,7 +74,7 @@ try {
   const cls2 = await request("POST", "/classes", { name: "Class 2", academicYear: year._id }, token);
   const section = await request("POST", "/sections", { name: "A", schoolClass: cls._id }, token, 201);
   const section2 = await request("POST", "/sections", { name: "B", schoolClass: cls2._id }, token, 201);
-  const studentData = { fullname: "Fixture Student", email: "student@example.test", password, rollNumber: 1, schoolClass: cls._id, section: section._id, fatherName: "Parent", motherName: "Parent", dob: "2015-01-01", gender: "Other", phone: "9999999999" };
+  const studentData = { fullname: "Fixture Student", email: "student@example.test", password, rollNumber: 1, schoolClass: cls._id, section: section._id, fatherName: "Parent", motherName: "Parent", dob: "2015-01-01", gender: "Other", phone: "9999999999", enrollmentStart: '2026-04-01', enrollmentReason: 'Explicit synthetic historical enrollment for attendance fixtures' };
   const student = await request("POST", "/students", studentData, token, 201);
   assert.equal(student.user.fullname, studentData.fullname); assert.equal(student.user.password, undefined);
   const before = await User.countDocuments();
@@ -89,6 +97,7 @@ try {
   const sample = await request("GET", "/students/sample", null, token); assert.ok(sample.length > 0);
   const importBook = sampleWorkbook(); importBook.worksheets[0].getRow(2).getCell(3).value = "imported@example.test";
   const makeImport = (phase, previewToken) => { const form = new FormData(); form.append('file', new Blob([importBuffer]), 'students.xlsx'); form.append('phase', phase); if (previewToken) form.append('previewToken', previewToken); return form; };
+  for (const [key, value] of Object.entries({ enrollmentStart: '2026-04-01', enrollmentReason: 'Explicit synthetic attendance fixture' })) importBook.worksheets[0].getRow(2).getCell(importBook.worksheets[0].getRow(1).values.indexOf(key)).value = value;
   const importBuffer = await importBook.xlsx.writeBuffer();
   const preview = await request('POST', '/students/import', makeImport('preview'), token); assert.equal(preview.created, 1); assert.equal(preview.failed, 0);
   const summary = await request('POST', '/students/import', makeImport('commit', preview.previewToken), token); assert.equal(summary.created, 1); assert.equal(summary.failed, 0);
@@ -216,7 +225,11 @@ try {
   await verifyWorkflow({ request, base, token, teacherToken, teacherToken2, studentToken, teacher, teacher2, student, assignment, assignment2, period, period2, cls, cls2, section, year });
   await verifyPeople({ request, token });
   await verifyLearning({ request, token, directory: dir });
+  await verifyEnrollments({ request, token });
+  await verifyFinance({ request, token });
+  await verifyAssignments({ request, token });
   console.log(`PASS: ${count} HTTP/integration checks, including student workflow, permissions, attendance, concurrent scheduling and payments`);
+}
 } finally {
   if (http) { http.closeAllConnections(); await new Promise(r => http.close(r)); }
   await mongoose.disconnect();

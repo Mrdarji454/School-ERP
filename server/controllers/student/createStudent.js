@@ -7,7 +7,7 @@ import { sendResponse } from "../../utils/apiResponse.js";
 export const createStudent = expressasynchandler(async (req, res) => {
     // const session = await mongoose.startSession();
     // session.startTransaction();
-    const student = await createStudentService(req.body);
+    const student = await createStudentService(req.body, req.user);
 
 
     sendResponse(res, 201, "Student created successfully", student);

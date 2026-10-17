@@ -1,0 +1,101 @@
+/* Admin-only tokens: public school pages and role portals retain their theme. */
+.admin-shell {
+  --admin-navy: #243e5a; --admin-deep: #182c42; --admin-gold: #e8be35;
+  --admin-pale-gold: #fff5d6; --admin-page: #f5f7fa; --admin-text: #172b40;
+  --admin-secondary: #526477; --admin-border: #dce3ea; --admin-success: #217a52;
+  display: flex; height: 100dvh; color: var(--admin-text); background: var(--admin-page);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+}
+.admin-shell * { box-sizing: border-box; }
+.admin-shell :where(button,a,input,select,textarea,[tabindex]):focus-visible { outline: 3px solid #94700b; outline-offset: 3px; }
+.admin-shell :where(button,a,input,select,textarea) { touch-action: manipulation; }
+.admin-shell button:not(:disabled), .admin-shell select:not(:disabled) { cursor: pointer; }
+.admin-shell :where(input,select,textarea) { max-width: 100%; }
+.admin-shell :where(h1,h2,h3,p,dd) { overflow-wrap: anywhere; }
+.admin-shell .erp-primary { background: var(--admin-navy); box-shadow: none; min-height: 44px; }
+.admin-shell .erp-primary:hover { background: var(--admin-deep); box-shadow: none; }
+.admin-shell .erp-secondary { color: var(--admin-navy); border-color: var(--admin-border); min-height: 44px; font-size: 13px; }
+.admin-shell .erp-secondary:hover { background: var(--admin-page); border-color: var(--admin-navy); }
+.admin-shell h1 { font-size: clamp(1.3rem, 2vw, 1.65rem); }
+.admin-shell :where(th,td) { overflow-wrap: anywhere; }
+.admin-shell th { background: var(--admin-page); }
+.admin-shell .erp-dashboard-card { border-color: var(--admin-border); border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px #172b400a; }
+.admin-workspace { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.admin-main { flex: 1; min-width: 0; overflow: auto; }
+.admin-content { width: 100%; max-width: 1600px; margin: auto; padding: 24px 28px 40px; }
+.admin-sidebar { width: 248px; flex-shrink: 0; display: flex; flex-direction: column; color: #dbe4ec; background: var(--admin-deep); }
+.admin-sidebar.compact { width: 80px; }
+.admin-brand { min-height: 90px; display: flex; gap: 10px; align-items: center; padding: 12px 16px; background: white; color: var(--admin-text); border-right: 1px solid var(--admin-border); border-bottom: 1px solid var(--admin-border); }
+.admin-brand img { width: 46px; height: 58px; object-fit: contain; flex-shrink: 0; }
+.admin-brand strong { display: block; font-size: 15px; }
+.admin-brand span { display: block; font-size: 11px; color: var(--admin-secondary); }
+.admin-sidebar nav { flex: 1; padding: 18px 12px; overflow-y: auto; }
+.admin-nav-group { margin-bottom: 20px; }
+.admin-nav-group h2:not(.sr-only) { color: #a9b8c6; text-transform: uppercase; letter-spacing: .1em; font-size: 10px; font-weight: 700; padding: 0 10px; margin-bottom: 7px; }
+.admin-nav-item { display: flex; align-items: center; gap: 11px; min-height: 44px; border-radius: 8px; padding: 9px 11px; font-size: 13px; margin-top: 2px; }
+.admin-nav-item svg { flex-shrink: 0; }
+.admin-nav-item:hover { background: #ffffff12; color: white; }
+.admin-nav-item.active { color: white; background: var(--admin-navy); box-shadow: inset 3px 0 var(--admin-gold); font-weight: 600; }
+.admin-sidebar a:focus-visible { outline-color: var(--admin-gold); }
+.admin-sidebar-account { display: flex; gap: 10px; align-items: center; padding: 16px; border-top: 1px solid #ffffff24; font-size: 12px; }
+.admin-sidebar-account span:not(.admin-avatar) { color: #a9b8c6; }
+.admin-avatar { background: var(--admin-pale-gold); border: 1px solid #f0d77f; border-radius: 50%; width: 36px; height: 36px; flex-shrink: 0; display: grid; place-items: center; color: var(--admin-deep); font-weight: 700; }
+.admin-topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; min-height: 90px; padding: 14px 24px; background: white; border-bottom: 1px solid var(--admin-border); flex-shrink: 0; }
+.admin-header-title, .admin-header-controls { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.admin-header-caption { font-size: 11px; color: var(--admin-secondary); }
+.admin-year-select span { display: block; font-size: 10px; font-weight: 600; color: var(--admin-secondary); margin-bottom: 2px; }
+.admin-year-select select { border: 1px solid var(--admin-border); border-radius: 8px; padding: 9px; min-height: 44px; width: 165px; background: white; color: var(--admin-text); font-size: 13px; }
+.admin-school-date { text-align: right; border-left: 1px solid var(--admin-border); padding-left: 12px; font-size: 11px; }
+.admin-school-date span { display: block; color: var(--admin-secondary); font-size: 10px; }
+.admin-header-profile { display: flex; align-items: center; gap: 8px; max-width: 180px; font-size: 12px; }
+.admin-header-profile > div { min-width: 0; }
+.admin-header-profile strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-header-profile span:not(.admin-avatar) { color: var(--admin-secondary); display: block; }
+.admin-icon-button { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid var(--admin-border); border-radius: 8px; color: var(--admin-navy); background: white; }
+.admin-icon-button:hover { background: var(--admin-page); }
+.admin-mobile-toggle { display: none; }
+.admin-skip-link { position: fixed; left: 12px; top: -100px; z-index: 100; background: white; padding: 12px; color: var(--admin-deep); border: 2px solid var(--admin-gold); }
+.admin-skip-link:focus { top: 10px; }
+.admin-shell .admin-drawer { margin: 0; width: min(340px, 92vw); max-width: 92vw; height: 100dvh; max-height: 100dvh; border-radius: 0; background: var(--admin-deep); }
+.admin-drawer > div:first-child { background: white; padding: 12px 16px; }
+.admin-drawer > div:nth-child(2) { padding: 0; }
+.admin-drawer .admin-sidebar.mobile { display: flex; width: 100%; }
+.admin-drawer .admin-brand { min-height: 85px; }
+.admin-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+.admin-welcome h1 { font-weight: 700; margin-bottom: 4px; }
+.admin-welcome p { color: var(--admin-secondary); font-size: 13px; }
+.admin-date-label { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--admin-border); border-radius: 8px; padding: 10px 12px; font-size: 12px; }
+.admin-summary { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; margin-bottom: 18px; }
+.admin-shell .erp-stat { padding: 18px; border-radius: 12px; border-color: var(--admin-border); position: relative; overflow: hidden; }
+.admin-shell .erp-stat::after { content: ''; position: absolute; bottom: 0; left: 0; width: 28%; height: 3px; background: var(--admin-gold); }
+.admin-shell .erp-stat > div { gap: 12px; flex-direction: row-reverse; justify-content: flex-end; align-items: flex-start; }
+.admin-shell .erp-stat h2 { font-size: 26px; margin-top: 4px; }
+.admin-shell .erp-stat p:first-child { font-size: 12px; }
+.admin-shell .erp-stat-icon { width: 40px; height: 40px; background: #eaf2f8; color: var(--admin-navy); flex-shrink: 0; border-radius: 9px; }
+.admin-shell .erp-stat-icon svg { width: 21px; height: 21px; }
+.admin-dashboard-grid { display: grid; grid-template-columns: minmax(0,2fr) minmax(270px,1fr); gap: 18px; margin-bottom: 18px; }
+.admin-split-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 18px; margin: 18px 0; }
+.admin-card-link { color: var(--admin-navy); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 32px; }
+.admin-filter-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 12px; border-radius: 9px; background: var(--admin-page); margin-bottom: 16px; }
+.admin-filter-row :where(input,select) { padding: 9px; min-height: 44px; font-size: 13px; border-radius: 8px; }
+.admin-filter-row label { font-size: 11px; }
+.admin-attendance-content { display: grid; grid-template-columns: 165px minmax(0,1fr); align-items: center; gap: 24px; padding: 8px 0 20px; }
+.admin-attendance-ring { border-radius: 50%; width: 138px; height: 138px; display: grid; place-items: center; margin: auto; }
+.admin-attendance-ring > div { width: 108px; height: 108px; border-radius: 50%; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.admin-attendance-ring strong { font-size: 25px; }.admin-attendance-ring span { color: var(--admin-secondary); font-size: 11px; }
+.admin-attendance-bars { display: grid; gap: 12px; }.admin-attendance-bar { display: grid; grid-template-columns: 65px minmax(0,1fr) 40px; align-items: center; gap: 10px; font-size: 12px; }
+.admin-attendance-bar > div { height: 7px; border-radius: 9px; background: #edf1f4; overflow: hidden; }.admin-attendance-bar i { display: block; height: 100%; border-radius: inherit; }.admin-attendance-bar strong { text-align: right; }
+.admin-policy { border-radius: 8px; background: var(--admin-pale-gold); color: #5d4a0d; padding: 12px; font-size: 12px; }
+.admin-actions { display: grid; gap: 8px; }.admin-actions a { display: flex; gap: 10px; align-items: center; border: 1px solid var(--admin-border); border-radius: 9px; padding: 10px; min-height: 48px; font-size: 13px; font-weight: 600; }.admin-actions a:hover { border-color: var(--admin-navy); background: var(--admin-page); }.admin-actions a > svg:first-child { background: #eaf2f8; padding: 6px; width: 32px; height: 32px; border-radius: 7px; color: var(--admin-navy); }.admin-actions a > svg:last-child { margin-left: auto; }
+.admin-entry { padding: 14px 0; border-bottom: 1px solid var(--admin-border); }.admin-entry:last-child { border-bottom: 0; }.admin-entry h3 { font-size: 14px; font-weight: 600; margin: 7px 0 4px; }.admin-entry p { font-size: 12px; color: var(--admin-secondary); }.admin-badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 99px; background: #eaf2f8; color: #243e5a; font-weight: 600; }.admin-badge.gold { background: var(--admin-pale-gold); color: #67500a; }
+.admin-event { display: flex; align-items: flex-start; gap: 12px; }.admin-event-date { background: var(--admin-deep); color: white; padding: 10px; border-radius: 8px; font-size: 12px; flex-shrink: 0; }
+.admin-empty { padding: 28px 12px; text-align: center; color: var(--admin-secondary); font-size: 13px; }
+.admin-finance-value { font-size: clamp(22px,2.5vw,30px); font-weight: 700; margin: 10px 0 4px; overflow-wrap: anywhere; }.admin-finance-note { font-size: 12px; color: var(--admin-secondary); }
+.admin-skeleton { padding: 18px; min-height: 125px; display: grid; gap: 13px; background: white; border-radius: 12px; border: 1px solid var(--admin-border); }.admin-skeleton > span:not(.sr-only) { display: block; height: 15px; border-radius: 5px; background: #e6ebf1; animation: admin-pulse 1.4s ease-in-out infinite alternate; }.admin-skeleton > span:last-child { width: 60%; }
+@keyframes admin-pulse { to { opacity: .45; } }
+@media (max-width: 1300px) { .admin-school-date { display: none; }.admin-summary { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 1100px) { .admin-shell > .admin-sidebar { display: none; }.admin-mobile-toggle { display: grid; }.admin-desktop-toggle { display: none; } }
+@media (max-width: 800px) { .admin-dashboard-grid, .admin-split-grid { grid-template-columns: minmax(0,1fr); }.admin-content { padding: 18px 16px 32px; }.admin-topbar { padding: 12px 16px; }.admin-header-profile > div { display: none; }.admin-date-label { display: none; } }
+@media (max-width: 500px) { .admin-summary { grid-template-columns: minmax(0,1fr); }.admin-attendance-content { grid-template-columns: minmax(0,1fr); gap: 18px; }.admin-filter-row { grid-template-columns: minmax(0,1fr); }.admin-header-controls { width: 100%; justify-content: space-between; }.admin-header-profile > div { display: block; max-width: 100px; }.admin-header-caption { display: none; }.admin-year-select select { width: 150px; }.admin-shell .erp-dashboard-card { padding: 16px; }.admin-welcome { flex-wrap: wrap; } }
+@media (max-width: 500px) { .admin-header-profile strong { display: none; }.admin-header-controls { gap: 8px; }.admin-year-select select { width: 140px; } }
+@media (prefers-reduced-motion: reduce) { .admin-shell *, .admin-shell *::before, .admin-shell *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

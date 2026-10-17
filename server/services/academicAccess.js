@@ -2,6 +2,7 @@ import Student from '../models/Student.js';
 import Teacher from '../models/Teacher.js';
 import TeacherAssignment from '../models/TeacherAssignment.js';
 import { classSection, eligibleAssignment } from '../utils/relationships.js';
+import { placementAt } from './enrollmentPlacement.js';
 export async function eligibleAssignments(user) {
   const teacher = await Teacher.findOne({ user: user._id, isActive: true });
   if (!teacher) return [];
@@ -20,7 +21,8 @@ export async function audienceScope(user) {
   }
   if (user.role === 'Student') {
     const student = await Student.findOne({ user: user._id, isActive: true });
-    if (student) try { const cls = await classSection(student.schoolClass, student.section); return { years: [cls.academicYear], classes: [cls._id], sections: [student.section], student }; } catch (e) { if (e.status !== 400) throw e; }
+    const placement = await placementAt(student, undefined, null, true);
+    if (placement) try { const cls = await classSection(placement.schoolClass, placement.section); return { years: [cls.academicYear], classes: [cls._id], sections: [placement.section], student }; } catch (e) { if (e.status !== 400) throw e; }
   }
   return { years: [], classes: [], sections: [] };
 }

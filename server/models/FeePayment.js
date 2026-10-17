@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { randomUUID } from "node:crypto";
 
 const feePaymentSchema = new mongoose.Schema(
     {
@@ -51,7 +52,9 @@ const feePaymentSchema = new mongoose.Schema(
         timestamps: true
     });
 
-feePaymentSchema.add({ idempotencyKey: String, externalReference: String, isReversed: { type: Boolean, default: false }, reversedAt: Date, reversedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, reversalReason: String });
+feePaymentSchema.add({ receiptNumber: { type: String, immutable: true }, idempotencyKey: String, externalReference: String, isReversed: { type: Boolean, default: false }, reversedAt: Date, reversedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, reversalReason: String });
 feePaymentSchema.index({ idempotencyKey: 1 }, { unique: true, sparse: true });
 feePaymentSchema.index({ externalReference: 1 }, { unique: true, sparse: true });
+feePaymentSchema.pre("validate", function () { if (this.isNew && !this.receiptNumber) this.receiptNumber = "F-" + randomUUID(); });
+feePaymentSchema.index({ receiptNumber: 1 }, { unique: true, sparse: true });
 export default mongoose.model("FeePayment", feePaymentSchema);

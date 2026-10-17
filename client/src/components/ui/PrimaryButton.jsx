@@ -11,7 +11,7 @@ const PrimaryButton = ({
       type={type}
       disabled={loading || disabled}
       className={`
-                w-full
+                erp-primary w-full
                 rounded-xl
                 bg-blue-600
                 py-3

@@ -7,7 +7,7 @@ import { profileTemplate } from '../services/peopleWorkbook.js';
 
 export async function verifyPeople({ request, token }) {
   const password = 'PeopleInitial123!', changed = 'PeopleChanged123!';
-  const year = await request('POST', '/academic-years', { name: 'People 2030', startDate: '2030-04-01', endDate: '2031-03-31' }, token);
+  const year = await request('POST', '/academic-years', { name: 'People fixture year', startDate: '2026-04-01', endDate: '2027-03-31' }, token);
   const cls = await request('POST', '/classes', { name: 'People Class', academicYear: year._id }, token);
   const section = await request('POST', '/sections', { name: 'A', schoolClass: cls._id }, token, 201);
   const other = await request('POST', '/sections', { name: 'B', schoolClass: cls._id }, token, 201);

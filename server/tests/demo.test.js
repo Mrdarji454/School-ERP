@@ -1,3 +1,5 @@
+import { extendAssignments, verifyAssignmentDemo } from '../scripts/demo/extend-assignments.js';
+import { extendFinance, verifyFinanceDemo } from '../scripts/demo/extend-finance.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -11,6 +13,7 @@ import { demoConfig, seedDate, completedDays, demoId, randomValue, connectDemo, 
 import { requireResetConfirmation, resetDemo } from '../scripts/demo/cli.js';
 import { seedDemo } from '../scripts/demo/seed.js';
 import { verifyDemo, fingerprint } from '../scripts/demo/verify.js';
+import { extendEnrollments, verifyEnrollmentDemo } from '../scripts/demo/extend-enrollments.js';
 import { extendLearning } from '../scripts/demo/extend-learning.js';
 import { verifyLearningDemo } from '../scripts/demo/verify-learning.js';
 const uri = 'mongodb://127.0.0.1:27018/school_erp_demo?replicaSet=demoRs';
@@ -83,6 +86,22 @@ test('isolated replica verifies guarded reset, full seed, and manual-edit preser
     await seedDemo(freshConfig, () => {});
     await extendLearning();
     assert.ok(await fingerprint() === manualFingerprint, 'A populated seed rerun must preserve manual profile changes');
+    process.env.JWT_SECRET = 'isolated-demo-enrollment-signing-secret';
+    await extendEnrollments(freshConfig);
+    assert.equal((await verifyEnrollmentDemo()).enrollments, 7);
+    await verifyDemo(freshConfig);
+    await extendFinance();
+    assert.equal((await verifyFinanceDemo()).nonReversedFeeCollections, 1250);
+    await verifyDemo(freshConfig);
+    await extendAssignments();
+    assert.equal((await verifyAssignmentDemo()).assignments, 8);
+    await verifyDemo(freshConfig);
+    await mongoose.connection.db.collection('assignments').updateOne({ _id: demoId('assignments-extension/0') }, { $set: { title: 'Manually edited assignment draft' } });
+    const enrollmentFingerprint = await fingerprint();
+    await extendEnrollments(freshConfig);
+    await extendFinance();
+    await extendAssignments();
+    assert.equal(await fingerprint(), enrollmentFingerprint, 'Enrollment demo rerun preserves all manual edits');
     await resetDemo(['--confirm-demo-reset']);
     assert.equal((await mongoose.connection.db.listCollections().toArray()).length, 0);
   } finally { await client?.close(); await mongoose.disconnect(); child.kill(); await Promise.race([new Promise(resolve => child.once('exit', resolve)), delay(5000)]); }

@@ -6,6 +6,9 @@ import { transaction } from '../utils/transaction.js';
 import { fail } from '../utils/errors.js';
 import { password, onlyFields, profileValues } from './profileValidation.js';
 import generateToken from '../utils/generateToken.js';
+import { placementAt } from './enrollmentPlacement.js';
+import { enrollmentTimeline } from './enrollments.js';
+import Enrollment from '../models/Enrollment.js';
 export async function changePassword(actor, data) {
   onlyFields(data, ['currentPassword', 'newPassword']); password(data.newPassword);
   const user = await transaction(async session => {
@@ -36,6 +39,14 @@ export async function myProfile(actor) {
   const profile = await query;
   if (!profile) fail(404, 'Profile not found');
   const assignments = student ? [] : await TeacherAssignment.find({ teacher: profile._id }).populate('schoolClass', 'name').populate('section', 'name').populate('subject', 'name').select('schoolClass section subject isActive');
+  if (student) {
+    const current = await placementAt(profile, undefined, null, true), result = profile.toObject();
+    if (profile.enrollmentManaged) {
+      const row = current ? await Enrollment.findById(current._id).populate({ path: 'schoolClass', select: 'name academicYear', populate: { path: 'academicYear', select: 'name' } }).populate('section', 'name').lean() : null;
+      result.schoolClass = row?.schoolClass || null; result.section = row?.section || null; result.rollNumber = row?.rollNumber || null;
+    }
+    return { profile: result, assignments, enrollment: await enrollmentTimeline(profile._id, false) };
+  }
   return { profile, assignments };
 }
 export async function updateMyProfile(actor, data) {

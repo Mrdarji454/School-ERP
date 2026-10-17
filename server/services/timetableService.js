@@ -7,6 +7,7 @@ import Period from "../models/Period.js";
 import { transaction } from "../utils/transaction.js";
 import { active, same, eligibleAssignment } from "../utils/relationships.js";
 import { fail } from "../utils/errors.js";
+import { placementAt } from './enrollmentPlacement.js';
 export const overlaps = (a, b) => a.startTime < b.endTime && b.startTime < a.endTime;
 export function bookingConflict(candidate, existing) {
   if (!overlaps(candidate.period, existing.period)) return false;
@@ -48,8 +49,10 @@ export async function timetableScope(user, filters = {}) {
     query.teacher = teacher._id;
   } else if (user.role === "Student") {
     const student = await Student.findOne({ user: user._id, isActive: true });
-    if (!student || (filters.schoolClass && !same(filters.schoolClass, student.schoolClass)) || (filters.section && !same(filters.section, student.section))) fail(403, "Only your own class schedule is available");
-    query.schoolClass = student.schoolClass; query.section = student.section;
+    const placement = await placementAt(student, undefined, null, true);
+    if (!student || (filters.schoolClass && !same(filters.schoolClass, placement?.schoolClass)) || (filters.section && !same(filters.section, placement?.section))) fail(403, "Only your own class schedule is available");
+    if (!placement) return { _id: null };
+    query.schoolClass = placement.schoolClass; query.section = placement.section;
   }
   const assignments = await TeacherAssignment.find(query);
   const eligible = [];

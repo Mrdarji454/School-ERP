@@ -7,6 +7,7 @@ import Teacher from "../models/Teacher.js";
 import TeacherAssignment from "../models/TeacherAssignment.js";
 import Period from "../models/Period.js";
 import Timetable from "../models/TimeTable.js";
+import Enrollment from '../models/Enrollment.js';
 import { active, classSection, assignmentRelations, same } from "../utils/relationships.js";
 import { fail } from "../utils/errors.js";
 const models = { class: SchoolClass, section: Section, subject: Subject, assignment: TeacherAssignment, period: Period, year: AcademicYear };
@@ -23,6 +24,7 @@ export const academicRelations = kind => asyncHandler(async (req, res, next) => 
   const immutable = { class: ["academicYear"], section: ["schoolClass"], subject: ["schoolClass"], assignment: ["academicYear", "schoolClass", "section", "teacher", "subject"] }[kind] || [];
   if (old && immutable.some(key => !same(old[key], data[key]))) fail(409, "Create a new record instead of moving an existing academic relationship");
   if (kind === "year" && (!(new Date(data.startDate) < new Date(data.endDate)))) fail(400, "Academic year end date must follow start date");
+  if (kind === 'year' && old && ['startDate', 'endDate'].some(key => new Date(old[key]).getTime() !== new Date(data[key]).getTime()) && await Enrollment.exists({ academicYear: old._id })) fail(409, 'Academic-year dates with established enrollments cannot change; preserve their historical boundaries');
   if (kind === "period") {
     const valid = value => typeof value === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
     if (!valid(data.startTime) || !valid(data.endTime) || data.startTime >= data.endTime) fail(400, "Use valid HH:mm times with end after start");

@@ -5,6 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "enrollment:audit": "node scripts/enrollment-init.js",
+    "enrollment:init": "node scripts/enrollment-init.js",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "check:imports": "node scripts/check-imports.js",
@@ -23,7 +25,14 @@
     "seed:demo:workbooks": "node scripts/demo/people-fixtures.js",
     "seed:demo:report": "node scripts/demo/cli.js report",
     "seed:demo:reset": "node scripts/demo/cli.js reset",
-    "test:demo": "node --test tests/demo.test.js"
+    "test:demo": "node --test tests/demo.test.js",
+    "seed:demo:enrollments": "node scripts/demo/extend-enrollments.js",
+    "seed:demo:enrollments:verify": "node scripts/demo/extend-enrollments.js --verify",
+    "seed:demo:finance": "node scripts/demo/extend-finance.js",
+    "seed:demo:finance:verify": "node scripts/demo/extend-finance.js --verify",
+    "seed:demo:assignments": "node scripts/demo/extend-assignments.js",
+    "seed:demo:assignments:verify": "node scripts/demo/extend-assignments.js --verify",
+    "test:assignments": "node tests/integration.js --assignments-only"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -10,6 +10,8 @@ import { transaction } from "../../utils/transaction.js";
 import { fail } from "../../utils/errors.js";
 import Section from '../../models/Section.js';
 import { password, onlyFields, profileValues } from '../profileValidation.js';
+import { initialEnrollment, assertPlacementUnchanged } from '../enrollments.js';
+import { currentStudentIds } from '../enrollmentPlacement.js';
 export const studentFields = ["rollNumber", "schoolClass", "section", "fatherName", "motherName", "dob", "gender", "phone", "address", "bloodGroup", 'guardianName', 'guardianRelationship', 'guardianPhone', 'additionalGuardianPhone', 'admissionDate'];
 export const populateStudent = query => query.populate("user", "fullname email phone isActive").populate("schoolClass", "name academicYear").populate("section", "name schoolClass");
 export function validateStudent(data, creating = false) {
@@ -21,16 +23,16 @@ export function validateStudent(data, creating = false) {
   if (creating || data.dob !== undefined) if (!data.dob || Number.isNaN(new Date(data.dob).getTime()) || new Date(data.dob) > new Date()) fail(400, "A valid past date of birth is required");
   if (creating || data.gender !== undefined) if (!["Male", "Female", "Other"].includes(data.gender)) fail(400, "Invalid gender");
 }
-export async function createProfile(data) {
-  onlyFields(data, [...studentFields, 'fullname', 'email', 'password', 'accountActive', 'isActive']);
+export async function createProfile(data, actor) {
+  onlyFields(data, [...studentFields, 'fullname', 'email', 'password', 'accountActive', 'isActive', 'enrollmentStart', 'enrollmentReason']);
   profileValues(data); password(data.password);
   validateStudent(data, true);
   const id = await transaction(async session => {
     await classSection(data.schoolClass, data.section, session);
-    await checkRoll(data, null, session);
     const [user] = await User.create([{ fullname: data.fullname, email: data.email, password: data.password, phone: data.phone, role: "Student", mustChangePassword: true, isActive: data.accountActive ?? true }], { session });
     const fields = Object.fromEntries(studentFields.filter(k => data[k] !== undefined).map(k => [k, data[k]]));
     const [student] = await Student.create([{ ...fields, isActive: data.isActive ?? true, user: user._id, admissionNo: `ADM${new Date().getFullYear()}-${randomUUID()}` }], { session });
+    await initialEnrollment(student, data, actor, session);
     return student._id;
   });
   return populateStudent(Student.findById(id));
@@ -41,8 +43,7 @@ export async function updateProfile(id, data) {
   await transaction(async session => {
     const student = await Student.findById(id).session(session);
     if (!student) fail(404, "Student not found");
-    await classSection(data.schoolClass || student.schoolClass, data.section || student.section, session);
-    await checkRoll({ schoolClass: data.schoolClass || student.schoolClass, section: data.section || student.section, rollNumber: data.rollNumber ?? student.rollNumber }, student._id, session);
+    assertPlacementUnchanged(student, data);
     const user = await User.findById(student.user).session(session);
     if (!user) fail(404, "Student account not found");
     if (data.email !== undefined && data.email.trim().toLowerCase() !== user.email) fail(400, 'Use the separate change-login-email action');
@@ -82,7 +83,8 @@ export async function studentFilter(query, user) {
       try { await eligibleAssignment(assignment._id, user); assignments.push(assignment); }
       catch (error) { if (error.status !== 400) throw error; }
     }
-    filter.$and = [{ isActive: true }, assignments.length ? { $or: assignments.map(a => ({ schoolClass: a.schoolClass, section: a.section })) } : { _id: { $in: [] } }];
+    const ids = (await Promise.all(assignments.map(a => currentStudentIds({ schoolClass: a.schoolClass, section: a.section })))).flat();
+    filter.$and = [{ isActive: true }, { _id: { $in: ids } }];
   }
   if (query.status !== undefined && query.status !== "") {
     if (!["true", "false"].includes(query.status)) fail(400, "Invalid status");
@@ -100,9 +102,4 @@ export async function studentFilter(query, user) {
     filter.$or = [{ user: { $in: users.map(u => u._id) } }, { admissionNo: { $regex: escaped, $options: "i" } }];
   }
   return filter;
-}
-async function checkRoll(data, id, session) {
-  // Serialize roster writes even before the new compound index is installed.
-  await Section.updateOne({ _id: data.section }, { $inc: { __v: 1 } }, { session });
-  if (await Student.exists({ schoolClass: data.schoolClass, section: data.section, rollNumber: Number(data.rollNumber), ...(id ? { _id: { $ne: id } } : {}) }).session(session)) fail(409, 'Roll number already exists in this class and section');
 }

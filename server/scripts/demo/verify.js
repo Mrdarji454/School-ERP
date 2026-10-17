@@ -1,3 +1,5 @@
+import { ASSIGNMENT_DEMO_ID, assignmentModels, verifyAssignmentDemo } from './extend-assignments.js';
+import { FINANCE_DEMO_ID, verifyFinanceDemo } from './extend-finance.js';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import * as M from './models.js';
@@ -8,11 +10,15 @@ import { summarizeAttendance } from '../../services/dashboard/dashboardData.js';
 import { startDemoApi } from './api.js';
 import { seedDemo } from './seed.js';
 import LearningResource from '../../models/LearningResource.js';
+import { ENROLLMENT_DEMO_ID, verifyEnrollmentDemo } from './extend-enrollments.js';
+import Enrollment from '../../models/Enrollment.js';
+import EnrollmentTransition from '../../models/EnrollmentTransition.js';
 import { EXTENSION_ID } from './extend-learning.js';
 export async function fingerprint() {
   const hash = createHash('sha256');
   for (const [name, Model] of Object.entries(M.models)) { hash.update(name); hash.update(JSON.stringify(await Model.find().select(name === 'User' ? '+password' : '').sort({ _id: 1 }).lean())); }
   hash.update(JSON.stringify(await LearningResource.find().sort({ _id: 1 }).lean()));
+  for (const Model of [Enrollment, EnrollmentTransition, ...assignmentModels]) hash.update(JSON.stringify(await Model.find().sort({ _id: 1 }).lean()));
   // The digest stays in memory, never printed or included in the report.
   return hash.digest('hex');
 }
@@ -20,7 +26,14 @@ export async function verifyDemo(config, { checkRepeat = true } = {}) {
   const manifest = await manifestCollection().findOne({ _id: MANIFEST_ID });
   if (manifest?.state !== 'complete') throw safeError('A completed demo seed is required. Run npm run seed:demo.');
   process.env.SCHOOL_TIMEZONE = manifest.timeZone;
-  const actualCounts = await M.counts();
+  const fullCounts = await M.counts();
+  if (await manifestCollection().findOne({ _id: ASSIGNMENT_DEMO_ID, state: 'complete' })) await verifyAssignmentDemo();
+  const enrollmentExtension = await manifestCollection().findOne({ _id: ENROLLMENT_DEMO_ID, state: 'complete' });
+  if (enrollmentExtension) await verifyEnrollmentDemo();
+  const financeExtension = await manifestCollection().findOne({ _id: FINANCE_DEMO_ID, state: 'complete' });
+  if (financeExtension) await verifyFinanceDemo();
+  const extraIds = name => [...(enrollmentExtension?.fixtureIds[name] || []), ...(financeExtension?.fixtureIds[name] || [])];
+  const actualCounts = Object.fromEntries(Object.entries(fullCounts).map(([name, count]) => [name, count - extraIds(name).length]));
   const extension = await manifestCollection().findOne({ _id: EXTENSION_ID, state: 'complete' });
   const expectedCounts = { ...manifest.counts, Notification: manifest.counts.Notification + (extension?.noticeIds.length || 0), AcademicCalendar: manifest.counts.AcademicCalendar + (extension?.calendarIds.length || 0) };
   assert.deepEqual(actualCounts, expectedCounts, 'Counts differ from the seed plus explicit extension (manual testing may explain this).');
@@ -29,7 +42,7 @@ export async function verifyDemo(config, { checkRepeat = true } = {}) {
   assert.equal(await M.User.countDocuments({ isActive: false }), 2);
   assert.equal(await M.AcademicYear.countDocuments({ isCurrent: true, isActive: true }), 1);
   assert.equal((await M.AcademicYear.findOne({ isCurrent: true })).name, '2026-2027');
-  const all = Object.fromEntries(await Promise.all(Object.entries(M.models).map(async ([name, Model]) => [name, await Model.find().lean()])));
+  const all = Object.fromEntries(await Promise.all(Object.entries(M.models).map(async ([name, Model]) => [name, await Model.find({ _id: { $nin: extraIds(name) } }).lean()])));
   const maps = Object.fromEntries(Object.entries(all).map(([name, records]) => [name, new Map(records.map(r => [String(r._id), r]))]));
   for (const [name, Model] of Object.entries(M.models)) for (const row of all[name]) for (const [key, schema] of Object.entries(Model.schema.paths)) {
     const ref = schema.options.ref;
@@ -98,7 +111,7 @@ export async function verifyDemo(config, { checkRepeat = true } = {}) {
       assert.equal(timetable.records.length, 15); assert.ok(timetable.records.every(r => same(r.teacherAssignment.teacher._id, demoId(`teacher/${n}`))));
       assert.ok(timetable.records.every(r => !('salary' in r.teacherAssignment.teacher)));
       const roster = await api.request('GET', `/workflow/roster?teacherAssignment=${manifest.samples[`teacher${n}Assignment`]}&period=${demoId('period/0')}&date=${manifest.seedDate}`, null, tokens[`teacher${n}`]);
-      assert.equal(roster.record, null); assert.equal(roster.roster.length, 25);
+      assert.equal(roster.record, null); assert.equal(roster.roster.length, maps.Student.get(String(demoId(`student/${n}`))).enrollmentManaged ? 25 : 0); assert.match(roster.enrollmentPolicy, /Pre-cutover/);
       const own = await api.request('GET', '/workflow/attendance?limit=100', null, tokens[`student${n}`]);
       const rows = all.Attendance.filter(a => a.isActive).map(a => ({ students: a.students.filter(e => same(e.student, demoId(`student/${n}`))) }));
       assert.deepEqual(own.summary, summarizeAttendance(rows));
@@ -112,7 +125,7 @@ export async function verifyDemo(config, { checkRepeat = true } = {}) {
     const locked = await M.Attendance.findById(manifest.samples.locked).lean();
     const entries = locked.students.map(e => ({ student: String(e.student), status: e.status, remark: e.remark }));
     await api.request('PUT', `/attendance/${locked._id}`, { version: locked.__v, students: entries }, tokens.admin, 409);
-    await api.request('POST', '/attendance', { teacherAssignment: String(locked.teacherAssignment), period: String(locked.period), attendanceDate: locked.attendanceDate.toISOString().slice(0, 10), students: entries }, tokens.admin, 409);
+    await api.request('POST', '/attendance', { teacherAssignment: String(locked.teacherAssignment), period: String(locked.period), attendanceDate: locked.attendanceDate.toISOString().slice(0, 10), students: entries }, tokens.admin, maps.Student.get(String(locked.students[0].student)).enrollmentManaged ? 409 : 400);
     const emptyDay = await api.request('GET', `/workflow/attendance?date=${manifest.seedDate}`, null, tokens.student1);
     assert.equal(emptyDay.summary.total, 0); assert.equal(emptyDay.summary.absent, 0);
     const now = new Date();
@@ -122,11 +135,12 @@ export async function verifyDemo(config, { checkRepeat = true } = {}) {
       assert.deepEqual((await api.request('GET', '/workflow/notices', null, tokens[account])).map(n => n._id).sort(), visible);
     }
     const dashboard = await api.request('GET', '/dashboard/admin', null, tokens.admin);
-    assert.equal(dashboard.statistics.totalStudents, 248); assert.equal(dashboard.statistics.totalTeachers, 20); assert.equal(dashboard.statistics.feesCollected, finance.fee.paid);
+    // The dashboard defaults to the original current academic year; extension years are deliberately separate.
+    assert.equal(dashboard.statistics.totalStudents, 248); assert.equal(dashboard.statistics.totalTeachers, 20); assert.equal(dashboard.statistics.feesCollected, finance.fee.paid + (financeExtension ? 1250 : 0));
     for (const path of ['students?limit=10', 'admin-management/academic-years', 'admin-management/classes', 'admin-management/sections', 'admin-management/subjects', 'admin-management/teachers', 'admin-management/teacher-assignments', 'workflow/timetables', 'workflow/attendance?limit=10', 'academic-calendar', 'student-fees', 'teacher-salaries', 'fee-payments', 'salary-payments']) await api.request('GET', `/${path}`, null, tokens.admin);
     apiChecks = api.checks;
   } finally { await api.close(); }
   let repeatedSeedPreservesAllDocuments = false;
   if (checkRepeat) { const before = await fingerprint(); await seedDemo(config, () => {}); assert.ok(await fingerprint() === before, 'Repeated seed must preserve every existing document and manual edit'); repeatedSeedPreservesAllDocuments = true; }
-  return { verifiedAt: new Date().toISOString(), counts: actualCounts, apiChecks, timetableConflicts: 0, attendance: overall, finance, repeatedSeedPreservesAllDocuments, browserAcceptance: 'Unverified: no connected browser' };
+  return { verifiedAt: new Date().toISOString(), counts: fullCounts, apiChecks, timetableConflicts: 0, attendance: overall, finance, repeatedSeedPreservesAllDocuments, browserAcceptance: 'Unverified: no connected browser' };
 }

@@ -3,7 +3,7 @@ export const studentGroups = [
   ['Account', [f('fullname', 'Full name', 'text', true), f('email', 'Email / login identifier', 'email', true), f('accountActive', 'Account status', 'status')]],
   ['Personal', [f('dob', 'Date of birth', 'date', true), f('gender', 'Gender', 'gender', true), f('phone', 'Phone'), f('address', 'Address'), f('bloodGroup', 'Blood group')]],
   ['Guardian', [f('fatherName', 'Father name'), f('motherName', 'Mother name'), f('guardianName', 'Primary guardian name'), f('guardianRelationship', 'Guardian relationship'), f('guardianPhone', 'Guardian contact'), f('additionalGuardianPhone', 'Additional guardian contact')]],
-  ['Academic placement', [f('academicYear', 'Academic year', 'year', true), f('schoolClass', 'Class', 'class', true), f('section', 'Section', 'section', true), f('rollNumber', 'Roll number', 'number', true), f('admissionDate', 'Admission date', 'date'), f('isActive', 'Enrollment status', 'status')]],
+  ['Academic placement', [f('academicYear', 'Academic year', 'year', true), f('schoolClass', 'Class', 'class', true), f('section', 'Section', 'section', true), f('rollNumber', 'Roll number', 'number', true), f('admissionDate', 'Admission date', 'date'), f('isActive', 'Profile status', 'status')]],
 ];
 export const teacherGroups = [
   ['Account', [f('fullname', 'Full name', 'text', true), f('email', 'Email / login identifier', 'email', true), f('accountActive', 'Account status', 'status')]],

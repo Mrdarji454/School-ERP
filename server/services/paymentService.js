@@ -23,12 +23,16 @@ export function balanceAfter(total, paid, amount, reverse = false) {
   return { paidAmount: next / 100, remainingAmount: (t - next) / 100, status: next === t ? "Paid" : next === 0 ? "Pending" : "Partial" };
 }
 export async function recordPayment(kind, body, user, key) {
+  if (user.role !== 'Admin') fail(403, 'Admin permission required');
+  if (body.remarks !== undefined && (typeof body.remarks !== 'string' || body.remarks.length > 500)) fail(400, 'Remarks must be at most 500 characters');
   const c = financeTypes[kind];
   if (typeof key !== "string" || !/^[A-Za-z0-9:_-]{8,128}$/.test(key)) fail(400, "Send a stable Idempotency-Key header (8–128 characters) for each payment");
   const amount = cents(body.amount) / 100;
   const reference = typeof body[c.reference] === "string" ? body[c.reference].trim() : "";
+  if (reference.length > 200) fail(400, 'Reference must be at most 200 characters');
+  const remarks = (body.remarks || '').trim();
   const match = existing => {
-    if (String(existing[c.link]) !== String(body[c.link]) || existing.amount !== amount || existing.paymentMethod !== body.paymentMethod || (existing[c.reference] || "") !== reference) fail(409, "Idempotency key was already used for a different payment");
+    if (String(existing[c.link]) !== String(body[c.link]) || existing.amount !== amount || existing.paymentMethod !== body.paymentMethod || (existing[c.reference] || "") !== reference || (existing.remarks || "").trim() !== remarks || String(existing[c.actor]) !== String(user._id)) fail(409, "Idempotency key was already used for a different payment");
     return existing;
   };
   try {
@@ -40,15 +44,16 @@ export async function recordPayment(kind, body, user, key) {
       const next = balanceAfter(balance[c.total], balance.paidAmount, amount);
       balance.paidAmount = next.paidAmount; balance.remainingAmount = next.remainingAmount; balance[c.status] = next.status;
       await balance.save({ session });
-      const [payment] = await c.Payment.create([{ [c.link]: balance._id, amount, paymentMethod: body.paymentMethod, [c.reference]: reference, remarks: body.remarks, [c.actor]: user._id, idempotencyKey: key, ...(reference ? { externalReference: reference } : {}) }], { session });
+      const [payment] = await c.Payment.create([{ [c.link]: balance._id, amount, paymentMethod: body.paymentMethod, [c.reference]: reference, remarks, [c.actor]: user._id, idempotencyKey: key, ...(reference ? { externalReference: reference } : {}) }], { session });
       return payment;
     });
   } catch (error) {
-    if (error.code === 11000) { const existing = await c.Payment.findOne({ idempotencyKey: key }); if (existing) return match(existing); }
+    if (error.code === 11000) { const existing = await c.Payment.findOne({ idempotencyKey: key }); if (existing) return match(existing); if (error.keyPattern?.externalReference) fail(409, 'Reference is already recorded for another payment; this attempt was rolled back'); }
     throw error;
   }
 }
 export async function reversePayment(kind, id, user, reason) {
+  if (user.role !== 'Admin') fail(403, 'Admin permission required');
   if (typeof reason !== "string" || !reason.trim() || reason.length > 500) fail(400, "A reversal reason is required (up to 500 characters)");
   const c = financeTypes[kind];
   return transaction(async session => {

@@ -52,4 +52,4 @@ export async function listPeople(kind, query, all = false) {
   const active = await Model.countDocuments({ $and: [filter, { isActive: true }] });
   return { records, pagination: { total, page, limit, totalPages }, statistics: { total, active, inactive: total - active } };
 }
-export const savePerson = (kind, id, data, actor) => kind === 'students' ? id ? updateProfile(id, data) : createProfile(data) : saveTeacher(id, data, actor);
+export const savePerson = (kind, id, data, actor) => kind === 'students' ? id ? updateProfile(id, data) : createProfile(data, actor) : saveTeacher(id, data, actor);

@@ -71,3 +71,15 @@ Browser acceptance remains pending until these items are actually exercised and 
 ## Learning resources, notices and calendar
 
 Browser acceptance remains unverified: no connected browser was available on 10 October 2026. Follow the seven-step manual acceptance checklist in [LEARNING_COMMUNICATION_REPORT.md](LEARNING_COMMUNICATION_REPORT.md), covering upload/failure retention, keyboard/mobile layout, PDF preview/download, role isolation, scheduling, audiences, calendar scope and unchanged attendance. API/source verification does not mark these browser checks passed.
+
+## Admin dashboard design integration — 12 October 2026
+
+Visual and interactive browser acceptance is **unverified**: no connected browser was available. Follow the eight-step checklist in [ADMIN_DASHBOARD_DESIGN_REPORT.md](ADMIN_DASHBOARD_DESIGN_REPORT.md): desktop/tablet/mobile and zoom, drawer focus/Escape, all navigation destinations, academic-year and attendance filtering, Add Student/Teacher workflows, existing imports/exports/forms, slow/error states and truthful preview/finance labels. Automated API/source checks do not mark these browser items complete.
+
+Enrollment and rollover acceptance: follow the desktop/mobile checklist in [ENROLLMENT_MILESTONE_REPORT.md](ENROLLMENT_MILESTONE_REPORT.md). Browser acceptance remains unverified because no connected browser was available.
+
+Finance browser acceptance remains incomplete: follow [FINANCE_MILESTONE_REPORT.md](FINANCE_MILESTONE_REPORT.md) for assignment, partial payment, receipt printing, personal visibility, reversal reconciliation and salary checks at desktop/mobile sizes.
+
+## Assignments and evaluation ? 17 October 2026
+
+Browser acceptance is unverified (no connected browser). Follow the nine-step checklist in [ASSIGNMENT_MILESTONE_REPORT.md](ASSIGNMENT_MILESTONE_REPORT.md), including mobile/keyboard forms, unsaved work, uncertain retries, concurrent grading/resubmission, private feedback/PDFs, transfer/delegation, exports and existing-screen regression.

@@ -7,7 +7,7 @@ export const createFeePaymentValidator = [
         .withMessage("Student Fee is required"),
 
     body("amount")
-        .isFloat({ min: 1 })
+        .isFloat({ gt: 0 })
         .withMessage("Amount must be greater than 0"),
 
     body("paymentMethod")

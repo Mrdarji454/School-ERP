@@ -1,3 +1,5 @@
+import assignmentRoutes from './routes/assignmentRoutes.js';
+import financeRoutes from './routes/financeRoutes.js';
 import feeStructureRoutes from "./routes/feeStructureRoutes.js";
 import studentFeeRoutes from "./routes/studentFeeRoutes.js";
 import salaryStructureRoutes from "./routes/salaryStructureRoutes.js";
@@ -8,6 +10,7 @@ import workflowRoutes from './routes/workflowRoutes.js';
 import peopleRoutes from './routes/peopleRoutes.js';
 import learningRoutes from './routes/learningRoutes.js';
 import communicationRoutes from './routes/communicationRoutes.js';
+import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from "./routes/authRoutes.js";
@@ -43,7 +46,9 @@ app.use("/api/admin-management", adminManagementRoutes);
 app.use('/api/workflow', workflowRoutes);
 app.use('/api/people', peopleRoutes);
 app.use('/api/resources', learningRoutes);
+app.use('/api/assignments', assignmentRoutes);
 app.use('/api/communications', communicationRoutes);
+app.use('/api/enrollments', enrollmentRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/academic-years", AcademicYearRoutes);
@@ -67,6 +72,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/fee-structures", feeStructureRoutes);
+app.use("/api/finance", financeRoutes);
 app.use("/api/student-fees", studentFeeRoutes);
 app.use("/api/salary-structures", salaryStructureRoutes);
 app.use("/api/teacher-salaries", teacherSalaryRoutes);

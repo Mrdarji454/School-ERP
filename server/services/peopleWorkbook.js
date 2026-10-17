@@ -9,7 +9,9 @@ import { teacherFields } from './teacherProfile.js';
 import { password, profileValues } from './profileValidation.js';
 import { peopleModel, identifier, listPeople, savePerson } from './people.js';
 import { fail } from '../utils/errors.js';
-export const workbookColumns = kind => [identifier(kind), 'fullname', 'email', 'password', 'accountActive', 'isActive', ...(kind === 'students' ? ['academicYear', 'className', 'sectionName', ...studentFields.filter(k => !['schoolClass', 'section'].includes(k))] : ['phone', ...teacherFields])];
+import { assertPlacementUnchanged, checkEnrollmentSlot, nextDate } from './enrollments.js';
+import { schoolDate, schoolToday } from '../utils/schoolDate.js';
+export const workbookColumns = kind => [identifier(kind), 'fullname', 'email', 'password', 'accountActive', 'isActive', ...(kind === 'students' ? ['academicYear', 'className', 'sectionName', ...studentFields.filter(k => !['schoolClass', 'section'].includes(k)), 'enrollmentStart', 'enrollmentReason'] : ['phone', ...teacherFields])];
 const safeCell = v => typeof v === 'string' && /^\s*[=+@-]/.test(v) ? `'${v}` : v;
 export function profileTemplate(kind) {
   peopleModel(kind);
@@ -19,7 +21,7 @@ export function profileTemplate(kind) {
   sheet.addRow({ fullname: `Example ${kind === 'students' ? 'Student' : 'Teacher'}`, email: 'replace@example.test', password: 'ReplaceBeforeImport!', accountActive: 'true', isActive: 'true', ...(kind === 'students' ? { academicYear: '2026-2027', className: 'Class 1', sectionName: 'A', rollNumber: 2, dob: '2015-01-01', gender: 'Other' } : { qualification: 'B.Ed', designation: 'Teacher', joiningDate: '2026-04-01', employeeType: 'Permanent', experience: 0 }) });
   const help = book.addWorksheet('Instructions');
   help.columns = [{ header: 'Column', key: 'column', width: 30 }, { header: 'Description', key: 'description', width: 110 }];
-  for (const key of workbookColumns(kind)) help.addRow({ column: key, description: key === 'password' ? 'Required for create only. Must be blank for update. 8+ characters, maximum 72 UTF-8 bytes. Never included in previews/exports.' : key === identifier(kind) ? 'Server-generated: blank on create; preferred exact matching key on update. Immutable.' : ['academicYear', 'className', 'sectionName'].includes(key) ? 'Exact academic name; all three required for student creation/placement changes or scoped roll matching.' : ['accountActive', 'isActive'].includes(key) ? 'true/false. Blank preserves on update; defaults true on create.' : ['dob', 'admissionDate', 'joiningDate'].includes(key) ? 'YYYY-MM-DD date. Student dob and Teacher joiningDate required at creation.' : 'Blank preserves on update. See guide for required creation fields. No salary, role, bank or government-ID columns.' });
+  for (const key of workbookColumns(kind)) help.addRow({ column: key, description: key === 'enrollmentStart' ? 'Create only: YYYY-MM-DD effective start, default school today. Future dates unsupported.' : key === 'enrollmentReason' ? 'Create only: explicit reason required for a backdated enrollment start; maximum 200 characters.' : key === 'password' ? 'Required for create only. Must be blank for update. 8+ characters, maximum 72 UTF-8 bytes. Never included in previews/exports.' : key === identifier(kind) ? 'Server-generated: blank on create; preferred exact matching key on update. Immutable.' : ['academicYear', 'className', 'sectionName'].includes(key) ? 'Exact academic name; required for creation or scoped roll matching. Updates cannot change placement; use Enrollments.' : ['accountActive', 'isActive'].includes(key) ? 'true/false. Blank preserves on update; defaults true on create.' : ['dob', 'admissionDate', 'joiningDate'].includes(key) ? 'YYYY-MM-DD date. Student dob and Teacher joiningDate required at creation.' : 'Blank preserves on update. See guide for required creation fields. No salary, role, bank or government-ID columns.' });
   return book;
 }
 export async function exportPeople(kind, query) {
@@ -46,7 +48,8 @@ export async function importPeople(kind, file, body, actor) {
   }
   const book = new ExcelJS.Workbook();
   try { await book.xlsx.load(file.buffer); } catch { fail(400, 'Invalid Excel workbook'); }
-  const sheet = book.worksheets[0], columns = workbookColumns(kind);
+  const sheet = book.worksheets[0]; let columns = workbookColumns(kind);
+  if (kind === 'students' && sheet?.columnCount === columns.length - 2) columns = columns.slice(0, -2); // Old templates remain accepted; admission starts today.
   if (!sheet || sheet.rowCount > 1001 || sheet.columnCount !== columns.length || columns.some((key, i) => sheet.getRow(1).getCell(i + 1).text.trim() !== key)) fail(400, 'Use the matching template, at most 1000 rows, with unchanged column headings');
   const rows = [], seen = new Set(), seenEmails = new Set(), seenRolls = new Set();
   let created = 0, updated = 0;
@@ -63,6 +66,7 @@ export async function importPeople(kind, file, body, actor) {
       const suppliedId = data[key]; delete data[key];
       if (mode === 'create' && suppliedId) fail(400, 'Leave generated identifier blank when creating records');
       if (mode === 'update' && data.password !== undefined) fail(400, 'Password must be blank in update rows');
+      if (mode === 'update' && (data.enrollmentStart || data.enrollmentReason)) fail(400, 'Enrollment dates cannot be edited through imports');
       for (const k of ['accountActive', 'isActive']) if (data[k] !== undefined) { if (!['true', 'false'].includes(data[k])) fail(400, `Invalid ${k}: use true or false`); data[k] = data[k] === 'true'; }
       let target;
       if (kind === 'students') {
@@ -102,7 +106,15 @@ export async function importPeople(kind, file, body, actor) {
         validateStudent(data, mode === 'create');
         const scope = { schoolClass: data.schoolClass || target?.schoolClass, section: data.section || target?.section, rollNumber: Number(data.rollNumber ?? target?.rollNumber) };
         const roll = `${scope.schoolClass}:${scope.section}:${scope.rollNumber}`;
-        if (seenRolls.has(roll) || await Model.exists({ ...scope, ...(target ? { _id: { $ne: target._id } } : {}) })) fail(400, 'Duplicate roll number in class and section'); seenRolls.add(roll);
+        if (target) assertPlacementUnchanged(target, data);
+        if (seenRolls.has(roll)) fail(400, 'Duplicate roll number in class and section'); seenRolls.add(roll);
+        if (!target) {
+          const cls = await SchoolClass.findById(scope.schoolClass), year = await AcademicYear.findById(cls.academicYear);
+          const startDate = data.enrollmentStart ? schoolDate(data.enrollmentStart) : schoolToday();
+          if (startDate > schoolToday() || startDate < year.startDate || startDate > year.endDate) fail(400, 'Admission date must be on/before today and inside the academic year');
+          if (startDate < schoolToday() && !data.enrollmentReason?.trim()) fail(400, 'Backdated admission requires a reason');
+          await checkEnrollmentSlot({ ...scope, student: new (Model.base.Types.ObjectId)(), academicYear: year._id, startDate, endDate: nextDate(year.endDate) }, null);
+        }
       } else {
         for (const k of ['fullname', 'email', 'qualification', 'designation', 'joiningDate']) if (mode === 'create' && !data[k]) fail(400, `${k} is required`);
         if (data.employeeType && !['Permanent', 'Contract', 'Guest'].includes(data.employeeType)) fail(400, 'Invalid employment type');

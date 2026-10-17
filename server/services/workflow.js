@@ -11,6 +11,8 @@ import { listCommunications } from './communications.js';
 import { active, eligibleAssignment, same } from '../utils/relationships.js';
 import { schoolDate, schoolToday } from '../utils/schoolDate.js';
 import { fail } from '../utils/errors.js';
+import { placementAt, datedRoster } from './enrollmentPlacement.js';
+import Enrollment from '../models/Enrollment.js';
 import { timetableScope, populateTimetable } from './timetableService.js';
 import { attendanceScope } from './attendanceService.js';
 import { expectedVersion, auditAction } from './attendanceVersion.js';
@@ -49,16 +51,17 @@ async function teacherId(user) {
   return t._id;
 }
 async function studentProfile(user) {
-  const student = await Student.findOne({ user: user._id, isActive: true }).select('schoolClass section');
+  const student = await Student.findOne({ user: user._id, isActive: true });
   if (!student) fail(403, 'Active student profile required');
-  return student;
+  const placement = await placementAt(student, undefined, null, true);
+  return { _id: student._id, schoolClass: placement?.schoolClass || null, section: placement?.section || null, placement };
 }
 export async function workflowOptions(user) {
   let filter = {}, placement = null;
   if (user.role === 'Teacher') filter.teacher = await teacherId(user);
   if (user.role === 'Student') {
     const student = await studentProfile(user);
-    placement = await Student.findById(student._id).select('schoolClass section').populate('schoolClass', 'name academicYear isActive').populate('section', 'name isActive').lean();
+    placement = student.placement ? student.placement.legacyUnresolved ? await Student.findById(student._id).select('schoolClass section').populate('schoolClass', 'name academicYear isActive').populate('section', 'name isActive').lean() : await Enrollment.findById(student.placement._id).select('schoolClass section').populate('schoolClass', 'name academicYear isActive').populate('section', 'name isActive').lean() : null;
     const historical = await Attendance.find({ isActive: true, 'students.student': student._id }).distinct('teacherAssignment');
     filter = { $or: [{ schoolClass: student.schoolClass, section: student.section }, { _id: { $in: historical } }] };
   }
@@ -124,6 +127,11 @@ export async function attendanceList(user, query) {
 export async function attendanceDetail(user, id) {
   const row = await Attendance.findOne({ _id: id, ...await attendanceScope(user) }).select(user.role === 'Admin' ? '' : '-audit -markedBy').populate(assignmentPopulation).populate(periodPopulation).populate(rosterPopulation).lean();
   if (!row) fail(404, 'Attendance not found');
+  const established = await datedRoster(row.teacherAssignment, row.attendanceDate);
+  row.students = row.students.map(entry => {
+    const historical = established.find(s => String(s._id) === String(entry.student?._id));
+    return { ...entry, enrollmentResolved: Boolean(historical), student: entry.student ? { ...entry.student, rollNumber: historical?.rollNumber ?? null } : null };
+  });
   return row;
 }
 export async function attendanceRoster(user, query) {
@@ -134,9 +142,8 @@ export async function attendanceRoster(user, query) {
   const date = schoolDate(query.date), year = await active(AcademicYear, assignment.academicYear);
   if (date < year.startDate || date > year.endDate) fail(400, 'Date must fall within the academic year');
   const existing = await Attendance.findOne({ teacherAssignment: assignment._id, period: period._id, attendanceDate: date }).select('_id');
-  const users = await User.find({ role: 'Student', isActive: true }).distinct('_id');
-  const roster = await Student.find({ schoolClass: assignment.schoolClass, section: assignment.section, isActive: true, user: { $in: users } }).select('user admissionNo rollNumber').populate('user', 'fullname').sort({ rollNumber: 1 }).lean();
-  return { roster, record: existing ? await attendanceDetail(user, existing._id) : null };
+  const roster = await datedRoster(assignment, date);
+  return { roster, record: existing ? await attendanceDetail(user, existing._id) : null, enrollmentPolicy: 'Only established date-effective enrollments appear. Pre-cutover history remains readable, but unresolved corrections are blocked.' };
 }
 export async function setAttendanceLock(user, id, body) {
   const row = await Attendance.findOne({ _id: id, isActive: true });

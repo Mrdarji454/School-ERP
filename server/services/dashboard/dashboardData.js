@@ -14,6 +14,7 @@ import AcademicCalendar from "../../models/AcademicCalendar.js";
 import { schoolToday } from "../../utils/schoolDate.js";
 import { getNotifications } from "./getNotifications.js";
 import { fail } from "../../utils/errors.js";
+import { currentStudentIds } from '../enrollmentPlacement.js';
 export function summarizeAttendance(records) {
   const counts = { present: 0, absent: 0, late: 0, halfDay: 0, leave: 0 };
   const keys = { Present: "present", Absent: "absent", Late: "late", "Half Day": "halfDay", Leave: "leave" };
@@ -28,7 +29,7 @@ export async function dashboardData(yearId) {
   const classes = await SchoolClass.find({ academicYear: year._id, isActive: true }).distinct("_id");
   const assignments = await TeacherAssignment.find({ academicYear: year._id, schoolClass: { $in: classes }, isActive: true });
   const assignmentIds = assignments.map(a => a._id), teacherIds = assignments.map(a => a.teacher);
-  const studentScope = { schoolClass: { $in: classes }, isActive: true };
+  const studentScope = { _id: { $in: await currentStudentIds({ schoolClass: { $in: classes } }) }, isActive: true };
   const structures = await FeeStructure.find({ academicYear: year._id }).distinct("_id");
   const feeIds = await StudentFee.find({ feeStructure: { $in: structures } }).distinct("_id");
   const salaryPeriod = { $or: Array.from({ length: 12 * (year.endDate.getUTCFullYear() - year.startDate.getUTCFullYear() + 1) }, (_, i) => ({ year: year.startDate.getUTCFullYear() + Math.floor(i / 12), month: i % 12 + 1 })).filter(p => new Date(Date.UTC(p.year, p.month, 0)) >= year.startDate && new Date(Date.UTC(p.year, p.month - 1, 1)) <= year.endDate) };

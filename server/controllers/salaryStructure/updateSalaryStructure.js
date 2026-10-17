@@ -1,29 +1,15 @@
-import asyncHandler from "express-async-handler";
-import SalaryStructure from "../../models/SalaryStructure.js";
-
+import asyncHandler from 'express-async-handler';
+import Model from '../../models/SalaryStructure.js';
+import Balance from '../../models/TeacherSalary.js';
+import { transaction } from '../../utils/transaction.js';
+import { fail } from '../../utils/errors.js';
 export const updateSalaryStructure = asyncHandler(async (req, res) => {
-
-    const salary = await SalaryStructure.findById(req.params.id);
-
-    if (!salary) {
-        res.status(404);
-        throw new Error("Salary structure not found");
-    }
-
-    for (const key of ["basicSalary","allowance","deduction","effectiveFrom","description"]) if (req.body[key] !== undefined) salary[key] = req.body[key];
-
-    salary.updatedBy = req.user._id;
-
-    await salary.save();
-
-    res.status(200).json({
-
-        success: true,
-
-        message: "Salary structure updated successfully",
-
-        data: salary,
-
-    });
-
+ const data = await transaction(async session => {
+  const row = await Model.findOneAndUpdate({ _id: req.params.id }, { $inc: { __v: 1 } }, { session, new: true });
+  if (!row) fail(404, 'Structure not found');
+  if (await Balance.exists({ salaryStructure: row._id }).session(session)) fail(409, 'Issued structures are immutable. Deactivate this structure and create a new one for future obligations.');
+  for (const key of ['basicSalary', 'allowance', 'deduction', 'effectiveFrom', 'description']) if (req.body[key] !== undefined) row[key] = req.body[key];
+  row.updatedBy = req.user._id; await row.save({ session }); return row;
+ });
+ res.json({ success: true, data });
 });
