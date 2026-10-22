@@ -19,6 +19,8 @@ export async function verifyAdminManagement({ request, token, teacherToken, stud
   const section = await request('POST', '/sections', { name: 'A', schoolClass: cls._id, capacity: 35 }, token, 201);
   const subject = await request('POST', '/subjects', { name: 'Science', code: 'SCI', schoolClass: cls._id }, token, 201);
   const period = await request('POST', '/periods', { name: 'Management period', periodNumber: 8, startTime: '13:00', endTime: '14:00' }, token, 201);
+  assert.equal((await request('GET', `${prefix}/periods?search=Management%20period`, null, token)).records[0].isScheduled, false);
+  assert.equal((await request('GET', `${prefix}/academic-years?search=Management%202026`, null, token)).records[0].hasEnrollments, false);
   const teacher = await request('POST', '/teachers', { fullname: 'Management Teacher', email: 'management@example.test', password, phone: '9999999999', qualification: 'B.Ed', designation: 'Teacher', joiningDate: '2026-04-01', employeeType: 'Contract' }, token, 201);
   assert.ok(teacher.employeeId);
   const assignmentBody = { academicYear: year._id, schoolClass: cls._id, section: section._id, subject: subject._id, teacher: teacher._id, isClassTeacher: true, remarks: 'Management workflow' };
@@ -34,6 +36,13 @@ export async function verifyAdminManagement({ request, token, teacherToken, stud
   await request('POST', '/periods', { name: 'Invalid', periodNumber: 9, startTime: '14:00', endTime: '13:00' }, token, 400);
   const student = await request('POST', '/students', { fullname: 'Managed Student', email: 'managed-student@example.test', password, rollNumber: 1, schoolClass: cls._id, section: section._id, fatherName: 'Parent', motherName: 'Parent', dob: '2018-01-01', gender: 'Other', phone: '9999999999' }, token, 201);
   assert.equal(student.schoolClass._id || student.schoolClass, cls._id);
+  const managedClass = (await request('GET', `${prefix}/classes?academicYear=${year._id}`, null, token)).records.find(record => record._id === cls._id);
+  assert.equal(managedClass.sectionCount, 1); assert.equal(managedClass.studentCount, 1);
+  assert.equal((await request('GET', `${prefix}/academic-years?search=Management%202026`, null, token)).records[0].hasEnrollments, true);
+  const booking = await request('POST', '/timetables', { academicYear: year._id, teacherAssignment: assignment._id, period: period._id, day: 'Friday', roomNumber: 'Management fixture room' }, token, 201);
+  assert.equal((await request('GET', `${prefix}/periods?search=Afternoon`, null, token)).records[0].isScheduled, true);
+  await request('DELETE', `/timetables/${booking._id}`, null, token);
+  assert.equal((await request('GET', `${prefix}/periods?search=Afternoon`, null, token)).records[0].isScheduled, true, 'Inactive timetable history still reserves period timing');
   await request('POST', '/teacher-assignments', assignmentBody, token, 400);
   const anotherSubject = await request('POST', '/subjects', { name: 'Language', code: 'LANG', schoolClass: cls._id }, token, 201);
   const conflict = await request('POST', '/teacher-assignments', { ...assignmentBody, subject: anotherSubject._id }, token, 400);
@@ -52,6 +61,10 @@ export async function verifyAdminManagement({ request, token, teacherToken, stud
   assert.equal(teachers.records.length, 1); assert.equal(teachers.records[0].salary, undefined); assert.equal(teachers.records[0].user.password, undefined);
   const assignments = await request('GET', `${prefix}/teacher-assignments?academicYear=${year._id}&schoolClass=${cls._id}&section=${section._id}&teacher=${teacher._id}`, null, token);
   assert.equal(assignments.pagination.total, 1); assert.equal(assignments.records[0].subject.name, 'General Science');
+  assert.equal((await request('GET', `${prefix}/teacher-assignments?subject=${subject._id}`, null, token)).pagination.total, 1);
+  assert.equal((await request('GET', `${prefix}/teacher-assignments?subject=${anotherSubject._id}`, null, token)).pagination.total, 0);
+  await request('GET', `${prefix}/teacher-assignments?subject=invalid`, null, token, 400);
+  await request('GET', `${prefix}/teacher-assignments?subject[$ne]=invalid`, null, token, 400);
   const page = await request('GET', `${prefix}/subjects?schoolClass=${cls._id}&page=99&limit=1`, null, token);
   assert.equal(page.pagination.page, 2); assert.equal(page.records.length, 1);
   assert.equal((await request('GET', `${prefix}/subjects?search=%5B`, null, token)).records.length, 0);
