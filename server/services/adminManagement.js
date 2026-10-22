@@ -8,6 +8,8 @@ import Teacher from "../models/Teacher.js";
 import TeacherAssignment from "../models/TeacherAssignment.js";
 import Student from "../models/Student.js";
 import User from "../models/User.js";
+import Timetable from "../models/TimeTable.js";
+import Enrollment from "../models/Enrollment.js";
 import { fail } from "../utils/errors.js";
 
 const classPopulation = { path: "schoolClass", select: "name academicYear isActive", populate: { path: "academicYear", select: "name isCurrent isActive" } };
@@ -29,7 +31,7 @@ const escaped = text => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export async function listManagement(resource, query) {
   const entry = Object.hasOwn(config, resource) ? config[resource] : null;
   if (!entry) fail(404, "Management resource not found");
-  for (const key of ["search", "status", "academicYear", "schoolClass", "section", "teacher", "page", "limit"]) if (query[key] !== undefined && typeof query[key] !== "string") fail(400, `Invalid ${key} filter`);
+  for (const key of ["search", "status", "academicYear", "schoolClass", "section", "teacher", "subject", "page", "limit"]) if (query[key] !== undefined && typeof query[key] !== "string") fail(400, `Invalid ${key} filter`);
   if (query.status && !["all", "active", "inactive"].includes(query.status)) fail(400, "Invalid status filter");
   const requestedPage = Number(query.page || 1), limit = Number(query.limit || 10);
   if (!Number.isSafeInteger(requestedPage) || requestedPage < 1 || !Number.isSafeInteger(limit) || limit < 1 || limit > 100) fail(400, "Page must be positive and page size must be 1–100");
@@ -45,7 +47,7 @@ export async function listManagement(resource, query) {
     if (filter.schoolClass?.$in && !filter.schoolClass.$in.some(value => String(value) === cls)) filter.schoolClass = { $in: [] };
     else filter.schoolClass = cls;
   }
-  if (resource === "teacher-assignments") for (const key of ["teacher", "section"]) if (query[key]) filter[key] = id(query[key], key);
+  if (resource === "teacher-assignments") for (const key of ["teacher", "section", "subject"]) if (query[key]) filter[key] = id(query[key], key);
   if (query.search?.trim()) {
     if (query.search.length > 100) fail(400, "Search must be 100 characters or fewer");
     const regex = { $regex: escaped(query.search.trim()), $options: "i" };
@@ -64,7 +66,28 @@ export async function listManagement(resource, query) {
   let recordsQuery = entry.Model.find(filter).sort(entry.sort || { createdAt: -1, _id: 1 }).skip((page - 1) * limit).limit(limit);
   if (entry.select) recordsQuery = recordsQuery.select(entry.select);
   for (const population of entry.populate || []) recordsQuery = recordsQuery.populate(population);
-  return { records: await recordsQuery.lean(), pagination: { page, limit, total, totalPages } };
+  const records = await recordsQuery.lean();
+  const ids = records.map(record => record._id);
+  // Read-only, page-scoped UI metadata. The write endpoints remain authoritative
+  // if a dependency is added after this response was loaded.
+  if (ids.length && resource === 'periods') {
+    const scheduled = new Set((await Timetable.distinct('period', { period: { $in: ids } })).map(String));
+    for (const record of records) record.isScheduled = scheduled.has(String(record._id));
+  }
+  if (ids.length && resource === 'academic-years') {
+    const enrolled = new Set((await Enrollment.distinct('academicYear', { academicYear: { $in: ids } })).map(String));
+    for (const record of records) record.hasEnrollments = enrolled.has(String(record._id));
+  }
+  if (ids.length && resource === 'classes') {
+    const [sections, students] = await Promise.all([
+      Section.aggregate([{ $match: { schoolClass: { $in: ids } } }, { $group: { _id: '$schoolClass', count: { $sum: 1 } } }]),
+      Student.aggregate([{ $match: { schoolClass: { $in: ids }, isActive: true } }, { $group: { _id: '$schoolClass', count: { $sum: 1 } } }]),
+    ]);
+    const sectionCounts = new Map(sections.map(row => [String(row._id), row.count]));
+    const studentCounts = new Map(students.map(row => [String(row._id), row.count]));
+    for (const record of records) { record.sectionCount = sectionCounts.get(String(record._id)) || 0; record.studentCount = studentCounts.get(String(record._id)) || 0; }
+  }
+  return { records, pagination: { page, limit, total, totalPages } };
 }
 
 export async function managementOptions() {

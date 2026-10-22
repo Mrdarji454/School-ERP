@@ -7,6 +7,7 @@ export const adminNavigation = [
   { name: "Sections", path: "/admin/sections", icon: Layers3 },
   { name: "Subjects", path: "/admin/subjects", icon: BookCopy },
   { name: "Periods", path: "/admin/periods", icon: Clock },
+  { name: "Teacher Assignments", path: "/admin/teacher-assignments", icon: UserCheck },
  ] },
  { title: "Daily operations", items: [
   { name: "Timetable", path: "/admin/timetable", icon: Calendar },
@@ -19,6 +20,5 @@ export const adminNavigation = [
   { name: "Enrollments", path: "/admin/enrollments", icon: BookCopy },
   { name: "Promotion / rollover", path: "/admin/promotions", icon: Layers3 },
   { name: "Teachers", path: "/admin/teachers", icon: Users },
-  { name: "Teacher Assignments", path: "/admin/teacher-assignments", icon: UserCheck },
  ] },
 ];

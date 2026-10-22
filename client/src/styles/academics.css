@@ -1,0 +1,119 @@
+/* Figma academic management: tokens inherit from the existing Admin theme. */
+@font-face { font-family: 'Vedant Academic Inter'; src: url('../assets/fonts/InterVariable.woff2') format('woff2'); font-style: normal; font-weight: 100 900; font-display: swap; }
+.admin-academic-shell { font-family: 'Vedant Academic Inter', Inter, ui-sans-serif, system-ui, sans-serif; }
+.admin-academic-shell .admin-sidebar { width: 232px; color: var(--admin-secondary); background: white; border-right: 1px solid var(--admin-border); }
+.admin-academic-shell .admin-sidebar.compact { width: 80px; }
+.admin-academic-shell .admin-brand { min-height: 96px; border-right: 0; border-bottom: 0; padding: 16px; gap: 12px; }
+.admin-academic-shell .admin-brand img { width: 56px; height: 64px; }
+.admin-academic-shell .compact .admin-brand { padding: 12px; }
+.admin-academic-shell .admin-brand strong, .admin-academic-shell .admin-brand span { font-size: 13px; font-weight: 600; color: var(--admin-text); }
+.admin-academic-shell .admin-sidebar nav { padding: 0 16px 16px; }
+.admin-academic-shell .admin-nav-group { margin-bottom: 8px; }
+.admin-academic-shell .admin-nav-group h2:not(.sr-only) { color: var(--admin-secondary); font-size: 10px; font-weight: 600; letter-spacing: 0; margin-bottom: 2px; padding: 0; }
+.admin-academic-shell .admin-nav-item { min-height: 28px; margin-top: 0; padding: 5px 8px; font-size: 12px; line-height: 18px; }
+.admin-academic-shell .admin-sidebar:not(.compact) .admin-nav-item svg { display: none; }
+.admin-academic-shell .admin-nav-item:hover { background: var(--admin-page); color: var(--admin-navy); }
+.admin-academic-shell .admin-nav-item.active { color: white; background: var(--admin-navy); }
+.admin-academic-shell .admin-sidebar-account { border-color: var(--admin-border); }
+.admin-academic-shell .admin-sidebar-account span:not(.admin-avatar) { color: var(--admin-secondary); }
+.admin-academic-shell .admin-topbar { min-height: 72px; padding: 12px 24px; flex-wrap: nowrap; }
+.admin-academic-shell .admin-header-caption { display: none; }
+.admin-academic-shell .admin-content { padding: 32px; }
+.admin-academic-shell .admin-drawer { background: white; }
+.admin-academic-shell .admin-sidebar.mobile .admin-nav-item { min-height: 44px; }
+.academic-page { display: flex; flex-direction: column; gap: 24px; }
+.academic-breadcrumb { font-size: 12px; color: var(--admin-secondary); display: flex; flex-wrap: wrap; gap: 8px; }
+.academic-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.admin-shell .academic-heading h1 { color: var(--admin-text); font-size: 28px; font-weight: 600; margin: 0 0 4px; line-height: 1.5; }
+.academic-heading p { color: var(--admin-secondary); }
+.academic-heading .erp-primary { width: auto; white-space: nowrap; flex-shrink: 0; padding: 10px 20px; border-radius: 10px; font-weight: 400; }
+.academic-panel { background: white; border: 1px solid var(--admin-border); border-radius: 12px; padding: 24px; }
+.academic-context h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.academic-context p { color: var(--admin-secondary); }
+.academic-filters { display: grid; grid-template-columns: minmax(240px, 1.5fr) repeat(3,minmax(0,1fr)); gap: 24px 16px; align-items: start; }
+.academic-filter-fields { display: contents; }
+.academic-filter-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.academic-filter-toggle { display: none; }
+.academic-page :where(input:not([type=checkbox]):not([type=hidden]), select, textarea), .academic-dialog :where(input, select, textarea) { border: 1px solid var(--admin-border); border-radius: 10px; background: white; color: var(--admin-text); min-height: 48px; padding: 12px 14px; font-size: 14px; }
+.academic-page :where(input,select,textarea):focus-visible { outline: 3px solid #94700b; outline-offset: 2px; box-shadow: none; }
+.academic-page label { color: var(--admin-text); font-size: 13px; font-weight: 600; }
+.academic-page input::placeholder { color: var(--admin-secondary); }
+.academic-page :where(input,textarea)[readonly], .academic-page [aria-readonly=true], .academic-page select:disabled { background: var(--admin-page); color: var(--admin-secondary); }
+.academic-page button:disabled, .academic-page select:disabled { cursor: not-allowed; opacity: .6; }
+.academic-match-count { font-size: 14px; font-weight: 600; }
+.academic-results { min-width: 0; }
+.academic-results > div:first-child { border-radius: 12px 12px 0 0; box-shadow: none; border-color: var(--admin-border); }
+.academic-results > .academic-desktop-table { min-height: 0; }
+.academic-results table { width: 100%; table-layout: auto; }
+.academic-results th { font-size: 12px; color: var(--admin-secondary); padding: 14px 16px; font-weight: 600; }
+.academic-results td { padding: 16px; font-size: 13px; height: 80px; color: var(--admin-text); border-color: var(--admin-border); }
+.academic-results th:first-child, .academic-results td:first-child { padding-left: 24px; }
+.academic-results th:last-child, .academic-results td:last-child { padding-right: 24px; }
+.academic-results tbody tr { border-color: var(--admin-border); }
+.academic-results tbody tr:hover { background: var(--admin-page); }
+.academic-record-name { font-weight: 600; }
+.academic-status { display: inline-flex; padding: 4px 9px; border-radius: 6px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.academic-status.active { background: #edf7f1; color: var(--admin-success); }
+.academic-status.inactive { background: var(--admin-page); color: var(--admin-navy); }
+.academic-record-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; max-width: 230px; }
+.academic-record-actions button { min-height: 32px; color: var(--admin-navy); font-size: 13px; text-align: left; border-radius: 5px; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; }
+.academic-record-actions button:hover { text-decoration-color: currentColor; }
+.academic-mobile-records { display: none; }
+.academic-pagination { border: 1px solid var(--admin-border); border-top: 0; background: white; border-radius: 0 0 12px 12px; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; color: var(--admin-secondary); font-size: 12px; }
+.academic-pagination > span { margin-right: auto; }
+.academic-pagination > div { margin: 0; border: 0; border-radius: 0; padding: 0; box-shadow: none; gap: 12px; }
+.academic-pagination > div > span { font-size: 12px; font-weight: 400; }
+.academic-pagination button { min-height: 44px; border: 1px solid var(--admin-border); border-radius: 10px; font-size: 13px; padding: 8px 12px; }
+.academic-page-size { display: flex; align-items: center; gap: 8px; font-size: 12px !important; color: var(--admin-secondary) !important; font-weight: 400 !important; }
+.academic-page-size select { padding: 8px; min-height: 44px; }
+.academic-error { padding: 24px; background: #fff1f1; border: 1px solid #f3c9c9; border-radius: 12px; color: #a42626; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.academic-error h2 { font-size: 18px; font-weight: 600; }
+.academic-empty-action { padding: 0 24px 24px; background: white; border-inline: 1px solid var(--admin-border); color: var(--admin-secondary); display: flex; gap: 16px; align-items: center; justify-content: center; }
+.academic-form-note { color: var(--admin-secondary); }
+.academic-policy { padding: 16px; border-radius: 10px; background: var(--admin-pale-gold); color: #67500a; }
+.academic-form fieldset { gap: 24px 16px; }
+.academic-form-actions { justify-content: flex-start; border-color: var(--admin-border); }
+.academic-form-actions .erp-primary { width: auto; padding-inline: 20px; }
+.academic-checkbox { min-height: 48px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--admin-border); border-radius: 10px; padding: 12px 14px; }
+.academic-checkbox input { accent-color: var(--admin-navy); }
+.academic-dialog { color: var(--admin-text); }
+@media (max-width: 1200px) {
+  .academic-filters { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 700px) {
+  .admin-academic-shell .admin-content { padding: 16px; }
+  .admin-academic-shell .admin-topbar { padding: 12px 16px; gap: 8px; }
+  .admin-academic-shell .admin-header-title { gap: 8px; }
+  .admin-academic-shell .admin-header-title > div { font-size: 13px; }
+  .admin-academic-shell .admin-header-controls { width: auto; }
+  .admin-academic-shell .admin-header-profile { display: none; }
+  .academic-heading { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .admin-shell .academic-heading h1 { font-size: 24px; }
+  .academic-panel { padding: 24px; }
+  .academic-context { display: none; }
+  .academic-filters { gap: 24px; grid-template-columns: minmax(0,1fr); }
+  .academic-filter-toggle { display: block; justify-self: start; min-height: 44px; padding: 10px 18px; border: 1px solid var(--admin-border); border-radius: 10px; color: var(--admin-navy); text-align: left; }
+  .academic-filter-fields { display: none; }
+  .academic-filter-fields.expanded { display: grid; grid-template-columns: minmax(0,1fr); }
+  .academic-desktop-table { display: none; }
+  .academic-mobile-records { display: grid; gap: 16px; }
+  .academic-results > .academic-mobile-records { border: 0; border-radius: 0; background: transparent; }
+  .academic-mobile-card { padding: 24px; border: 1px solid var(--admin-border); border-radius: 12px; background: white; }
+  .academic-mobile-card-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+  .academic-mobile-card h2 { font-size: 18px; font-weight: 600; min-width: 0; }
+  .academic-mobile-card dl { color: var(--admin-secondary); font-size: 14px; margin-bottom: 16px; }
+  .academic-mobile-card dl > div { display: flex; flex-wrap: wrap; gap: 4px; }
+  .academic-mobile-card dt { flex-shrink: 0; }
+  .academic-mobile-card dd { min-width: 0; }
+  .academic-record-actions { max-width: none; gap: 8px; }
+  .academic-record-actions button { min-height: 44px; border: 1px solid var(--admin-border); border-radius: 10px; padding: 10px 16px; text-decoration: none; }
+  .academic-pagination { border: 1px solid var(--admin-border); border-radius: 12px; margin-top: 16px; padding: 16px; }
+  .academic-pagination > div { width: 100%; }
+  .academic-pagination > div > span { text-align: center; }
+  .academic-page-size { margin-left: auto; }
+  .academic-empty-action { flex-direction: column; }
+  .academic-form fieldset { grid-template-columns: minmax(0,1fr); }
+  .academic-form fieldset > * { grid-column: 1; }
+  .academic-form-actions { flex-direction: column-reverse; align-items: flex-start; }
+  .academic-form-actions .erp-primary { width: auto; }
+}
