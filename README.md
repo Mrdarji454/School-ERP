@@ -2,6 +2,8 @@
 
 React/Vite/Tailwind frontend (`client/`) and Express/Mongoose API (`server/`) for Admin, Teacher, and Student accounts. Includes academic management, timetable management, attendance review, and scoped Teacher/Student portals. The public school website is preserved.
 
+For report-card runtime, recovery checks, deployment gates, monitoring and pilot planning, see [Operations readiness](OPERATIONS_READINESS.md), [Report-card milestone](REPORT_CARD_MILESTONE_REPORT.md) and [School acceptance checklist](SCHOOL_ACCEPTANCE_CHECKLIST.md). Browser and production-infrastructure acceptance remain pending.
+
 ## Setup
 
 Use a Node.js version supported by the checked-in Vite version (verified here with Node.js 24.10.0). Install each package from its lockfile:

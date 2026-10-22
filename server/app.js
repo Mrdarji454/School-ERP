@@ -1,3 +1,5 @@
+import reportCardRoutes from './routes/reportCardRoutes.js';
+import examRoutes from './routes/examRoutes.js';
 import assignmentRoutes from './routes/assignmentRoutes.js';
 import financeRoutes from './routes/financeRoutes.js';
 import feeStructureRoutes from "./routes/feeStructureRoutes.js";
@@ -47,6 +49,8 @@ app.use('/api/workflow', workflowRoutes);
 app.use('/api/people', peopleRoutes);
 app.use('/api/resources', learningRoutes);
 app.use('/api/assignments', assignmentRoutes);
+app.use('/api/exams', examRoutes);
+app.use('/api/report-cards', reportCardRoutes);
 app.use('/api/communications', communicationRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use("/api/user", userRoutes);

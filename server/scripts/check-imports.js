@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 async function walk(dir) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
-  return (await Promise.all(entries.filter(e => !["node_modules", "scripts", "tests", ".test-data"].includes(e.name)).map(e => e.isDirectory() ? walk(path.join(dir, e.name)) : path.join(dir, e.name)))).flat();
+  return (await Promise.all(entries.filter(e => !["node_modules", "scripts", "tests", ".test-data", ".reportcard-venv"].includes(e.name)).map(e => e.isDirectory() ? walk(path.join(dir, e.name)) : path.join(dir, e.name)))).flat();
 }
 const files = (await walk(root)).filter(p => p.endsWith(".js") && path.basename(p) !== "server.js");
 for (const file of files) {

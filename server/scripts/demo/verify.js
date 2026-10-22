@@ -1,3 +1,6 @@
+import { REPORT_CARD_DEMO_ID, verifyReportCardDemo } from './extend-report-cards.js';
+import ReportCard from '../../models/ReportCard.js';
+import { EXAM_DEMO_ID, examModels, verifyExamDemo } from './extend-exams.js';
 import { ASSIGNMENT_DEMO_ID, assignmentModels, verifyAssignmentDemo } from './extend-assignments.js';
 import { FINANCE_DEMO_ID, verifyFinanceDemo } from './extend-finance.js';
 import assert from 'node:assert/strict';
@@ -18,7 +21,7 @@ export async function fingerprint() {
   const hash = createHash('sha256');
   for (const [name, Model] of Object.entries(M.models)) { hash.update(name); hash.update(JSON.stringify(await Model.find().select(name === 'User' ? '+password' : '').sort({ _id: 1 }).lean())); }
   hash.update(JSON.stringify(await LearningResource.find().sort({ _id: 1 }).lean()));
-  for (const Model of [Enrollment, EnrollmentTransition, ...assignmentModels]) hash.update(JSON.stringify(await Model.find().sort({ _id: 1 }).lean()));
+  for (const Model of [Enrollment, EnrollmentTransition, ...assignmentModels, ...examModels, ReportCard]) hash.update(JSON.stringify(await Model.find().sort({ _id: 1 }).lean()));
   // The digest stays in memory, never printed or included in the report.
   return hash.digest('hex');
 }
@@ -28,11 +31,14 @@ export async function verifyDemo(config, { checkRepeat = true } = {}) {
   process.env.SCHOOL_TIMEZONE = manifest.timeZone;
   const fullCounts = await M.counts();
   if (await manifestCollection().findOne({ _id: ASSIGNMENT_DEMO_ID, state: 'complete' })) await verifyAssignmentDemo();
+  if (await manifestCollection().findOne({ _id: EXAM_DEMO_ID, state: 'complete' })) await verifyExamDemo();
   const enrollmentExtension = await manifestCollection().findOne({ _id: ENROLLMENT_DEMO_ID, state: 'complete' });
   if (enrollmentExtension) await verifyEnrollmentDemo();
   const financeExtension = await manifestCollection().findOne({ _id: FINANCE_DEMO_ID, state: 'complete' });
   if (financeExtension) await verifyFinanceDemo();
-  const extraIds = name => [...(enrollmentExtension?.fixtureIds[name] || []), ...(financeExtension?.fixtureIds[name] || [])];
+  const reportCardExtension = await manifestCollection().findOne({ _id: REPORT_CARD_DEMO_ID, state: 'complete' });
+  if (reportCardExtension) await verifyReportCardDemo();
+  const extraIds = name => [...(enrollmentExtension?.fixtureIds[name] || []), ...(financeExtension?.fixtureIds[name] || []), ...(reportCardExtension?.fixtureIds[name] || [])];
   const actualCounts = Object.fromEntries(Object.entries(fullCounts).map(([name, count]) => [name, count - extraIds(name).length]));
   const extension = await manifestCollection().findOne({ _id: EXTENSION_ID, state: 'complete' });
   const expectedCounts = { ...manifest.counts, Notification: manifest.counts.Notification + (extension?.noticeIds.length || 0), AcademicCalendar: manifest.counts.AcademicCalendar + (extension?.calendarIds.length || 0) };

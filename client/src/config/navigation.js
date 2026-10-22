@@ -12,7 +12,7 @@ export const adminNavigation = [
   { name: "Timetable", path: "/admin/timetable", icon: Calendar },
   { name: "Attendance review", path: "/admin/attendance", icon: UserCheck },
  ] },
- { title: "Learning and communication", items: [{ name: "Assignments", path: "/admin/assignments", icon: BookCopy }, { name: "Learning resources", path: "/admin/resources", icon: BookCopy }, { name: "Notices", path: "/admin/notices", icon: Layers3 }, { name: "Academic calendar", path: "/admin/calendar", icon: Calendar }] },
+ { title: "Learning and communication", items: [{ name: "Report cards", path: "/admin/report-cards", icon: BookCopy }, { name: "Exams", path: "/admin/exams", icon: BookCopy }, { name: "Published results", path: "/admin/results", icon: BookCopy }, { name: "Assignments", path: "/admin/assignments", icon: BookCopy }, { name: "Learning resources", path: "/admin/resources", icon: BookCopy }, { name: "Notices", path: "/admin/notices", icon: Layers3 }, { name: "Academic calendar", path: "/admin/calendar", icon: Calendar }] },
  { title: "Finance", items: [{ name: "Student fees", path: "/admin/fees", icon: BookCopy }, { name: "Teacher salaries", path: "/admin/salaries", icon: Users }] },
  { title: "People", items: [
   { name: "Students", path: "/admin/students", icon: GraduationCap },

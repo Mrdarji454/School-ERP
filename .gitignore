@@ -31,3 +31,5 @@ server/.demo-data/
 
 server/.private-resources/
 server/.demo-resource-files/
+server/.reportcard-venv/
+__pycache__/

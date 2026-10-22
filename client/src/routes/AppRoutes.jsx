@@ -1,3 +1,6 @@
+import ReportCardsPage from '../pages/workflow/ReportCardsPage';
+import ExamsPage from '../pages/workflow/ExamsPage';
+import ResultsPage from '../pages/workflow/ResultsPage';
 import AssignmentsPage from '../pages/workflow/AssignmentsPage';
 import FinancePage from '../pages/workflow/FinancePage';
 import FinanceSetupPage from '../pages/admin/FinanceSetupPage';
@@ -50,7 +53,7 @@ const AppRoutes = () => {
         <Route element={<AdminLayout />}>
           {['fee', 'salary'].map(kind => <Route key={kind} path={`/admin/${kind === 'fee' ? 'fees' : 'salaries'}`} element={<FinancePage key={kind} kind={kind} />} />)}
           {['fee', 'salary'].flatMap(kind => [<Route key={`${kind}-structures`} path={`/admin/${kind}-structures`} element={<FinanceSetupPage key={`${kind}-structures`} kind={kind} />} />, <Route key={`${kind}-issuance`} path={`/admin/${kind}-issuance`} element={<FinanceSetupPage key={`${kind}-issuance`} kind={kind} issuance />} />])}
-          <Route path="/admin/assignments" element={<AssignmentsPage />} />
+          <Route path="/admin/report-cards" element={<ReportCardsPage />} /><Route path="/admin/exams" element={<ExamsPage />} /><Route path="/admin/results" element={<ResultsPage />} /><Route path="/admin/assignments" element={<AssignmentsPage />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/enrollments" element={<EnrollmentsPage />} />
           <Route path="/admin/promotions" element={<PromotionsPage />} />
@@ -61,7 +64,7 @@ const AppRoutes = () => {
           {managementResources.map(resource => <Route key={resource} path={`/admin/${resource}`} element={resource === "teachers" ? <PeoplePage key={resource} kind="teachers" /> : <ManagementPage key={resource} resource={resource} />} />)}
         </Route>
       </Route>
-      {['Teacher', 'Student'].map(role => <Route key={role} element={<ProtectedRoute allowedRoles={[role]} />}><Route element={<PortalLayout role={role} />}><Route path={`/${role.toLowerCase()}/${role === "Student" ? "fees" : "salary"}`} element={<FinancePage key={role} kind={role === "Student" ? "fee" : "salary"} />} /><Route path={`/${role.toLowerCase()}/assignments`} element={<AssignmentsPage />} /><Route path={`/${role.toLowerCase()}/dashboard`} element={<PortalDashboard />} /><Route path={`/${role.toLowerCase()}/timetable`} element={<TimetablePage />} /><Route path={`/${role.toLowerCase()}/resources`} element={<ResourcesPage />} /><Route path={`/${role.toLowerCase()}/notices`} element={<CommunicationsPage key="notices" kind="notices" />} /><Route path={`/${role.toLowerCase()}/calendar`} element={<CommunicationsPage key="calendar" kind="calendar" />} /><Route path={`/${role.toLowerCase()}/profile`} element={<AccountPage />} /><Route path={`/${role.toLowerCase()}/password`} element={<ChangePassword />} /><Route path={`/${role.toLowerCase()}/attendance`} element={<AttendancePage />} /></Route></Route>)}
+      {['Teacher', 'Student'].map(role => <Route key={role} element={<ProtectedRoute allowedRoles={[role]} />}><Route element={<PortalLayout role={role} />}><Route path={`/${role.toLowerCase()}/${role === "Student" ? "fees" : "salary"}`} element={<FinancePage key={role} kind={role === "Student" ? "fee" : "salary"} />} /><Route path={`/${role.toLowerCase()}/exams`} element={<ExamsPage />} />{role === 'Student' && <><Route path="/student/report-cards" element={<ReportCardsPage />} /><Route path="/student/results" element={<ResultsPage />} /></>}<Route path={`/${role.toLowerCase()}/assignments`} element={<AssignmentsPage />} /><Route path={`/${role.toLowerCase()}/dashboard`} element={<PortalDashboard />} /><Route path={`/${role.toLowerCase()}/timetable`} element={<TimetablePage />} /><Route path={`/${role.toLowerCase()}/resources`} element={<ResourcesPage />} /><Route path={`/${role.toLowerCase()}/notices`} element={<CommunicationsPage key="notices" kind="notices" />} /><Route path={`/${role.toLowerCase()}/calendar`} element={<CommunicationsPage key="calendar" kind="calendar" />} /><Route path={`/${role.toLowerCase()}/profile`} element={<AccountPage />} /><Route path={`/${role.toLowerCase()}/password`} element={<ChangePassword />} /><Route path={`/${role.toLowerCase()}/attendance`} element={<AttendancePage />} /></Route></Route>)}
     </Routes>
   );
 };

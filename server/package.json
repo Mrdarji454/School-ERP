@@ -10,7 +10,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "check:imports": "node scripts/check-imports.js",
-    "test": "node --test tests/core.test.js",
+    "test": "node --test tests/core.test.js tests/examCalculation.test.js",
     "test:integration": "node tests/integration.js",
     "bootstrap:admin": "node scripts/bootstrap-admin.js",
     "audit:data": "node scripts/audit-data.js",
@@ -32,7 +32,14 @@
     "seed:demo:finance:verify": "node scripts/demo/extend-finance.js --verify",
     "seed:demo:assignments": "node scripts/demo/extend-assignments.js",
     "seed:demo:assignments:verify": "node scripts/demo/extend-assignments.js --verify",
-    "test:assignments": "node tests/integration.js --assignments-only"
+    "test:assignments": "node tests/integration.js --assignments-only",
+    "test:exams": "node tests/integration.js --exams-only",
+    "seed:demo:exams": "node scripts/demo/extend-exams.js",
+    "seed:demo:exams:verify": "node scripts/demo/extend-exams.js --verify",
+    "seed:demo:report-cards": "node scripts/demo/extend-report-cards.js",
+    "seed:demo:report-cards:verify": "node scripts/demo/extend-report-cards.js --verify",
+    "test:report-cards": "node tests/integration.js --exams-only",
+    "check:readiness": "node scripts/readiness.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

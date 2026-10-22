@@ -1,9 +1,10 @@
+import ReportCard from '../models/ReportCard.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import LearningResource from '../models/LearningResource.js';
 import Assignment from '../models/Assignment.js';
 import Submission from '../models/AssignmentSubmission.js';
-const referenced = async key => await LearningResource.exists({ 'file.key': key }) || await Assignment.exists({ 'file.key': key }) || await Submission.exists({ 'file.key': key });
+const referenced = async key => await ReportCard.exists({ 'file.key': key }) || await LearningResource.exists({ 'file.key': key }) || await Assignment.exists({ 'file.key': key }) || await Submission.exists({ 'file.key': key });
 import { storageRoot, validKey } from './privateStorage.js';
 export async function cleanupResources({ remove = false, now = Date.now() } = {}) {
   const root = await storageRoot(), candidates = [], removed = [];

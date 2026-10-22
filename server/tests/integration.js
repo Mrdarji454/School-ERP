@@ -1,3 +1,5 @@
+import { verifyRecovery } from './recovery.js';
+import { verifyExams } from './exams.js';
 import { verifyAssignments } from './assignments.js';
 // Starts its own loopback-only MongoDB replica set. Never reads .env or uses MONGO_URI.
 import assert from "node:assert/strict";
@@ -62,7 +64,10 @@ try {
   await request("POST", "/auth/register", { fullname: "Attacker", email: "attacker@example.test", password, role: "Admin" }, null, 401);
   const adminLogin = await request("POST", "/auth/login", { email: "admin@example.test", password });
   const token = adminLogin.token;
-  if (process.argv.includes('--assignments-only')) {
+  if (process.argv.includes('--exams-only')) {
+    await verifyExams({ request, token });
+    console.log(`PASS: ${count} exam HTTP checks plus concurrency and privacy assertions`);
+  } else if (process.argv.includes('--assignments-only')) {
     await verifyAssignments({ request, token });
     console.log(`PASS: ${count} assignment HTTP checks plus transaction, privacy and retention assertions`);
   } else {
@@ -228,6 +233,8 @@ try {
   await verifyEnrollments({ request, token });
   await verifyFinance({ request, token });
   await verifyAssignments({ request, token });
+  await verifyExams({ request, token });
+  await verifyRecovery({ directory: dir, port, request, token });
   console.log(`PASS: ${count} HTTP/integration checks, including student workflow, permissions, attendance, concurrent scheduling and payments`);
 }
 } finally {

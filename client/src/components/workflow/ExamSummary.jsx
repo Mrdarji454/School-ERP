@@ -1,0 +1,10 @@
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthState';
+import useApiList from '../../hooks/useApiList';
+import { publicationTime } from '../../utils/publication';
+import RequestState from './RequestState';
+export default function ExamSummary({ academicYear = '' }) {
+ const { user } = useAuth(), student = user.role === 'Student', request = useApiList('/exams', { academicYear, limit: 1 }), results = useApiList(student ? '/exams/results' : null, { academicYear });
+ const s=request.data?.summary, base=`/${user.role.toLowerCase()}`;
+ return <section className="space-y-3 rounded-xl border bg-white p-5"><h2 className="text-lg font-semibold">Exams and results</h2><Link className="text-blue-800 underline" to={`${base}/exams`}>Open exam schedule{student ? '' : ' and tasks'}</Link>{student && <RequestState skeleton request={results}>{results.data && <Link className="block text-blue-800 underline" to={`${base}/results`}>{results.data.records.filter(r=>r.unread).length} unread published results</Link>}</RequestState>}<RequestState skeleton request={request}>{request.data && <>{!student && <div className="grid gap-3 sm:grid-cols-3">{(user.role==='Admin' ? [['Upcoming exams',s.upcoming],['Components awaiting review',s.reviews],['Approved, ready to publish',s.ready]] : [['Upcoming exams',s.upcoming],['Entry tasks',s.tasks],['Returned components',s.returned]]).map(([label,count])=><p key={label}><strong>{count}</strong> {label}</p>)}</div>}{request.data.entryPreview.map(t=><p key={t._id}>{t.name}: entry deadline {publicationTime(t.deadline,request.data.timeZone)}</p>)}<p className="text-sm">Schedule preview: {request.data.schedulePreview.length} of {request.data.scheduleTotal} upcoming sittings ({request.data.timeZone})</p>{request.data.schedulePreview.map(s=><p key={s._id}>{s.name}: {s.date.slice(0,10)}, {s.startTime}?{s.endTime}{s.room ? ` / ${s.room}` : ''}</p>)}{!request.data.scheduleTotal && <p>No upcoming exam sittings in this scope.</p>}</>}</RequestState></section>;
+}
